@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_delivery/screens/customer/homepage.dart';
 import 'package:food_delivery/services/location_service.dart';
+import 'package:food_delivery/widgets/custom_button.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 class LocationAccessPage extends StatefulWidget {
@@ -31,53 +35,27 @@ class _LocationAccessPageState extends State<LocationAccessPage> {
     await LocationService.requestLocationPermission();
     setState(() {
       _locationPermissionGranted = true;
+      Navigator.pushNamed(context, Homepage.routeName);
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
+     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Location Access'),
-      ),
+      
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'Location Access',
-              style: TextStyle(fontSize: 24),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'This app needs access to your location to function properly.',
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _locationServiceEnabled && _locationPermissionGranted
-                  ? null
-                  : LocationService.requestLocationPermission,
-              child: Text(
-                'Enable Location Access',
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              _locationServiceEnabled
-                  ? 'Location service is enabled.'
-                  : 'Location service is not enabled.',
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(height: 10),
-            Text(
-              _locationPermissionGranted
-                  ? 'Location permission is granted.'
-                  : 'Location permission is not granted.',
-              style: TextStyle(fontSize: 18),
-            ),
-          ],
+
+            customButtom(title:  _locationPermissionGranted ? 'LOCATION IS ENABLED' : 'ACCESS LOCATION'),
+            SizedBox(height: 20.h,),
+            Text(_locationPermissionGranted ? 'LOCATION IS ENABLED FOR THIS APP' : 'this app will access your location\n only while using the app',style: GoogleFonts.sen(color:isDark?Colors.white: Colors.black),)
+
+
+          ]
         ),
       ),
     );
