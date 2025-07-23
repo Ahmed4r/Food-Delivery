@@ -51,5 +51,8 @@
 	<string>en</string>
 	<string>nb</string>
 </array>
+
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>This app needs access to your location to function properly.</string>
 </dict>
 </plist>
