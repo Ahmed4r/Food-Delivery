@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_delivery/screens/customer/homepage.dart';
 import 'package:food_delivery/screens/location/location_page.dart';
 import 'package:food_delivery/screens/login/forgot_password/forgot_password.dart';
 import 'package:food_delivery/screens/login/login.dart';
@@ -39,6 +40,7 @@ class FoodDelivery extends ConsumerWidget {
         OtpScreen.routeName: (context) => OtpScreen(),
         SignupPage.routeName: (context) => SignupPage(),
         LocationAccessPage.routeName: (context) => LocationAccessPage(),
+        Homepage.routeName: (context) => Homepage(),
         
         },
         theme: AppTheme.lightTheme,
