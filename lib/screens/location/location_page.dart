@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:food_delivery/services/location_service.dart';
+
 
 class LocationAccessPage extends StatefulWidget {
-  static const String routeName ='/location-access';
+  static const String routeName = '/location-access';
   @override
+
   _LocationAccessPageState createState() => _LocationAccessPageState();
 }
 
@@ -18,10 +20,7 @@ class _LocationAccessPageState extends State<LocationAccessPage> {
   }
 
   Future<void> _checkLocationService() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
+    await LocationService.checkLocationService();
     setState(() {
       _locationServiceEnabled = true;
     });
@@ -29,11 +28,7 @@ class _LocationAccessPageState extends State<LocationAccessPage> {
   }
 
   Future<void> _requestLocationPermission() async {
-    LocationPermission permission = await Geolocator.requestPermission();
-    if (permission != LocationPermission.whileInUse &&
-        permission != LocationPermission.always) {
-      return Future.error('Location permissions are denied');
-    }
+    await LocationService.requestLocationPermission();
     setState(() {
       _locationPermissionGranted = true;
     });
@@ -62,7 +57,7 @@ class _LocationAccessPageState extends State<LocationAccessPage> {
             ElevatedButton(
               onPressed: _locationServiceEnabled && _locationPermissionGranted
                   ? null
-                  : _checkLocationService,
+                  : LocationService.requestLocationPermission,
               child: Text(
                 'Enable Location Access',
                 style: TextStyle(fontSize: 18),
