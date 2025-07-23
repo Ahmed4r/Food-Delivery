@@ -10,7 +10,7 @@ import 'package:food_delivery/screens/signup/signup.dart';
 import 'package:food_delivery/theme/app_colors.dart';
 import 'package:food_delivery/theme/app_text_styles.dart';
 import 'package:food_delivery/theme_provider.dart';
-import 'package:food_delivery/widgets/apptextfield.dart';
+import 'package:food_delivery/widgets/custom_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
