@@ -17,24 +17,29 @@ class _OtpScreenState extends State<OtpScreen> {
   int _seconds = 60;
   bool _isRunning = false;
   bool is_clicked =false;
+  Timer? _timer;
 
-  void _startTimer() {
-    _isRunning = true;
-    _seconds = 60;
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      if (_seconds > 0) {
+void _startTimer() {
+  _isRunning = true;
+  _seconds = 60;
+  Timer.periodic(Duration(seconds: 1), (timer) {
+    if (_seconds > 0) {
+      if (mounted) {
         setState(() {
           _seconds--;
         });
-      } else {
-        _isRunning = false;
-        timer.cancel();
-        setState(() {
-          
-        });
       }
-    });
-  }
+    } else {
+      _isRunning = false;
+      timer.cancel();
+    }
+  });
+}
+@override
+void dispose() {
+  _timer?.cancel();
+  super.dispose();
+}
 
   void _verifyOtp() {
     print(_otpController.text);
