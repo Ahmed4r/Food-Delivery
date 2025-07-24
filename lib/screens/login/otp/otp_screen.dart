@@ -8,6 +8,8 @@ import 'package:pinput/pinput.dart';
 
 class OtpScreen extends StatefulWidget {
   static const routeName = '/otp-screen';
+
+  const OtpScreen({super.key});
   @override
   _OtpScreenState createState() => _OtpScreenState();
 }
@@ -68,8 +70,7 @@ void dispose() {
             SizedBox(height: 10.h),
             RichText(
               text: TextSpan(
-                text: 'we have sent a code to your email'
-                    .tr(),
+                text: 'we have sent a code to your email'.tr(),
                  style: GoogleFonts.sen(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.normal,
@@ -97,18 +98,18 @@ void dispose() {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('CODE'),
+                Text('CODE'.tr()),
 
-                _isRunning? Text('Resend in $_seconds',style: TextStyle(fontWeight: FontWeight.bold,
+                _isRunning? Text('Resend in ${_seconds.toString()}'.tr(),style: TextStyle(fontWeight: FontWeight.bold,
                              
-                color: Colors.white
+                color: Colors.orange
                 ),) 
                 : 
                 InkWell(
                   onTap: () =>_startTimer(),
-                  child: Text('Resend',style: TextStyle(fontWeight: FontWeight.bold,
+                  child: Text('Resend'.tr(),style: TextStyle(fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,
-                  color: Colors.white
+                  color: Colors.orange
                   )),
                 )
               ],
@@ -120,7 +121,7 @@ void dispose() {
               
               style: ButtonStyle(
                 minimumSize: WidgetStatePropertyAll(Size(327.w, 70.h)),
-                backgroundColor: MaterialStateProperty.all(Colors.orange ),
+                backgroundColor: WidgetStateProperty.all(Colors.orange ),
               ),
               
               onPressed: _verifyOtp, child: Text('verify'.tr(),style: TextStyle(fontSize: 20,color: Colors.white),))
@@ -133,9 +134,12 @@ void dispose() {
 }
 
 final defaultPinTheme = PinTheme(
+  
+  
   width: 300.w,
   height: 56.h,
   textStyle: TextStyle(
+    
     fontSize: 20,
     color: Color.fromRGBO(30, 60, 87, 1),
     fontWeight: FontWeight.w600,
@@ -149,6 +153,7 @@ final defaultPinTheme = PinTheme(
 final focusedPinTheme = defaultPinTheme.copyDecorationWith(
   border: Border.all(color: Color(0xffF0F5FA)),
   borderRadius: BorderRadius.circular(8),
+  
 );
 
 final submittedPinTheme = defaultPinTheme.copyWith(
@@ -159,6 +164,7 @@ final submittedPinTheme = defaultPinTheme.copyWith(
 
 Widget buildPinPut(context) {
   return Pinput(
+    
     autofocus: true,
 
     defaultPinTheme: defaultPinTheme,
@@ -168,6 +174,7 @@ Widget buildPinPut(context) {
       if (s=='2222') {
         Navigator.pushReplacementNamed(context, LocationAccessPage.routeName);
       }
+      return null;
       
     },
 

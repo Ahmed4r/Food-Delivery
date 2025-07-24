@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
@@ -5,8 +6,9 @@ class AppTheme {
 
 
   static final lightTheme = ThemeData(
+    useMaterial3: true,
     brightness: Brightness.light,
-    scaffoldBackgroundColor: AppColors.background,
+   scaffoldBackgroundColor:AppColors.white,
     primaryColor: AppColors.primary,
     appBarTheme: const AppBarTheme(
       backgroundColor:  AppColors.black,
@@ -17,8 +19,9 @@ class AppTheme {
   );
 
   static final darkTheme = ThemeData(
+    useMaterial3: true,
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: Colors.black,
+    scaffoldBackgroundColor:AppColors.secondary,
     primaryColor: AppColors.primary,
     appBarTheme: const AppBarTheme(   
       backgroundColor: Colors.white,

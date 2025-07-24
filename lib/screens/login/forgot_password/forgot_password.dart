@@ -24,7 +24,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           children: [
             RichText(
               text: TextSpan(
-                text: 'forgot password'.tr(),
+                text: 'Forgot password'.tr(),
                 style: GoogleFonts.sen(
                   fontSize: 30.sp,
                   fontWeight: FontWeight.bold,
@@ -95,7 +95,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               ),
               onPressed: (){
                 Navigator.pushNamed(context, OtpScreen.routeName,arguments:{'email': Emailcontroller.text});
-              }, child: Text('sendcode'.tr(),
+              }, child: Text('sendCode'.tr(),
               style: GoogleFonts.cairo(fontSize: 20.sp,color: Colors.white
               ),))
           

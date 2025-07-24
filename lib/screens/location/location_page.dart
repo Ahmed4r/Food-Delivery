@@ -1,13 +1,17 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery/screens/customer/homepage.dart';
 import 'package:food_delivery/services/location_service.dart';
+import 'package:food_delivery/theme/app_colors.dart';
 import 'package:food_delivery/widgets/custom_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
 class LocationAccessPage extends StatefulWidget {
   static const String routeName = '/location-access';
+
+  const LocationAccessPage({super.key});
   @override
 
   _LocationAccessPageState createState() => _LocationAccessPageState();
@@ -35,7 +39,7 @@ class _LocationAccessPageState extends State<LocationAccessPage> {
     await LocationService.requestLocationPermission();
     setState(() {
       _locationPermissionGranted = true;
-      Navigator.pushNamed(context, Homepage.routeName);
+      // Navigator.pushNamed(context, Homepage.routeName);
     });
   }
 
@@ -49,10 +53,16 @@ class _LocationAccessPageState extends State<LocationAccessPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            CircleAvatar(
+          
+              radius: 100.r,
+              backgroundImage: AssetImage('assets/images/location.jpg'),
+            ),
+            SizedBox(height: 30.h,),
 
-            customButtom(title:  _locationPermissionGranted ? 'LOCATION IS ENABLED' : 'ACCESS LOCATION'),
+            customButtom(title:  _locationPermissionGranted ? 'LOCATION IS ENABLED'.tr() : 'ACCESS LOCATION'.tr()),
             SizedBox(height: 20.h,),
-            Text(_locationPermissionGranted ? 'LOCATION IS ENABLED FOR THIS APP' : 'this app will access your location\n only while using the app',style: GoogleFonts.sen(color:isDark?Colors.white: Colors.black),)
+            Text(_locationPermissionGranted ? 'LOCATION IS ENABLED FOR THIS APP'.tr() : 'this app will access your location\n only while using the app'.tr(),style: GoogleFonts.sen(color:isDark?Colors.white: Colors.black),)
 
 
           ]

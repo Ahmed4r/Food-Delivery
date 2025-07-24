@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_delivery/screens/customer/homepage.dart';
 import 'package:food_delivery/screens/login/forgot_password/forgot_password.dart';
 import 'package:food_delivery/screens/signup/signup.dart';
 import 'package:food_delivery/theme/app_colors.dart';
 import 'package:food_delivery/theme/app_text_styles.dart';
-import 'package:food_delivery/theme_provider.dart';
-import 'package:food_delivery/widgets/custom_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -22,8 +21,8 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _login_pageState extends ConsumerState<LoginPage> {
-  TextEditingController Emailcontroller = TextEditingController();
-  TextEditingController Passwordcontroller = TextEditingController();
+  TextEditingController Emailcontroller = TextEditingController(text: 'admin');
+  TextEditingController Passwordcontroller = TextEditingController(text: '123');
   bool isobsecured = false;
   bool checkboxvalue = false;
 
@@ -34,21 +33,17 @@ class _login_pageState extends ConsumerState<LoginPage> {
       appBar: AppBar(
         title: Column(
           children: [
-            RichText(
-              text: TextSpan(
-                text: 'login'.tr(),
-                style: GoogleFonts.sen(
-                  fontSize: 30.sp,
-                  fontWeight: FontWeight.bold,
-                  color: isDark?Colors.black:Colors.white
-                ),
+            Text(
+              'login'.tr(),
+              style: GoogleFonts.sen(
+                fontSize: 30.sp,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.black : Colors.white,
               ),
             ),
-            RichText(
-              text: TextSpan(
-                text: 'Please sign in to your existing account'.tr(),
-                style: GoogleFonts.sen(fontSize: 16.sp,  color: isDark?Colors.black:Colors.white),
-              ),
+            Text(
+              'Please sign in to your existing account'.tr(),
+              style: GoogleFonts.sen(fontSize: 16.sp, color: isDark ? Colors.black : Colors.white),
             ),
           ],
         ),
@@ -163,7 +158,7 @@ class _login_pageState extends ConsumerState<LoginPage> {
 
                 SizedBox(height: 20.h),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Checkbox(
                       value: checkboxvalue,
@@ -174,7 +169,8 @@ class _login_pageState extends ConsumerState<LoginPage> {
                       },
                     ),
 
-                    Text('Remember me'.tr(), style: AppTextStyles.bodyText),
+                    Text("Remember me".tr(), style: AppTextStyles.bodyText),
+                    Spacer(),
 
                     TextButton(
                       onPressed: () {
@@ -191,15 +187,18 @@ class _login_pageState extends ConsumerState<LoginPage> {
                   ],
                 ),
                 SizedBox(height: 20.h),
-                Container(
-                  width: 327.w,
-                  height: 62.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    color: AppColors.primary,
-                  ),
-                  child: Center(
-                    child: Text('login'.tr(), style: AppTextStyles.button),
+                InkWell(
+                  onTap: () => _login(),
+                  child: Container(
+                    width: 327.w,
+                    height: 62.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      color: AppColors.primary,
+                    ),
+                    child: Center(
+                      child: Text('login'.tr(), style: AppTextStyles.button),
+                    ),
                   ),
                 ),
                 SizedBox(height: 20.h),
@@ -243,4 +242,10 @@ class _login_pageState extends ConsumerState<LoginPage> {
       ),
     );
   }
+  void _login(){
+  if (Emailcontroller.text=='admin' && Passwordcontroller.text=='123') {
+    Navigator.pushNamed(context, Homepage.routeName);
+  }
 }
+}
+
