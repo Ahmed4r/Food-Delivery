@@ -52,12 +52,6 @@ A modern Flutter application for food delivery, featuring user authentication, p
 - `assets/lang/` - Localization files (en.json, ar.json)
 - `assets/images/` - App images
 
-## Screenshots
-![Login Screen](assets/images/login.png)
-![Home Screen](assets/images/home.png)
-![Profile Screen](assets/images/profile.png)
-![Settings Screen](C:\Users\ahmed\Desktop\Screenshot_1753300429.png)
-
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
