@@ -106,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: CircleAvatar(
                         radius: 60.r,
-                        backgroundImage:AssetImage(img),
+                        backgroundImage:AssetImage(img.isNotEmpty ? img : 'assets/images/profile_img.png'),
                       ),
                     ),
                     SizedBox(height: 12.h),

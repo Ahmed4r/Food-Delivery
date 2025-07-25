@@ -11,4 +11,6 @@ class AppColors {
   static const Color white = Colors.white;
   static const Color black = Colors.black;
   static const Color dark_grey =  Color(0xff303537) ;
+  static const Color light_grey =  Color.fromARGB(255, 239, 239, 239);
+  static const Color light_white =   Color(0xffF6F8FA);
 }

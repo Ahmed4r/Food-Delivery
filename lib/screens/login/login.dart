@@ -37,16 +37,15 @@ class _login_pageState extends ConsumerState<LoginPage> {
       if (checkboxvalue == true) {
         Emailcontroller.text = sahredPref!.getString('email') ?? '';
         Passwordcontroller.text = sahredPref!.getString('password') ?? '';
-      }
-      else{
+      } else {
         Emailcontroller.text = '';
         Passwordcontroller.text = '';
       }
     });
   }
 
-  TextEditingController Emailcontroller = TextEditingController( text: '');
-  TextEditingController Passwordcontroller = TextEditingController(text:  '');
+  TextEditingController Emailcontroller = TextEditingController(text: '');
+  TextEditingController Passwordcontroller = TextEditingController(text: '');
   bool isobsecured = false;
   bool checkboxvalue = false;
 
@@ -67,7 +66,10 @@ class _login_pageState extends ConsumerState<LoginPage> {
             ),
             Text(
               'Please sign in to your existing account'.tr(),
-              style: GoogleFonts.sen(fontSize: 16.sp, color: isDark ? Colors.black : Colors.white),
+              style: GoogleFonts.sen(
+                fontSize: 16.sp,
+                color: isDark ? Colors.black : Colors.white,
+              ),
             ),
           ],
         ),
@@ -81,9 +83,8 @@ class _login_pageState extends ConsumerState<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
 
               children: [
-                SizedBox(height: 40.h,),
-       
-        
+                SizedBox(height: 40.h),
+
                 SizedBox(
                   width: 327.w,
 
@@ -96,9 +97,12 @@ class _login_pageState extends ConsumerState<LoginPage> {
                     ),
                     decoration: InputDecoration(
                       alignLabelWithHint: true,
-                     label: Padding(
-                        padding:  EdgeInsets.only(bottom: 20.0.h),
-                        child: Text('email'.tr(),style: GoogleFonts.cairo(fontSize: 20.sp),),
+                      label: Padding(
+                        padding: EdgeInsets.only(bottom: 20.0.h),
+                        child: Text(
+                          'email'.tr(),
+                          style: GoogleFonts.cairo(fontSize: 20.sp),
+                        ),
                       ),
                       hintStyle: GoogleFonts.sen(
                         fontSize: 16,
@@ -106,10 +110,10 @@ class _login_pageState extends ConsumerState<LoginPage> {
                       ),
 
                       hintText: 'example@gmail.com'.tr(),
-                       labelStyle: GoogleFonts.sen(
+                      labelStyle: GoogleFonts.sen(
                         fontSize: 11.sp,
                         color: isDark ? Colors.white : Colors.black,
-                        ),
+                      ),
 
                       contentPadding: const EdgeInsets.symmetric(
                         vertical: 16,
@@ -126,7 +130,7 @@ class _login_pageState extends ConsumerState<LoginPage> {
                 ),
 
                 SizedBox(height: 20.h),
-              
+
                 SizedBox(
                   width: 327.w,
 
@@ -146,25 +150,27 @@ class _login_pageState extends ConsumerState<LoginPage> {
                         },
                         icon: isobsecured
                             ? FaIcon(FontAwesomeIcons.eye)
-                            : FaIcon(FontAwesomeIcons.eyeSlash), 
+                            : FaIcon(FontAwesomeIcons.eyeSlash),
                       ),
 
                       hintStyle: GoogleFonts.sen(
                         fontSize: 16,
                         color: isDark ? Colors.white : Colors.black,
                       ),
-                       label: Padding(
-                        padding:  EdgeInsets.only(bottom: 20.0.h),
-                        child: Text('password'.tr(),style: GoogleFonts.sen(fontSize: 20.sp),),
+                      label: Padding(
+                        padding: EdgeInsets.only(bottom: 20.0.h),
+                        child: Text(
+                          'password'.tr(),
+                          style: GoogleFonts.sen(fontSize: 20.sp),
+                        ),
                       ),
                       alignLabelWithHint: true,
                       labelStyle: GoogleFonts.sen(
                         fontSize: 11.sp,
                         color: isDark ? Colors.white : Colors.black,
-                        ),
+                      ),
 
                       hintText: 'password'.tr(),
-
 
                       contentPadding: const EdgeInsets.symmetric(
                         vertical: 16,
@@ -186,14 +192,22 @@ class _login_pageState extends ConsumerState<LoginPage> {
                   children: [
                     Checkbox(
                       value: checkboxvalue,
-                      onChanged: (value) async{
+                      onChanged: (value) async {
                         setState(() {
                           checkboxvalue = value!;
                         });
-                        SharedPreferences sahredPref = await SharedPreferences.getInstance();
-                        checkboxvalue==true? sahredPref.setBool('remember', checkboxvalue) : sahredPref.remove('remember');
+                        SharedPreferences sahredPref =
+                            await SharedPreferences.getInstance();
+                        checkboxvalue == true &&
+                                Emailcontroller.text.isNotEmpty &&
+                                Passwordcontroller.text.isNotEmpty
+                            ? sahredPref.setBool('remember', checkboxvalue)
+                            : sahredPref.remove('remember');
                         sahredPref.setString('email', Emailcontroller.text);
-                        sahredPref.setString('password', Passwordcontroller.text);
+                        sahredPref.setString(
+                          'password',
+                          Passwordcontroller.text,
+                        );
                       },
                     ),
 
@@ -251,18 +265,18 @@ class _login_pageState extends ConsumerState<LoginPage> {
                   ],
                 ),
                 Text('Or'.tr(), style: AppTextStyles.bodyText),
-                SizedBox(height: 20.h,),
-              
-                  InkWell(
-                    onTap: () {
-                      
-                    },
-                    child: CircleAvatar(
-                      child: FaIcon(FontAwesomeIcons.google,color: Colors.orange,),
+                SizedBox(height: 20.h),
+
+                InkWell(
+                  onTap: () {},
+                  child: CircleAvatar(
+                    child: FaIcon(
+                      FontAwesomeIcons.google,
+                      color: Colors.orange,
                     ),
                   ),
-                  SizedBox(height: 200,)
-                
+                ),
+                SizedBox(height: 200),
               ],
             ),
           ),
@@ -270,24 +284,60 @@ class _login_pageState extends ConsumerState<LoginPage> {
       ),
     );
   }
-  void _login(){
-    if (checkboxvalue == true) {
-      if (Emailcontroller.text == sahredPref!.getString('email') && Passwordcontroller.text == sahredPref!.getString('password')) {
-        Navigator.pushNamed(context, Homepage.routeName);
-        CustomAlert.success(context, title: 'Successfully logged in');
-      }
-      else{
-        CustomAlert.error(context, title: 'Incorrect email or password');
+
+ void _login() async {
+    final email = Emailcontroller.text.trim();
+    final password = Passwordcontroller.text;
+
+    // Validate input
+    if (email.isEmpty || password.isEmpty) {
+      CustomAlert.error(context, title: 'Please enter email and password');
+      return;
+    }
+
+    // For demonstration: hardcoded admin credentials
+    const adminEmail = 'admin';
+    const adminPassword = '123';
+
+    // Check credentials
+    bool isValid = false;
+
+    // If remember me is checked, compare with stored credentials
+    if (checkboxvalue) {
+      final storedEmail = sahredPref?.getString('email') ?? '';
+      final storedPassword = sahredPref?.getString('password') ?? '';
+      if (email == storedEmail && password == storedPassword) {
+        isValid = true;
       }
     }
-    else{
-      if (Emailcontroller.text=='admin' && Passwordcontroller.text=='123') {
-        Navigator.pushNamed(context, Homepage.routeName);
+
+    // Also allow hardcoded admin login
+    if (email == adminEmail && password == adminPassword) {
+      isValid = true;
+    }
+
+    if (isValid) {
+      // Set login flag (or token)
+      await sahredPref?.setBool('isLoggedIn', true);
+
+      // Optionally, store token if you have one
+      await sahredPref?.setBool('authToken', true);
+
+      // If remember me is checked, store credentials
+      if (checkboxvalue) {
+        await sahredPref?.setString('email', email);
+        await sahredPref?.setString('password', password);
+        await sahredPref?.setBool('remember', true);
+      } else {
+        await sahredPref?.remove('email');
+        await sahredPref?.remove('password');
+        await sahredPref?.setBool('remember', false);
       }
-      else{
-        CustomAlert.error(context, title: 'Incorrect email or password');
-      }
+
+      Navigator.pushNamed(context, Homepage.routeName);
+      CustomAlert.success(context, title: 'Successfully logged in');
+    } else {
+      CustomAlert.error(context, title: 'Incorrect email or password');
     }
   }
 }
-

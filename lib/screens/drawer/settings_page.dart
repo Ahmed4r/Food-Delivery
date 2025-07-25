@@ -2,13 +2,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_delivery/screens/location/location_page.dart';
 import 'package:food_delivery/theme/app_colors.dart';
 import 'package:food_delivery/theme/theme_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   static const routeName = '/settings';
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 
   @override
   ConsumerState<SettingsPage> createState() => _SettingsPageState();
@@ -84,6 +85,13 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 }
               },
             ),
+          ),
+          ListTile(
+            leading: FaIcon( FontAwesomeIcons.locationArrow, color: themeMode == ThemeMode.dark ? Colors.white : Colors.black),
+            title: Text('location'.tr(), style: GoogleFonts.sen(
+              color: themeMode == ThemeMode.dark ? Colors.white : Colors.black
+            )),
+            trailing: IconButton(onPressed: ()=> Navigator.pushNamed(context, LocationAccessPage.routeName,), icon: Icon(Icons.arrow_forward_ios)),
           ),
          
         ],

@@ -14,6 +14,7 @@ import 'package:food_delivery/screens/drawer/faqs.dart';
 import 'package:food_delivery/screens/drawer/personal_info.dart';
 import 'package:food_delivery/screens/drawer/settings_page.dart';
 import 'package:food_delivery/screens/login/login.dart';
+import 'package:food_delivery/screens/onboarding_screen.dart';
 import 'package:food_delivery/theme/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +27,7 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+  @override
   void initState() {
     super.initState();
     _loadProfileData();
@@ -48,6 +50,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Drawer(
+      elevation: 10,
+     shadowColor: Colors.grey,
       backgroundColor: isDark ? const Color(0xff181F20) : Colors.white,
       child: SingleChildScrollView(
         child: Column(
@@ -62,7 +66,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   Navigator.pop(context);
                   // Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfile()),);
                 },
-                child: Container(
+                child: SizedBox(
                   height: 224,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -382,13 +386,10 @@ Navigator.pushNamed(context, FaqsScreen.routeName);
                             fontSize: 15.sp,
                           ),
                         ),
-                        onTap: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
-                            ),
-                          );
+                        onTap: ()async {
+                         SharedPreferences pref = await SharedPreferences.getInstance();
+                         pref.remove('authToken');
+                          Navigator.pushReplacementNamed(context, LoginPage.routeName);
                         },
                       ),
                     ],

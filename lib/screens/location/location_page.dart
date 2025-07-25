@@ -1,9 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_delivery/screens/customer/homepage.dart';
 import 'package:food_delivery/services/location_service.dart';
-import 'package:food_delivery/theme/app_colors.dart';
 import 'package:food_delivery/widgets/custom_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -48,6 +46,10 @@ class _LocationAccessPageState extends State<LocationAccessPage> {
   Widget build(BuildContext context) {
      final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
+      appBar: AppBar(
+        title: Text('location access'.tr(),style: GoogleFonts.sen(color:isDark?Colors.black: Colors.white),),
+
+      ),
       
       body: Center(
         child: Column(
