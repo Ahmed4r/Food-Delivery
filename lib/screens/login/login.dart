@@ -10,7 +10,9 @@ import 'package:food_delivery/screens/login/forgot_password/forgot_password.dart
 import 'package:food_delivery/screens/signup/signup.dart';
 import 'package:food_delivery/theme/app_colors.dart';
 import 'package:food_delivery/theme/app_text_styles.dart';
+import 'package:food_delivery/widgets/custom_alert.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   static const String routeName = '/login_page';
@@ -21,8 +23,30 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _login_pageState extends ConsumerState<LoginPage> {
-  TextEditingController Emailcontroller = TextEditingController(text: 'admin');
-  TextEditingController Passwordcontroller = TextEditingController(text: '123');
+  SharedPreferences? sahredPref;
+  @override
+  void initState() {
+    super.initState();
+    getPref();
+  }
+
+  getPref() async {
+    sahredPref = await SharedPreferences.getInstance();
+    setState(() {
+      checkboxvalue = sahredPref!.getBool('remember') ?? false;
+      if (checkboxvalue == true) {
+        Emailcontroller.text = sahredPref!.getString('email') ?? '';
+        Passwordcontroller.text = sahredPref!.getString('password') ?? '';
+      }
+      else{
+        Emailcontroller.text = '';
+        Passwordcontroller.text = '';
+      }
+    });
+  }
+
+  TextEditingController Emailcontroller = TextEditingController( text: '');
+  TextEditingController Passwordcontroller = TextEditingController(text:  '');
   bool isobsecured = false;
   bool checkboxvalue = false;
 
@@ -57,7 +81,7 @@ class _login_pageState extends ConsumerState<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
 
               children: [
-                SizedBox(height: 20.h,),
+                SizedBox(height: 40.h,),
        
         
                 SizedBox(
@@ -162,10 +186,14 @@ class _login_pageState extends ConsumerState<LoginPage> {
                   children: [
                     Checkbox(
                       value: checkboxvalue,
-                      onChanged: (value) {
+                      onChanged: (value) async{
                         setState(() {
                           checkboxvalue = value!;
                         });
+                        SharedPreferences sahredPref = await SharedPreferences.getInstance();
+                        checkboxvalue==true? sahredPref.setBool('remember', checkboxvalue) : sahredPref.remove('remember');
+                        sahredPref.setString('email', Emailcontroller.text);
+                        sahredPref.setString('password', Passwordcontroller.text);
                       },
                     ),
 
@@ -243,9 +271,23 @@ class _login_pageState extends ConsumerState<LoginPage> {
     );
   }
   void _login(){
-  if (Emailcontroller.text=='admin' && Passwordcontroller.text=='123') {
-    Navigator.pushNamed(context, Homepage.routeName);
+    if (checkboxvalue == true) {
+      if (Emailcontroller.text == sahredPref!.getString('email') && Passwordcontroller.text == sahredPref!.getString('password')) {
+        Navigator.pushNamed(context, Homepage.routeName);
+        CustomAlert.success(context, title: 'Successfully logged in');
+      }
+      else{
+        CustomAlert.error(context, title: 'Incorrect email or password');
+      }
+    }
+    else{
+      if (Emailcontroller.text=='admin' && Passwordcontroller.text=='123') {
+        Navigator.pushNamed(context, Homepage.routeName);
+      }
+      else{
+        CustomAlert.error(context, title: 'Incorrect email or password');
+      }
+    }
   }
-}
 }
 

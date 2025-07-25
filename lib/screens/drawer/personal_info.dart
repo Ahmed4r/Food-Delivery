@@ -57,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Row(
           children: [
             Text(
-              'personal info'.tr(),
+              "Personal Info".tr(),
               style: GoogleFonts.sen(
                 fontSize: 17.sp,
                 color: isDark ? Colors.black : Colors.white,
@@ -77,7 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 }
               },
               child: Text(
-                'edit'.tr(),
+               "Edit Profile".tr(),
                 style: GoogleFonts.sen(
                   fontSize: 17.sp,
                   color: AppColors.primary,
@@ -105,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CircleAvatar(
-                        radius: 40.r,
+                        radius: 60.r,
                         backgroundImage:AssetImage(img),
                       ),
                     ),
@@ -142,8 +142,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           Container(
-            width: 300.w,
+            width: 340.w,
             decoration: BoxDecoration(
+             
               color: isDark ? AppColors.dark_grey : Color(0xffF6F8FA),
             ),
             child: Column(
@@ -160,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Full Name',
+                        "FULL NAME".tr(),
                         style: GoogleFonts.sen(
                           color: isDark ? Colors.white : Colors.black,
                           fontSize: 15.sp,
@@ -190,7 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Email',
+                        "EMAIL".tr(),
                         style: GoogleFonts.sen(
                           color: isDark ? Colors.white : Colors.black,
                           fontSize: 15.sp,
@@ -220,7 +221,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Phone Number',
+                        "PHONE NUMBER".tr(),
                         style: GoogleFonts.sen(
                           color: isDark ? Colors.white : Colors.black,
                           fontSize: 15.sp,
