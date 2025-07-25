@@ -1,20 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
-// Custom Drawer Widget
-//
-// Description:
-//   A customizable navigation drawer for the food delivery app.
-//   Displays user profile information and provides navigation links to profile, address, cart, favorites, notifications, payments, FAQs, user reviews, settings, and logout.
-//   Supports dark and light themes, and loads user data from shared preferences.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:food_delivery/screens/customer/homepage.dart';
+import 'package:food_delivery/screens/drawer/address.dart';
 import 'package:food_delivery/screens/drawer/faqs.dart';
 import 'package:food_delivery/screens/drawer/personal_info.dart';
 import 'package:food_delivery/screens/drawer/settings_page.dart';
 import 'package:food_delivery/screens/login/login.dart';
-import 'package:food_delivery/screens/onboarding_screen.dart';
 import 'package:food_delivery/theme/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,15 +43,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Drawer(
       elevation: 10,
-     shadowColor: Colors.grey,
+      shadowColor: Colors.grey,
       backgroundColor: isDark ? const Color(0xff181F20) : Colors.white,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            /// Header of the Drawer
+         
             Material(
-              // color: isDark ? Colors.white : Colors.black,
+            
               child: InkWell(
                 onTap: () {
                   /// Close Navigation drawer before
@@ -173,6 +165,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         onTap: () {
                           /// Close Navigation drawer before
                           Navigator.pop(context);
+                          Navigator.pushNamed(context, AddressListScreen.routeName);
                           // Navigator.push(context, MaterialPageRoute(builder: (context) => FavouriteScreen()),);
                         },
                       ),
@@ -308,7 +301,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         ),
                         onTap: () {
                           Navigator.pop(context);
-Navigator.pushNamed(context, FaqsScreen.routeName);
+                          Navigator.pushNamed(context, FaqsScreen.routeName);
                         },
                       ),
                       ListTile(
@@ -386,10 +379,14 @@ Navigator.pushNamed(context, FaqsScreen.routeName);
                             fontSize: 15.sp,
                           ),
                         ),
-                        onTap: ()async {
-                         SharedPreferences pref = await SharedPreferences.getInstance();
-                         pref.remove('authToken');
-                          Navigator.pushReplacementNamed(context, LoginPage.routeName);
+                        onTap: () async {
+                          SharedPreferences pref =
+                              await SharedPreferences.getInstance();
+                          pref.remove('authToken');
+                          Navigator.pushReplacementNamed(
+                            context,
+                            LoginPage.routeName,
+                          );
                         },
                       ),
                     ],
@@ -399,6 +396,110 @@ Navigator.pushNamed(context, FaqsScreen.routeName);
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SeeAllCategoriesScreen extends StatelessWidget {
+  final List<Map<String, dynamic>> categories;
+
+  const SeeAllCategoriesScreen({Key? key, required this.categories})
+    : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'All Categories',
+          style: GoogleFonts.sen(
+            color: isDark ? Colors.white : Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: isDark ? Colors.black : Colors.white,
+        iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black),
+        elevation: 1,
+      ),
+      body: GridView.builder(
+        padding: const EdgeInsets.all(16),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 2.2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+        ),
+        itemCount: categories.length,
+        itemBuilder: (context, index) {
+          final category = categories[index];
+          return Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.network(
+                  category['image'],
+                  width: 40,
+                  height: 40,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) =>
+                      Icon(Icons.broken_image),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  category['title'],
+                  style: GoogleFonts.sen(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class SeeAllRestaurantsScreen extends StatelessWidget {
+  final List<Map<String, dynamic>> restaurants;
+  final Widget Function(Map<String, dynamic>) restaurantCardBuilder;
+
+  const SeeAllRestaurantsScreen({
+    Key? key,
+    required this.restaurants,
+    required this.restaurantCardBuilder,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Opened Restaurants',
+          style: GoogleFonts.sen(
+            color: isDark ? Colors.white : Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: isDark ? Colors.black : Colors.white,
+        iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black),
+        elevation: 1,
+      ),
+      body: ListView.separated(
+        padding: const EdgeInsets.all(16),
+        itemCount: restaurants.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 16),
+        itemBuilder: (context, index) {
+          return restaurantCardBuilder(restaurants[index]);
+        },
       ),
     );
   }

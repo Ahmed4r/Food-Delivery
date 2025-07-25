@@ -5,9 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery/screens/customer/edit_profile.dart';
 import 'package:food_delivery/screens/customer/homepage.dart';
+import 'package:food_delivery/screens/drawer/address.dart';
 import 'package:food_delivery/screens/drawer/faqs.dart';
 import 'package:food_delivery/screens/drawer/personal_info.dart';
 import 'package:food_delivery/screens/drawer/settings_page.dart';
+import 'package:food_delivery/screens/location/get_geolocation.dart';
 import 'package:food_delivery/screens/location/location_page.dart';
 import 'package:food_delivery/screens/login/forgot_password/forgot_password.dart';
 import 'package:food_delivery/screens/login/login.dart';
@@ -83,6 +85,8 @@ class FoodDelivery extends ConsumerWidget {
         EditProfile.routeName: (context) => EditProfile(),
         SettingsPage.routeName: (context) => SettingsPage(),
         FaqsScreen.routeName: (context) => FaqsScreen(),
+        AddressListScreen.routeName: (context) => AddressListScreen(),
+        GetGeolocation.routeName: (context) => GetGeolocation(),
         },
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,

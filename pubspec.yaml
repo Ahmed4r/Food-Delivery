@@ -46,6 +46,12 @@ dependencies:
   flutter_native_splash: ^2.3.10
   animated_introduction: ^1.0.4
   flutter_sliding_toast: ^1.5.2
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.1
+  http: ^1.1.0
+  geocoding: ^4.0.0
+ 
+
  
 flutter_native_splash:
   color: "#ffffff"
