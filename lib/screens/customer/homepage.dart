@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 class Homepage extends StatefulWidget {
   static const String routeName = '/customer_homepage';
 
-  Homepage({super.key});
+  const Homepage({super.key});
 
   @override
   State<Homepage> createState() => _HomepageState();

@@ -12,6 +12,8 @@ import 'package:latlong2/latlong.dart';
 class AddressListScreen extends StatefulWidget {
   static String routeName = 'address_list';
 
+  const AddressListScreen({super.key});
+
   @override
   State<AddressListScreen> createState() => _AddressListScreenState();
 }
@@ -159,7 +161,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
 class AddressDetailsScreen extends StatefulWidget {
   final AddressModel? address;
 
-  const AddressDetailsScreen({Key? key, this.address}) : super(key: key);
+  const AddressDetailsScreen({super.key, this.address});
 
   @override
   _AddressDetailsScreenState createState() => _AddressDetailsScreenState();
@@ -289,7 +291,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
       body: Column(
         children: [
           // Map Section
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height * 0.4,
             child: Stack(
               children: [

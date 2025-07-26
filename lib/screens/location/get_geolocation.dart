@@ -4,7 +4,7 @@ import 'package:geolocator/geolocator.dart';
 
 class GetGeolocation extends StatefulWidget {
   static const routeName = '/location';
-  const GetGeolocation({Key? key}) : super(key: key);
+  const GetGeolocation({super.key});
 
   @override
   State<GetGeolocation> createState() => _LocationPageState();
