@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,6 +22,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String email = '';
   String phone = '';
   String img = '';
+
+  ImageProvider _getProfileImageProvider() {
+    const String defaultAsset = 'assets/images/profile_img.png';
+    if (img == null || img.isEmpty) {
+      return AssetImage(defaultAsset);
+    }
+    if (img.startsWith('http://') || img.startsWith('https://')) {
+      return NetworkImage(img);
+    }
+    if (img.startsWith('/')) {
+      // Local file path
+      return FileImage(File(img));
+    }
+    // Try asset, fallback to default asset if error
+    try {
+      return AssetImage(img);
+    } catch (_) {
+      return AssetImage(defaultAsset);
+    }
+  }
 
   @override
   void initState() {
@@ -106,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: CircleAvatar(
                         radius: 60.r,
-                        backgroundImage:AssetImage(img.isNotEmpty ? img : 'assets/images/profile_img.png'),
+                        backgroundImage: _getProfileImageProvider(),
                       ),
                     ),
                     SizedBox(height: 12.h),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,6 +30,26 @@ class _CustomDrawerState extends State<CustomDrawer> {
   String name = '';
   String email = '';
   String? img;
+
+  ImageProvider _getProfileImageProvider() {
+    const String defaultAsset = 'assets/images/profile_img.png';
+    if (img == null || img!.isEmpty) {
+      return AssetImage(defaultAsset);
+    }
+    if (img!.startsWith('http://') || img!.startsWith('https://')) {
+      return NetworkImage(img!);
+    }
+    if (img!.startsWith('/')) {
+      // Local file path
+      return FileImage(File(img!));
+    }
+    // Try asset, fallback to default asset if error
+    try {
+      return AssetImage(img!);
+    } catch (_) {
+      return AssetImage(defaultAsset);
+    }
+  }
 
   Future<void> _loadProfileData() async {
     final prefs = await SharedPreferences.getInstance();
@@ -68,9 +90,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         padding: const EdgeInsets.only(left: 8.0, top: 30),
                         child: CircleAvatar(
                           radius: 40.r,
-                          backgroundImage: AssetImage(
-                            img ?? 'assets/images/profile_img.png',
-                          ),
+                          backgroundImage: _getProfileImageProvider(),
                         ),
                       ),
 
@@ -404,8 +424,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
 class SeeAllCategoriesScreen extends StatelessWidget {
   final List<Map<String, dynamic>> categories;
 
-  const SeeAllCategoriesScreen({Key? key, required this.categories})
-    : super(key: key);
+  const SeeAllCategoriesScreen({super.key, required this.categories});
 
   @override
   Widget build(BuildContext context) {
@@ -472,10 +491,10 @@ class SeeAllRestaurantsScreen extends StatelessWidget {
   final Widget Function(Map<String, dynamic>) restaurantCardBuilder;
 
   const SeeAllRestaurantsScreen({
-    Key? key,
+    super.key,
     required this.restaurants,
     required this.restaurantCardBuilder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
