@@ -1,11 +1,14 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:food_delivery/screens/login/forgot_password/forgot_password.dart';
+import 'package:food_delivery/screens/customer/customer_homepage.dart';
+import 'package:food_delivery/screens/restaurant/owner_homepage.dart';
 import 'package:food_delivery/theme/app_colors.dart';
 import 'package:food_delivery/theme/app_text_styles.dart';
 
@@ -26,11 +29,35 @@ class SignupPage extends ConsumerStatefulWidget {
 class _SignupPageState extends ConsumerState<SignupPage> {
   // State implementation here
 
-
-  TextEditingController Emailcontroller = TextEditingController();
-  TextEditingController Passwordcontroller = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController rePasswordController = TextEditingController();
   bool isobsecured = false;
   bool checkboxvalue = false;
+  String selectedRole = 'customer';
+   Future<void> registerUser() async {
+    try {
+      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      await FirebaseFirestore.instance.collection('users').doc(credential.user!.uid).set({
+        'email': emailController.text.trim(),
+        'role': selectedRole,
+      });
+
+      if (selectedRole == 'owner') {
+        Navigator.pushReplacementNamed(context, OwnerHomepage.routeName);
+      } else {
+        Navigator.pushReplacementNamed(context, Homepage.routeName);
+      }
+    } catch (e) {
+      log('Registration Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Registration failed ${e.toString()}')));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +72,17 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 style: GoogleFonts.sen(
                   fontSize: 30.sp,
                   fontWeight: FontWeight.bold,
-                  color: isDark?Colors.black:Colors.white
+                  color: isDark ? Colors.black : Colors.white,
                 ),
               ),
             ),
             RichText(
               text: TextSpan(
                 text: 'Please sign up to get started'.tr(),
-                style: GoogleFonts.sen(fontSize: 16.sp,  color: isDark?Colors.black:Colors.white),
+                style: GoogleFonts.sen(
+                  fontSize: 16.sp,
+                  color: isDark ? Colors.black : Colors.white,
+                ),
               ),
             ),
           ],
@@ -67,14 +97,11 @@ class _SignupPageState extends ConsumerState<SignupPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
 
               children: [
-                SizedBox(height: 20.h,),
-       
-        
                 SizedBox(
                   width: 327.w,
 
                   child: TextField(
-                    controller: Emailcontroller,
+                    controller: nameController,
 
                     style: TextStyle(
                       fontSize: 16,
@@ -82,20 +109,23 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                     ),
                     decoration: InputDecoration(
                       alignLabelWithHint: true,
-                     label: Padding(
-                        padding:  EdgeInsets.only(bottom: 20.0.h),
-                        child: Text('name'.tr(),style: GoogleFonts.cairo(fontSize: 20.sp),),
+                      label: Padding(
+                        padding: EdgeInsets.only(bottom: 20.0.h),
+                        child: Text(
+                          'name'.tr(),
+                          style: GoogleFonts.cairo(fontSize: 20.sp),
+                        ),
                       ),
                       hintStyle: GoogleFonts.sen(
                         fontSize: 16,
                         color: isDark ? Colors.white : Colors.black,
                       ),
 
-                      hintText: 'example@gmail.com'.tr(),
-                       labelStyle: GoogleFonts.sen(
+                      hintText: 'ahmed'.tr(),
+                      labelStyle: GoogleFonts.sen(
                         fontSize: 11.sp,
                         color: isDark ? Colors.white : Colors.black,
-                        ),
+                      ),
 
                       contentPadding: const EdgeInsets.symmetric(
                         vertical: 16,
@@ -116,7 +146,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   width: 327.w,
 
                   child: TextField(
-                    controller: Emailcontroller,
+                    controller: emailController,
 
                     style: TextStyle(
                       fontSize: 16,
@@ -124,9 +154,12 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                     ),
                     decoration: InputDecoration(
                       alignLabelWithHint: true,
-                     label: Padding(
-                        padding:  EdgeInsets.only(bottom: 20.0.h),
-                        child: Text('email'.tr(),style: GoogleFonts.cairo(fontSize: 20.sp),),
+                      label: Padding(
+                        padding: EdgeInsets.only(bottom: 20.0.h),
+                        child: Text(
+                          'email'.tr(),
+                          style: GoogleFonts.cairo(fontSize: 20.sp),
+                        ),
                       ),
                       hintStyle: GoogleFonts.sen(
                         fontSize: 16,
@@ -134,10 +167,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                       ),
 
                       hintText: 'example@gmail.com'.tr(),
-                       labelStyle: GoogleFonts.sen(
+                      labelStyle: GoogleFonts.sen(
                         fontSize: 11.sp,
                         color: isDark ? Colors.white : Colors.black,
-                        ),
+                      ),
 
                       contentPadding: const EdgeInsets.symmetric(
                         vertical: 16,
@@ -154,12 +187,12 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 ),
 
                 SizedBox(height: 20.h),
-              
+
                 SizedBox(
                   width: 327.w,
 
                   child: TextField(
-                    controller: Passwordcontroller,
+                    controller: passwordController,
                     obscureText: isobsecured == true ? false : true,
                     style: TextStyle(
                       fontSize: 16,
@@ -174,26 +207,28 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                         },
                         icon: isobsecured
                             ? FaIcon(FontAwesomeIcons.eye)
-                            : FaIcon(FontAwesomeIcons.eyeSlash), 
+                            : FaIcon(FontAwesomeIcons.eyeSlash),
                       ),
 
                       hintStyle: GoogleFonts.sen(
                         fontSize: 16,
                         color: isDark ? Colors.white : Colors.black,
                       ),
-                       label: Padding(
-                        padding:  EdgeInsets.only(bottom: 20.0.h),
-                        child: Text('password'.tr(),style: GoogleFonts.sen(fontSize: 20.sp),),
+                      label: Padding(
+                        padding: EdgeInsets.only(bottom: 20.0.h),
+                        child: Text(
+                          'password'.tr(),
+                          style: GoogleFonts.sen(fontSize: 20.sp),
+                        ),
                       ),
                       alignLabelWithHint: true,
                       labelStyle: GoogleFonts.sen(
                         fontSize: 11.sp,
                         color: isDark ? Colors.white : Colors.black,
-                        ),
+                      ),
 
                       hintText: 'password'.tr(),
 
-
                       contentPadding: const EdgeInsets.symmetric(
                         vertical: 16,
                         horizontal: 20,
@@ -213,7 +248,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   width: 327.w,
 
                   child: TextField(
-                    controller: Passwordcontroller,
+                    controller: rePasswordController,
                     obscureText: isobsecured == true ? false : true,
                     style: TextStyle(
                       fontSize: 16,
@@ -228,25 +263,27 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                         },
                         icon: isobsecured
                             ? FaIcon(FontAwesomeIcons.eye)
-                            : FaIcon(FontAwesomeIcons.eyeSlash), 
+                            : FaIcon(FontAwesomeIcons.eyeSlash),
                       ),
 
                       hintStyle: GoogleFonts.sen(
                         fontSize: 16,
                         color: isDark ? Colors.white : Colors.black,
                       ),
-                       label: Padding(
-                        padding:  EdgeInsets.only(bottom: 20.0.h),
-                        child: Text('re password'.tr(),style: GoogleFonts.sen(fontSize: 20.sp),),
+                      label: Padding(
+                        padding: EdgeInsets.only(bottom: 20.0.h),
+                        child: Text(
+                          'confirm password'.tr(),
+                          style: GoogleFonts.sen(fontSize: 20.sp),
+                        ),
                       ),
                       alignLabelWithHint: true,
                       labelStyle: GoogleFonts.sen(
                         fontSize: 11.sp,
                         color: isDark ? Colors.white : Colors.black,
-                        ),
+                      ),
 
-                      hintText: 're password'.tr(),
-
+                      hintText: 'confirm password'.tr(),
 
                       contentPadding: const EdgeInsets.symmetric(
                         vertical: 16,
@@ -263,78 +300,37 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 ),
 
                 SizedBox(height: 20.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Checkbox(
-                      value: checkboxvalue,
-                      onChanged: (value) {
-                        setState(() {
-                          checkboxvalue = value!;
-                        });
-                      },
-                    ),
-
-                    Text('Remember me'.tr(), style: AppTextStyles.bodyText),
-
-                    TextButton(
-                      onPressed: () {
-                        log('clicked');
-                        Navigator.pushNamed(context, ForgotPassword.routeName);
-                      },
-                      child: Text(
-                        'Forgot password'.tr(),
-                        style: AppTextStyles.bodyText.copyWith(
-                          color: Colors.deepOrange,
-                        ),
-                      ),
-                    ),
+                 SizedBox(
+                width: 327.w,
+                child: DropdownButtonFormField<String>(
+                  value: selectedRole,
+                  decoration: InputDecoration(
+                    label: Text('Register as', style: GoogleFonts.cairo(fontSize: 20.sp)),
+                  ),
+                  items: [
+                    DropdownMenuItem(value: 'customer', child: Text('Customer', style: GoogleFonts.cairo())),
+                    DropdownMenuItem(value: 'owner', child: Text('Restaurant Owner', style: GoogleFonts.cairo())),
                   ],
+                  onChanged: (value) => setState(() => selectedRole = value!),
                 ),
-                SizedBox(height: 20.h),
-                Container(
-                  width: 327.w,
-                  height: 62.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    color: AppColors.primary,
-                  ),
-                  child: Center(
-                    child: Text('login'.tr(), style: AppTextStyles.button),
-                  ),
-                ),
-                SizedBox(height: 20.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Don\'t have an account?'.tr(),
-                      style: AppTextStyles.bodyText,
+              ),
+              SizedBox(height: 20.h,),
+                InkWell(
+                  onTap: (){
+                    registerUser();
+                  },
+                  child: Container(
+                    width: 327.w,
+                    height: 62.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      color: AppColors.primary,
                     ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Sign up'.tr(),
-                        style: AppTextStyles.bodyText.copyWith(
-                          color: Colors.deepOrange,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Text('Or'.tr(), style: AppTextStyles.bodyText),
-                SizedBox(height: 20.h,),
-              
-                  InkWell(
-                    onTap: () {
-                      
-                    },
-                    child: CircleAvatar(
-                      child: FaIcon(FontAwesomeIcons.google,color: Colors.orange,),
+                    child: Center(
+                      child: Text('Sign Up'.tr(), style: AppTextStyles.button),
                     ),
                   ),
-                  SizedBox(height: 200,)
-                
+                ),
               ],
             ),
           ),

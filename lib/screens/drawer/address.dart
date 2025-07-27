@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_delivery/models/address_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 import 'package:food_delivery/services/location_service.dart';
 import 'package:food_delivery/theme/app_colors.dart';
 
@@ -19,9 +21,34 @@ class AddressListScreen extends StatefulWidget {
 }
 
 class _AddressListScreenState extends State<AddressListScreen> {
-  List<AddressModel> addresses = [
-   
-  ];
+  List<AddressModel> addresses = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAddresses();
+  }
+
+  Future<void> _loadAddresses() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String>? addressJsonList = prefs.getStringList('addresses');
+    if (addressJsonList != null) {
+      setState(() {
+        addresses = addressJsonList
+            .map((jsonStr) => AddressModel.fromJson(
+                Map<String, dynamic>.from(
+                    jsonDecode(jsonStr) as Map)))
+            .toList();
+      });
+    }
+  }
+
+  Future<void> _saveAddresses() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String> addressJsonList =
+        addresses.map((a) => jsonEncode(a.toJson())).toList();
+    await prefs.setStringList('addresses', addressJsonList);
+  }
 
   Future<void> _addNewAddress() async {
     final AddressModel? newAddress = await Navigator.push(
@@ -34,6 +61,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
       setState(() {
         addresses.add(newAddress);
       });
+      await _saveAddresses();
     }
   }
 
@@ -115,6 +143,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
                             setState(() {
                               addresses.removeAt(index);
                             });
+                            _saveAddresses();
                           },
                         ),
                       ],
@@ -276,7 +305,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
     }
   }
 
-  void _onMapTap(TapPosition tapPosition, LatLng location) {
+  void _onMapTap(TapPosition tapPosition, LatLng location) async {
     setState(() {
       selectedLocation = location;
     });

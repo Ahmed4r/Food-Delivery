@@ -1,19 +1,23 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:food_delivery/screens/customer/homepage.dart';
+import 'package:food_delivery/screens/customer/customer_homepage.dart';
 import 'package:food_delivery/screens/login/forgot_password/forgot_password.dart';
+import 'package:food_delivery/screens/restaurant/owner_homepage.dart';
 import 'package:food_delivery/screens/signup/signup.dart';
 import 'package:food_delivery/theme/app_colors.dart';
 import 'package:food_delivery/theme/app_text_styles.dart';
+import 'package:food_delivery/widgets/bottom_nav.dart';
 import 'package:food_delivery/widgets/custom_alert.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
 class LoginPage extends ConsumerStatefulWidget {
   static const String routeName = '/login_page';
   const LoginPage({super.key});
@@ -268,7 +272,11 @@ class _login_pageState extends ConsumerState<LoginPage> {
                 SizedBox(height: 20.h),
 
                 InkWell(
-                  onTap: () {},
+                  onTap: () async{
+                    signInWithGoogle();
+                    
+
+                  },
                   child: CircleAvatar(
                     child: FaIcon(
                       FontAwesomeIcons.google,
@@ -284,6 +292,24 @@ class _login_pageState extends ConsumerState<LoginPage> {
       ),
     );
   }
+  Future<UserCredential> signInWithGoogle() async {
+  // Trigger the authentication flow
+  final GoogleSignInAccount googleUser = await GoogleSignIn.instance.authenticate();
+  if (googleUser == null) {
+    throw Exception('Google sign in aborted');
+  }
+
+  // Obtain the auth details from the request
+  final GoogleSignInAuthentication googleAuth =googleUser.authentication;
+
+  // Create a new credential
+  final credential = GoogleAuthProvider.credential(idToken: googleAuth.idToken);
+
+  // Once signed in, return the UserCredential
+  return await FirebaseAuth.instance.signInWithCredential(credential);
+}
+
+
 
  void _login() async {
     final email = Emailcontroller.text.trim();
@@ -294,36 +320,23 @@ class _login_pageState extends ConsumerState<LoginPage> {
       CustomAlert.error(context, title: 'Please enter email and password');
       return;
     }
-
-    // For demonstration: hardcoded admin credentials
-    const adminEmail = 'admin';
-    const adminPassword = '123';
-
-    // Check credentials
-    bool isValid = false;
-
-    // If remember me is checked, compare with stored credentials
-    if (checkboxvalue) {
-      final storedEmail = sahredPref?.getString('email') ?? '';
-      final storedPassword = sahredPref?.getString('password') ?? '';
-      if (email == storedEmail && password == storedPassword) {
-        isValid = true;
+    try {
+      // Use Firebase Auth to sign in
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      // Fetch user role from Firestore
+      User? user = FirebaseAuth.instance.currentUser;
+      String? role;
+      if (user != null) {
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+        if (userDoc.exists && userDoc.data() != null) {
+          Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+          role = userData['role'] as String?;
+        }
       }
-    }
-
-    // Also allow hardcoded admin login
-    if (email == adminEmail && password == adminPassword) {
-      isValid = true;
-    }
-
-    if (isValid) {
-      // Set login flag (or token)
-      await sahredPref?.setBool('isLoggedIn', true);
-
-      // Optionally, store token if you have one
-      await sahredPref?.setBool('authToken', true);
-
-      // If remember me is checked, store credentials
+      // Save credentials if "Remember me" is checked
       if (checkboxvalue) {
         await sahredPref?.setString('email', email);
         await sahredPref?.setString('password', password);
@@ -333,11 +346,31 @@ class _login_pageState extends ConsumerState<LoginPage> {
         await sahredPref?.remove('password');
         await sahredPref?.setBool('remember', false);
       }
-
-      Navigator.pushNamed(context, Homepage.routeName);
+      // Navigate based on role
+      if (role == 'owner') {
+        print('Navigating to owner dashboard');
+        final prefs = await SharedPreferences.getInstance();
+prefs.setString('role', 'owner'); // or 'customer'
+        Navigator.pushNamed(context, BottomNav.routeName);
+      } else if (role == 'user') {
+        print('Navigating to user dashboard');
+        Navigator.pushNamed(context, Homepage.routeName);
+      } else {
+        print('Unknown or no role found');
+        CustomAlert.error(context, title: 'Unknown or no role found');
+        return;
+      }
       CustomAlert.success(context, title: 'Successfully logged in');
-    } else {
-      CustomAlert.error(context, title: 'Incorrect email or password');
+    } on FirebaseAuthException catch (e) {
+      String message = 'Login failed';
+      if (e.code == 'user-not-found') {
+        message = 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        message = 'Wrong password provided.';
+      }
+      CustomAlert.error(context, title: message);
+    } catch (e) {
+      CustomAlert.error(context, title: 'An error occurred');
     }
   }
 }

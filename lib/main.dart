@@ -22,43 +22,37 @@ import 'package:food_delivery/screens/restaurant/owner_homepage.dart';
 import 'package:food_delivery/screens/signup/signup.dart';
 import 'package:food_delivery/theme/theme.dart';
 import 'package:food_delivery/theme/theme_provider.dart';
+import 'package:food_delivery/widgets/bottom_nav.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer' as developer;
 void main() async {
-  debugPrint = (String? message, {int? wrapWidth}) {
-    developer.log(message ?? '', name: 'PaymobDebug');
-  };
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: FirebaseOptions(
       apiKey: "AIzaSyBTKQUPtXgfbnQpIos4VoddRBmdMsSukzs",
       appId: "1:4958439163:android:21cbb7fc4a5e0c5be3125e",
       projectId: "foodapp-e68fd",
       messagingSenderId: "4958439163",
-      storageBucket:  "foodapp-e68fd.firebasestorage.app"
+      storageBucket: "foodapp-e68fd.firebasestorage.app",
+    ),
+  );
 
-
-    )
-
-    
-);
   await EasyLocalization.ensureInitialized();
-  await SharedPreferences.getInstance();
-  var prefs = await SharedPreferences.getInstance();
-  var token = prefs.getBool('authToken') ?? false;
-  var flag = prefs.getBool('hasSeenOnboarding') ?? false;
-  log(token.toString());
-  log(flag.toString());
-  runApp(
-    
-    
-    EasyLocalization(
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getBool('authToken') ?? false;
+  final flag = prefs.getBool('hasSeenOnboarding') ?? false;
+  final role = prefs.getString('role');
 
+  runApp(
+    EasyLocalization(
       startLocale: Locale('en'),
       supportedLocales: [Locale('en'), Locale('ar')],
       path: 'assets/lang',
       fallbackLocale: Locale('en'),
-      child: ProviderScope(child: FoodDelivery(token: token,flag: flag,)),
+      child: ProviderScope(
+        child: FoodDelivery(token: token, flag: flag, role: role),
+      ),
     ),
   );
 }
@@ -66,7 +60,8 @@ void main() async {
 class FoodDelivery extends ConsumerWidget {
   final bool token;
   final bool flag;
-  const FoodDelivery({super.key, required this.token,required this.flag});
+  final String? role;
+  const FoodDelivery({super.key, required this.token,required this.flag, this.role});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -79,8 +74,12 @@ class FoodDelivery extends ConsumerWidget {
     else if (token==false && flag==true) {
       initialRoute = LoginPage.routeName;
     } else {
-      initialRoute = Homepage.routeName;
-    }
+  if (role == 'owner') {
+    initialRoute = OwnerHomepage.routeName;
+  } else {
+    initialRoute = Homepage.routeName;
+  }
+}
     return ScreenUtilInit(
       designSize: Size(375, 812),
       
@@ -109,6 +108,7 @@ class FoodDelivery extends ConsumerWidget {
         PaymentSystemScreen.routeName: (context) => PaymentSystemScreen(),
         OwnerHomepage.routeName : (context)=> OwnerHomepage() ,
         RestaurantViewScreen.routeName : (context)=> RestaurantViewScreen(),
+        BottomNav.routeName: (context) => BottomNav(),
         },
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,

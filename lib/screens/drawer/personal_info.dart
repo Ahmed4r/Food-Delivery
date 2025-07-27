@@ -25,7 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   ImageProvider _getProfileImageProvider() {
     const String defaultAsset = 'assets/images/profile_img.png';
-    if (img == null || img.isEmpty) {
+    if (img.isEmpty) {
       return AssetImage(defaultAsset);
     }
     if (img.startsWith('http://') || img.startsWith('https://')) {

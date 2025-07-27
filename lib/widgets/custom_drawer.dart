@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_delivery/screens/drawer/address.dart';
 import 'package:food_delivery/screens/drawer/faqs.dart';
+import 'package:food_delivery/screens/drawer/payments.dart';
 import 'package:food_delivery/screens/drawer/personal_info.dart';
 import 'package:food_delivery/screens/drawer/settings_page.dart';
 import 'package:food_delivery/screens/login/login.dart';
@@ -288,7 +289,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             fontSize: 15.sp,
                           ),
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          /// Close Navigation drawer before
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, PaymentSystemScreen.routeName);
+                        },
                       ),
                     ],
                   ),
@@ -403,6 +408,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           SharedPreferences pref =
                               await SharedPreferences.getInstance();
                           pref.remove('authToken');
+                          pref.remove('email');
+                          pref.remove('password');
                           Navigator.pushReplacementNamed(
                             context,
                             LoginPage.routeName,
