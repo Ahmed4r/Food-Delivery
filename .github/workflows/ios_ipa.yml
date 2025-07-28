@@ -25,23 +25,24 @@ jobs:
       - name: Configure Podfile for iOS build and Swift version
         run: |
           cd ios
-          # Ensure platform :ios, '15.5' is present at the beginning of the Podfile
-          if ! grep -q "platform :ios, '15.5'" Podfile; then
-            sed -i '' "1s/^/platform :ios, '15.5'\\n/" Podfile
+
+          # Add platform if not exists
+          if ! grep -q "platform :ios" Podfile; then
+            sed -i '' "1s/^/platform :ios, '15.5'\n/" Podfile
           fi
 
-          # Add post_install hook to set Swift version for all targets if not already present
-          # This is crucial for resolving Swift compiler errors with Firebase pods.
+          # Add post_install hook if not exists
           if ! grep -q "post_install do |installer|" Podfile; then
-            cat << EOF >> Podfile
+            echo >> Podfile
+            echo "post_install do |installer|" >> Podfile
+            echo "  installer.pods_project.targets.each do |target|" >> Podfile
+            echo "    target.build_configurations.each do |config|" >> Podfile
+            echo "      config.build_settings['SWIFT_VERSION'] = '5.10'" >> Podfile
+            echo "    end" >> Podfile
+            echo "  end" >> Podfile
+            echo "end" >> Podfile
+          fi
 
-              post_install do |installer|
-                installer.pods_project.targets.each do |target|
-                  target.build_configurations.each do |config|
-                    config.build_settings['SWIFT_VERSION'] = '5.10'
-                  end
-                end
-              end
 
            
 
