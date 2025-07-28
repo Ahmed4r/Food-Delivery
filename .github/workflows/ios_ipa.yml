@@ -19,64 +19,67 @@ jobs:
 
       - run: flutter pub get
 
-      # Configure Podfile for iOS build and Swift version
-      # This step ensures the correct iOS deployment target and
-      # adds a post_install hook to set the Swift version for all pods.
-      - name: Configure Podfile for iOS build and Swift version
+      - name: Modify Podfile to support iOS 15.5 and Swift 5.10
         run: |
           cd ios
 
-          # Add platform if not exists
+          if [ ! -f "Podfile" ]; then
+            echo "❌ Podfile not found!"
+            exit 1
+          fi
+
+          # Set iOS deployment target
+          sed -i '' "s/^# platform :ios.*/platform :ios, '15.5'/" Podfile
           if ! grep -q "platform :ios" Podfile; then
             sed -i '' "1s/^/platform :ios, '15.5'\n/" Podfile
-          else
-            sed -i '' "s/platform :ios.*/platform :ios, '15.5'/" Podfile
           fi
 
-          # Add post_install hook if not exists
+          # Set Swift version with a valid Ruby post_install block
           if ! grep -q "post_install do |installer|" Podfile; then
-            echo >> Podfile
-            echo "post_install do |installer|" >> Podfile
-            echo "  installer.pods_project.targets.each do |target|" >> Podfile
-            echo "    target.build_configurations.each do |config|" >> Podfile
-            echo "      config.build_settings['SWIFT_VERSION'] = '5.10'" >> Podfile
-            echo "    end" >> Podfile
-            echo "  end" >> Podfile
-            echo "end" >> Podfile
+            cat <<'EOF' >> Podfile
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['SWIFT_VERSION'] = '5.10'
+    end
+  end
+end
+EOF
           fi
 
-
-           
-
-      # Clean and reinstall CocoaPods
-      # This step removes the Podfile.lock and performs a fresh pod install
-      # to ensure all dependencies are correctly set up with the specified Swift version.
-      - name: Clean and update CocoaPods
+      - name: Install CocoaPods
         run: |
           rm -f ios/Podfile.lock
           cd ios
-          pod repo update
           pod deintegrate
           pod install --repo-update
           cd ..
 
+      - name: Patch FirebaseDataEncoder.swift for Firebase bug
+        run: |
+          swift_file="ios/Pods/FirebaseSharedSwift/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift"
+          if [ -f "$swift_file" ]; then
+            sed -i '' 's/let encoder = .*/let encoder = FirebaseDataEncoder()/' "$swift_file"
+            sed -i '' 's/let sending = .*/let sending = try! encoder.encode(value)/' "$swift_file"
+          else
+            echo "FirebaseDataEncoder.swift not found, skipping patch."
+          fi
+
       - run: flutter build ios --release --no-codesign
 
-      - run: mkdir Payload
-        working-directory: build/ios/iphoneos
+      - name: Prepare IPA
+        run: |
+          cd build/ios/iphoneos
+          mkdir Payload
+          mv Runner.app Payload
+          zip -qq -r -9 FlutterIpaExport.ipa Payload
 
-      - run: mv Runner.app/ Payload
-        working-directory: build/ios/iphoneos
-
-      - name: Zip output
-        run: zip -qq -r -9 FlutterIpaExport.ipa Payload
-        working-directory: build/ios/iphoneos
-
-      - name: Upload binaries to release
+      - name: Upload IPA to GitHub Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/ios/iphoneos/FlutterIpaExport.ipa
-          tag: v1.0
+          tag: ios-build-${{ github.run_id }}
           overwrite: true
-          body: "This is first release"
+          body: "🚀 iOS IPA build – created in run ID ${{ github.run_id }}"
