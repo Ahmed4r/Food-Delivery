@@ -60,11 +60,14 @@ jobs:
         run: |
           swift_file="ios/Pods/FirebaseSharedSwift/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift"
           if [ -f "$swift_file" ]; then
-            sed -i '' 's/let encoder = .*/let encoder = FirebaseDataEncoder()/' "$swift_file"
-            sed -i '' 's/let sending = .*/let sending = try! encoder.encode(value)/' "$swift_file"
+            sed -i '' 's/let encoder = .*$/let encoder = FirebaseDataEncoder()/' "$swift_file"
+            sed -i '' 's/let sending = .*$/let sending = try! encoder.encode(value)/' "$swift_file"
           else
             echo "FirebaseDataEncoder.swift not found, skipping patch."
           fi
+      - name: Print patched file for debug
+        run: cat ios/Pods/FirebaseSharedSwift/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift | grep encoder
+
 
       - run: flutter build ios --release --no-codesign
 
