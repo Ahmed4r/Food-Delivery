@@ -18,7 +18,7 @@ jobs:
           channel: 'stable'
           architecture: x64
 
-      - name: Install dependencies
+      - name: Get Flutter dependencies
         run: flutter pub get
 
       - name: Clean and install CocoaPods
