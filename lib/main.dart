@@ -82,8 +82,6 @@ class FoodDelivery extends ConsumerWidget {
 }
     return ScreenUtilInit(
       designSize: Size(375, 812),
-      
-      
       child: MaterialApp(
         
         locale: context.locale,

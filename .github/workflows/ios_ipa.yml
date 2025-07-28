@@ -7,34 +7,40 @@ jobs:
   build-ios:
     name: 🎉 iOS Build
     runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
 
-      - uses: subosito/flutter-action@v2
+    steps:
+      - name: 🔄 Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: 💻 Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          channel: stable
           architecture: x64
 
-      - run: flutter clean
+      - name: 🧹 Clean Project
+        run: flutter clean
 
-      - run: flutter pub get
+      - name: 📦 Get Dependencies
+        run: flutter pub get
 
-      - name: Modify Podfile to support iOS 15.5 and Swift 5.10
+      - name: 🛠️ Modify Podfile for iOS 15.5 & Swift 5.8
         run: |
           cd ios
 
+          # Ensure Podfile exists
           if [ ! -f "Podfile" ]; then
             echo "❌ Podfile not found!"
             exit 1
           fi
 
-          # Set iOS deployment target
-          sed -i '' "s/^# platform :ios.*/platform :ios, '15.5'/" Podfile
+          # Force set iOS deployment target
+          sed -i '' "s/^#\? *platform :ios.*/platform :ios, '15.5'/" Podfile
           if ! grep -q "platform :ios" Podfile; then
             sed -i '' "1s/^/platform :ios, '15.5'\n/" Podfile
           fi
 
-          # Set Swift version safely
+          # Add Swift version post_install block if not already there
           if ! grep -q "post_install do |installer|" Podfile; then
             {
               echo ""
@@ -48,37 +54,35 @@ jobs:
             } >> Podfile
           fi
 
-      - name: Install CocoaPods
+      - name: 🧼 Clean & Install CocoaPods
         run: |
-          rm -f ios/Podfile.lock
           cd ios
+          rm -rf Pods Podfile.lock
           pod deintegrate
           pod install --repo-update
           cd ..
 
-      # - name: Patch FirebaseDataEncoder.swift for Firebase bug
-      #   run: |
-      #     swift_file="ios/Pods/FirebaseSharedSwift/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift"
-      #     if [ -f "$swift_file" ]; then
-      #       sed -i '' 's/let encoder = .*$/let encoder = FirebaseDataEncoder()/' "$swift_file"
-      #       sed -i '' 's/let sending = .*$/let sending = try! encoder.encode(value)/' "$swift_file"
-      #     else
-      #       echo "FirebaseDataEncoder.swift not found, skipping patch."
-      #     fi
-      - name: Print patched file for debug
-        run: cat ios/Pods/FirebaseSharedSwift/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift | grep encoder
+      - name: 🔍 Debug FirebaseDataEncoder.swift (optional)
+        run: |
+          file="ios/Pods/FirebaseSharedSwift/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift"
+          if [ -f "$file" ]; then
+            echo "✅ FirebaseDataEncoder.swift found"
+            grep encoder "$file" || echo "No encoder lines found"
+          else
+            echo "⚠️ FirebaseDataEncoder.swift not found"
+          fi
 
+      - name: 🚀 Build iOS App
+        run: flutter build ios --release --no-codesign
 
-      - run: flutter build ios --release --no-codesign
-
-      - name: Prepare IPA
+      - name: 📦 Package IPA
         run: |
           cd build/ios/iphoneos
           mkdir Payload
           mv Runner.app Payload
           zip -qq -r -9 FlutterIpaExport.ipa Payload
 
-      - name: Upload IPA to GitHub Release
+      - name: ⬆️ Upload IPA to GitHub Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
