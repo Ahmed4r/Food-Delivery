@@ -41,7 +41,7 @@ jobs:
               echo "post_install do |installer|"
               echo "  installer.pods_project.targets.each do |target|"
               echo "    target.build_configurations.each do |config|"
-              echo "      config.build_settings['SWIFT_VERSION'] = '5.10'"
+              echo "      config.build_settings['SWIFT_VERSION'] = '5.8'"
               echo "    end"
               echo "  end"
               echo "end"
@@ -56,15 +56,15 @@ jobs:
           pod install --repo-update
           cd ..
 
-      - name: Patch FirebaseDataEncoder.swift for Firebase bug
-        run: |
-          swift_file="ios/Pods/FirebaseSharedSwift/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift"
-          if [ -f "$swift_file" ]; then
-            sed -i '' 's/let encoder = .*$/let encoder = FirebaseDataEncoder()/' "$swift_file"
-            sed -i '' 's/let sending = .*$/let sending = try! encoder.encode(value)/' "$swift_file"
-          else
-            echo "FirebaseDataEncoder.swift not found, skipping patch."
-          fi
+      # - name: Patch FirebaseDataEncoder.swift for Firebase bug
+      #   run: |
+      #     swift_file="ios/Pods/FirebaseSharedSwift/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift"
+      #     if [ -f "$swift_file" ]; then
+      #       sed -i '' 's/let encoder = .*$/let encoder = FirebaseDataEncoder()/' "$swift_file"
+      #       sed -i '' 's/let sending = .*$/let sending = try! encoder.encode(value)/' "$swift_file"
+      #     else
+      #       echo "FirebaseDataEncoder.swift not found, skipping patch."
+      #     fi
       - name: Print patched file for debug
         run: cat ios/Pods/FirebaseSharedSwift/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift | grep encoder
 
