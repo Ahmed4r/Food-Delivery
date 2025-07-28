@@ -21,29 +21,23 @@ jobs:
           channel: stable
           architecture: x64
 
+      - name: 🧹 Clean project
+        run: flutter clean
+
       - name: 📦 Get Flutter dependencies
         run: flutter pub get
 
-      - name: ⚙️ Generate .flutter-plugins-dependencies (inside ios/)
-        run: |
-          cd ios
-          flutter pub get
-          cd ..
+      - name: ⚙️ Prewarm & generate plugin files
+        run: flutter build ios --no-codesign --no-tree-shake-icons || true
 
-      - name: 🔧 Pre-warm Flutter iOS build (optional)
-        run: flutter build ios --no-codesign || true
-
-      - name: 🧼 Clean & install CocoaPods
+      - name: 🧼 Install CocoaPods
         run: |
-          rm -rf ios/Pods
-          rm -f ios/Podfile.lock
-          pod cache clean --all
           cd ios
           pod install
           cd ..
 
-      - name: 📱 Build iOS release (no codesign)
-        run: flutter build ios --release --no-codesign
+      - name: 📱 Final iOS release build
+        run: flutter build ios --release --no-codesign --no-tree-shake-icons
 
       - name: 📁 Prepare Payload folder
         run: mkdir Payload
@@ -64,4 +58,4 @@ jobs:
           file: build/ios/iphoneos/FlutterIpaExport.ipa
           tag: v1.0
           overwrite: true
-          body: "This is first release"
+          body: "🚀 First iOS release"
