@@ -20,6 +20,8 @@ jobs:
 
       - name: Get Flutter dependencies
         run: flutter pub get
+      - name: Pre-warm Flutter iOS and generate plugin files
+        run: flutter build ios --no-codesign || true
 
       - name: Clean and install CocoaPods
         run: |
