@@ -71,6 +71,9 @@ jobs:
           else
             echo "⚠️ FirebaseDataEncoder.swift not found"
           fi
+          
+      - name: 🔧 Build Flutter iOS Frameworks
+        run: flutter build ios-framework --output=build/ios/frameworks
 
       - name: 🚀 Build iOS App
         run: flutter build ios --release --no-codesign
