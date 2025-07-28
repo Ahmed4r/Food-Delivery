@@ -18,38 +18,34 @@ jobs:
           channel: 'stable'
           architecture: x64
 
-      - run: flutter pub get
+      - name: Install dependencies
+        run: flutter pub get
 
-      - name: Set iOS deployment target
+      - name: Clean and install CocoaPods
         run: |
-          cd ios
-          if ! grep -q "platform :ios, '15.5'" Podfile; then
-            echo "platform :ios, '15.5'" | cat - Podfile > temp && mv temp Podfile
-          fi
-          cd ..
-
-      - name: Clean and update CocoaPods
-        run: |
+          rm -rf ios/Pods
           rm -f ios/Podfile.lock
+          pod cache clean --all
           cd ios
-          pod repo update
-          pod deintegrate
           pod install
           cd ..
 
-      - run: flutter build ios --release --no-codesign
+      - name: Build iOS
+        run: flutter build ios --release --no-codesign
 
-      - run: mkdir Payload
+      - name: Prepare IPA folder
+        run: mkdir Payload
         working-directory: build/ios/iphoneos
 
-      - run: mv Runner.app/ Payload
+      - name: Move .app to Payload
+        run: mv Runner.app/ Payload
         working-directory: build/ios/iphoneos
 
-      - name: Zip output
+      - name: Zip to IPA
         run: zip -qq -r -9 FlutterIpaExport.ipa Payload
         working-directory: build/ios/iphoneos
 
-      - name: Upload binaries to release
+      - name: Upload to GitHub Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
