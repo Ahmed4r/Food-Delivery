@@ -31,11 +31,6 @@ target 'Runner' do
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 
-  # 🔐 ثبّت نسخ Firebase المتوافقة
-  pod 'Firebase/Core', '10.24.0'
-  pod 'Firebase/Auth', '10.24.0'
-  pod 'Firebase/Firestore', '10.24.0'
-  pod 'FirebaseSharedSwift', '10.24.0'
 
   target 'RunnerTests' do
     inherit! :search_paths
