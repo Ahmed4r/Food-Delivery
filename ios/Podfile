@@ -9,7 +9,7 @@ project 'Runner', {
 }
 
 def flutter_install_all_ios_pods(flutter_application_path)
-  plugin_file = File.join(flutter_application_path, '..', '.flutter-plugins-dependencies')
+  plugin_file = File.join(flutter_application_path, '.flutter-plugins-dependencies')
   eval(File.read(plugin_file), binding) if File.exist?(plugin_file)
 end
 
