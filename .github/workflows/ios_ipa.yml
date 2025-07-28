@@ -17,15 +17,12 @@ jobs:
 
       - run: flutter pub get
 
-      # ❌ شيلنا خطوة platform :ios عشان ما تعملش conflict
-      # Clean and reinstall CocoaPods
       - name: Clean and update CocoaPods
         run: |
           rm -f ios/Podfile.lock
           cd ios
-          pod repo update
-          pod deintegrate
-          pod install
+          pod repo remove trunk || true
+          pod install --repo-update
           cd ..
 
       - name: 🩹 Patch FirebaseSharedSwift bug (fix both lines)
