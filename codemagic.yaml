@@ -1,0 +1,36 @@
+workflows:
+  ios-workflow:
+    name: iOS Codemagic Build
+    max_build_duration: 60
+    environment:
+      flutter: 3.32.5
+      xcode: latest
+      vars:
+        BUNDLE_ID: "com.example.foodDelivery"
+        APP_NAME: "FoodDelivery"
+    scripts:
+      - name: Clean and get dependencies
+        script: |
+          flutter clean
+          flutter pub get
+          rm -rf ios/Pods ios/Podfile.lock ios/Flutter ios/.symlinks
+          cd ios
+          pod install
+          cd ..
+
+      - name: Build iOS
+        script: |
+          flutter build ios --release --no-codesign
+
+    artifacts:
+      - build/ios/iphoneos/*.ipa
+      - build/ios/iphoneos/*.app
+      - flutter_drive.log
+
+    publishing:
+      email:
+        recipients:
+          - "your-email@example.com"
+        notify:
+          success: true
+          failure: true
