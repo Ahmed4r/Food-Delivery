@@ -25,7 +25,11 @@ jobs:
             echo "platform :ios, '15.5'" | cat - Podfile > temp && mv temp Podfile
           fi
           cd ..
-      # Clean and reinstall CocoaPods
+      
+       # Explicitly set Swift version for Xcode
+      - name: Set Swift version
+        run: |
+          echo "SWIFT_VERSION = 5.10" >> ios/Flutter/Generated.xcconfig# Clean and reinstall CocoaPods
       - name: Clean and update CocoaPods
         run: |
           rm -f ios/Podfile.lock
