@@ -62,16 +62,19 @@ jobs:
           pod install --repo-update
           cd ..
 
-      - name: 🔍 Debug FirebaseDataEncoder.swift (optional)
+      - name: 🩹 Patch UnfairLock.swift for Swift compatibility
         run: |
-          file="ios/Pods/FirebaseSharedSwift/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift"
-          if [ -f "$file" ]; then
-            echo "✅ FirebaseDataEncoder.swift found"
-            grep encoder "$file" || echo "No encoder lines found"
+          swift_file="ios/Pods/FirebaseCoreInternal/FirebaseCore/Internal/Sources/Utilities/UnfairLock.swift"
+          if [ -f "$swift_file" ]; then
+            echo "✅ Found UnfairLock.swift, patching..."
+            sed -i '' 's/sending/let sending/g' "$swift_file"
+            sed -i '' 's/consuming //g' "$swift_file"
+            sed -i '' 's/borrowing //g' "$swift_file"
+            sed -i '' 's/inout //g' "$swift_file"
           else
-            echo "⚠️ FirebaseDataEncoder.swift not found"
+            echo "❌ UnfairLock.swift not found!"
           fi
-          
+
       - name: 🔧 Build Flutter iOS Frameworks
         run: flutter build ios-framework --output=build/ios/frameworks
 
