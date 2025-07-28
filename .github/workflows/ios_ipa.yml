@@ -27,9 +27,12 @@ jobs:
           pod deintegrate
           pod install
           cd ..
-      - name: 🩹 Patch FirebaseSharedSwift bug
+
+      - name: 🩹 Patch FirebaseSharedSwift bug (fix both lines)
         run: |
-          sed -i '' '288s/.*/let sending = encoder.encode(value)/' ios/Pods/FirebaseSharedSwift/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift
+          sed -i '' '287s/.*/let encoder = FirebaseDataEncoder()/' ios/Pods/FirebaseSharedSwift/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift
+          sed -i '' '288s/.*/let sending = try! encoder.encode(value)/' ios/Pods/FirebaseSharedSwift/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift
+
 
 
       - run: flutter build ios --release --no-codesign
