@@ -1,0 +1,25 @@
+platform :ios, '15.5'
+
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
+project 'Runner', {
+  'Debug' => :debug,
+  'Profile' => :release,
+  'Release' => :release,
+}
+
+def flutter_install_all_ios_pods(flutter_application_path)
+  eval(File.read(File.join(flutter_application_path, '.flutter-plugins-dependencies')), binding)
+end
+
+target 'Runner' do
+  use_frameworks!
+  use_modular_headers!
+
+  flutter_install_all_ios_pods(File.dirname(File.realpath(__FILE__)))
+
+  # ✅ Firebase versions locked to stable
+  pod 'Firebase/Core', '10.20.0'
+  pod 'FirebaseAnalytics', '10.20.0'
+  pod 'FirebaseCoreInternal', '10.20.0'
+end
