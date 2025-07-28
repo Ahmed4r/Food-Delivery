@@ -6,8 +6,11 @@ on:
 jobs:
   build-ios:
     name: 🎉 iOS Build
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
+      - name: Select Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_15.3.app
+
       - uses: actions/checkout@v3
 
       - uses: subosito/flutter-action@v2
@@ -17,7 +20,6 @@ jobs:
 
       - run: flutter pub get
 
-      # Ensure the Podfile has the correct platform
       - name: Set iOS deployment target
         run: |
           cd ios
@@ -25,7 +27,7 @@ jobs:
             echo "platform :ios, '15.5'" | cat - Podfile > temp && mv temp Podfile
           fi
           cd ..
-      # Clean and reinstall CocoaPods
+
       - name: Clean and update CocoaPods
         run: |
           rm -f ios/Podfile.lock
@@ -34,6 +36,7 @@ jobs:
           pod deintegrate
           pod install
           cd ..
+
       - run: flutter build ios --release --no-codesign
 
       - run: mkdir Payload
