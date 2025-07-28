@@ -30,9 +30,16 @@ jobs:
       - name: ⚙️ Prewarm & generate plugin files
         run: flutter build ios --no-codesign --no-tree-shake-icons || true
 
+      - name: 📂 Generate iOS plugin metadata
+        run: |
+          cd ios
+          flutter pub get
+          cd ..
+
       - name: 🧼 Install CocoaPods
         run: |
           cd ios
+          pod repo update
           pod install
           cd ..
 
