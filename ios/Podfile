@@ -29,7 +29,11 @@ target 'Runner' do
   use_frameworks!
   use_modular_headers!
 
-  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  flutter_install_all_ios_pods(
+  File.dirname(File.realpath(__FILE__)),
+  :generate_multiple_pod_projects => true
+)
+
 
 
   target 'RunnerTests' do
@@ -46,3 +50,5 @@ post_install do |installer|
     end
   end
 end
+
+
