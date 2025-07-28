@@ -1,16 +1,24 @@
 workflows:
   ios-workflow:
-    name: iOS Codemagic Build
+    name: iOS Build Fix Flutter.h
     max_build_duration: 60
     environment:
       flutter: 3.32.5
       xcode: latest
     scripts:
-      - name: Clean and generate iOS framework
+      - name: Clean & Get Packages
         script: |
           flutter clean
           flutter pub get
-          flutter build ios-framework --output=ios/Flutter/ --no-profile --no-debug --cocoapods
+
+      - name: Build Flutter Frameworks
+        script: |
+          flutter build ios-framework --no-profile --no-debug --output=build/ios/frameworks
+
+      - name: Fix Flutter.h Not Found
+        script: |
+          mkdir -p ios/Flutter
+          cp -r build/ios/frameworks/* ios/Flutter/
           rm -rf ios/Pods ios/Podfile.lock ios/.symlinks
 
       - name: Install CocoaPods
@@ -26,4 +34,3 @@ workflows:
     artifacts:
       - build/ios/iphoneos/*.ipa
       - build/ios/iphoneos/*.app
-      - flutter_drive.log
