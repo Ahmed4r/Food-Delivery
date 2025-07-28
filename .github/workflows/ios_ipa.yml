@@ -17,22 +17,23 @@ jobs:
 
       - run: flutter pub get
 
+      # Ensure the Podfile has the correct platform
+      - name: Set iOS deployment target
+        run: |
+          cd ios
+          if ! grep -q "platform :ios, '15.5'" Podfile; then
+            echo "platform :ios, '15.5'" | cat - Podfile > temp && mv temp Podfile
+          fi
+          cd ..
+      # Clean and reinstall CocoaPods
       - name: Clean and update CocoaPods
         run: |
           rm -f ios/Podfile.lock
           cd ios
+          pod repo update
           pod deintegrate
-          pod install --repo-update
+          pod install
           cd ..
-
-      - name: 🩹 Patch FirebaseSharedSwift bug (fix both lines)
-        run: |
-          sed -i '' '287s/.*/let encoder = FirebaseDataEncoder()/' ios/Pods/FirebaseSharedSwift/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift
-          sed -i '' '288s/.*/let sending = try! encoder.encode(value)/' ios/Pods/FirebaseSharedSwift/FirebaseSharedSwift/Sources/third_party/FirebaseDataEncoder/FirebaseDataEncoder.swift
-
-
-
-
       - run: flutter build ios --release --no-codesign
 
       - run: mkdir Payload
