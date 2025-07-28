@@ -29,6 +29,8 @@ jobs:
           # Add platform if not exists
           if ! grep -q "platform :ios" Podfile; then
             sed -i '' "1s/^/platform :ios, '15.5'\n/" Podfile
+          else
+            sed -i '' "s/platform :ios.*/platform :ios, '15.5'/" Podfile
           fi
 
           # Add post_install hook if not exists
