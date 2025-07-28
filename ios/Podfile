@@ -31,12 +31,6 @@ target 'Runner' do
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 
-  # ✅ Lock these Firebase pods to known stable versions (matching ^6.0.0 Dart packages)
-  pod 'Firebase/Core', '10.17.0'
-  pod 'FirebaseAuth', '10.17.0'
-  pod 'FirebaseFirestore', '10.17.0'
-  pod 'FirebaseSharedSwift', '0.4.0' # specifically fixes the Swift error
-
   target 'RunnerTests' do
     inherit! :search_paths
   end

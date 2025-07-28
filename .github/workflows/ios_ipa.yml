@@ -21,7 +21,7 @@ jobs:
         run: |
           rm -f ios/Podfile.lock
           cd ios
-          pod repo remove trunk || true
+          pod deintegrate
           pod install --repo-update
           cd ..
 
