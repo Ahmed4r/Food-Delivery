@@ -34,18 +34,18 @@ jobs:
             sed -i '' "1s/^/platform :ios, '15.5'\n/" Podfile
           fi
 
-          # Set Swift version with a valid Ruby post_install block
+          # Set Swift version safely
           if ! grep -q "post_install do |installer|" Podfile; then
-            cat <<'EOF' >> Podfile
-
-post_install do |installer|
-  installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['SWIFT_VERSION'] = '5.10'
-    end
-  end
-end
-EOF
+            {
+              echo ""
+              echo "post_install do |installer|"
+              echo "  installer.pods_project.targets.each do |target|"
+              echo "    target.build_configurations.each do |config|"
+              echo "      config.build_settings['SWIFT_VERSION'] = '5.10'"
+              echo "    end"
+              echo "  end"
+              echo "end"
+            } >> Podfile
           fi
 
       - name: Install CocoaPods
