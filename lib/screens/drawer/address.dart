@@ -640,11 +640,11 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                           AddressModel(
                             label: selectedLabel.toUpperCase(),
                             address: currentAddress,
-                            icon: selectedLabel == 'Home'
-                                ? Icons.home
+                            iconName: selectedLabel == 'Home'
+                                ? 'home'
                                 : selectedLabel == 'Work'
-                                    ? Icons.work
-                                    : Icons.location_on,
+                                    ? 'work'
+                                    : 'location_on',
                             iconColor: selectedLabel == 'Home'
                                 ? Colors.blue
                                 : selectedLabel == 'Work'
