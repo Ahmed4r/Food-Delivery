@@ -9,33 +9,40 @@ on:
 
 jobs:
   build-ios:
-    runs-on: macos-14
-    
+    runs-on: macos-14 # مهم جدًا عشان Xcode 15+
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-      
+
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.32.8'
-        channel: 'stable'
-        cache: true
-        
-    - name: Clean and get Flutter dependencies
+        flutter-version: '3.22.1'
+        channel: stable
+
+    - name: Clean & Get packages
       run: |
         flutter clean
         flutter pub get
-        
-    - name: Install CocoaPods dependencies
+
+    - name: Clean CocoaPods
+      run: |
+        cd ios
+        rm -rf Pods Podfile.lock
+        pod deintegrate
+        pod cache clean --all
+        cd ..
+
+    - name: Install Pods
       run: |
         cd ios
         pod install --repo-update
         cd ..
-        
+
     - name: Build iOS (no codesign)
       run: flutter build ios --release --no-codesign --no-tree-shake-icons
-      
+
     - name: Create IPA
       run: |
         mkdir -p build/ios/ipa
@@ -43,10 +50,9 @@ jobs:
         mkdir Payload
         cp -r Runner.app Payload/
         zip -r ../ipa/app.ipa Payload/
-        
-    - name: Upload IPA artifact
+
+    - name: Upload IPA
       uses: actions/upload-artifact@v4
       with:
         name: ios-ipa
         path: build/ios/ipa/app.ipa
-        retention-days: 30
