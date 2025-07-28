@@ -294,16 +294,21 @@ class _login_pageState extends ConsumerState<LoginPage> {
   }
   Future<UserCredential> signInWithGoogle() async {
   // Trigger the authentication flow
-  final GoogleSignInAccount googleUser = await GoogleSignIn.instance.authenticate();
+  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+  // Handle sign-in canceled by user case
   if (googleUser == null) {
     throw Exception('Google sign in aborted');
   }
 
   // Obtain the auth details from the request
-  final GoogleSignInAuthentication googleAuth =googleUser.authentication;
+  final GoogleSignInAuthentication? googleAuth = await googleUser.authentication;
 
   // Create a new credential
-  final credential = GoogleAuthProvider.credential(idToken: googleAuth.idToken);
+  final credential = GoogleAuthProvider.credential(
+    idToken: googleAuth?.idToken,
+    accessToken: googleAuth?.accessToken,
+  );
 
   // Once signed in, return the UserCredential
   return await FirebaseAuth.instance.signInWithCredential(credential);
