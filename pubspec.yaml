@@ -56,7 +56,7 @@ dependencies:
   cloud_firestore: ^4.15.0
 
 
-  google_sign_in: ^6.2.1
+  google_sign_in: ^6.2.2
  
 
  
