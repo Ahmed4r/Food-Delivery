@@ -1,32 +1,40 @@
 workflows:
-  ios-workflow:
-    name: iOS Build Stable
+  ios-release-build:
+    name: Codemagic iOS Build With Flutter.h Fix
     max_build_duration: 60
     environment:
       flutter: 3.32.5
       xcode: latest
     scripts:
-      - name: Clean & Get Packages
+      - name: Clean and install dependencies
         script: |
           flutter clean
           flutter pub get
 
-      - name: Build Flutter.framework manually
+      - name: Generate Flutter.framework & App.framework manually
         script: |
-          flutter build ios --release --no-codesign
+          flutter build ios-framework \
+            --no-profile \
+            --no-debug \
+            --output=build/ios/frameworks \
+            --cocoapods
+
           mkdir -p ios/Flutter
-          cp -r build/ios/Release-iphoneos/Flutter.framework ios/Flutter/
+          cp -r build/ios/frameworks/Release/iphoneos/Flutter.framework ios/Flutter/
+          cp -r build/ios/frameworks/Release/iphoneos/App.framework ios/Flutter/
 
       - name: Install CocoaPods
         script: |
+          rm -rf ios/Pods ios/.symlinks ios/Podfile.lock
           cd ios
           pod install
           cd ..
 
-      - name: Final iOS Build
+      - name: Build iOS App (Release)
         script: |
           flutter build ios --release --no-codesign
 
     artifacts:
       - build/ios/iphoneos/*.ipa
       - build/ios/iphoneos/*.app
+      - flutter_drive.log
