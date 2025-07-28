@@ -6,11 +6,15 @@ workflows:
       flutter: 3.32.5
       xcode: latest
     scripts:
-      - name: Clean and get dependencies
+      - name: Clean and generate iOS framework
         script: |
           flutter clean
           flutter pub get
-          rm -rf ios/Pods ios/Flutter ios/.symlinks ios/Podfile.lock
+          flutter build ios-framework --output=ios/Flutter/ --no-profile --no-debug --cocoapods
+          rm -rf ios/Pods ios/Podfile.lock ios/.symlinks
+
+      - name: Install CocoaPods
+        script: |
           cd ios
           pod install
           cd ..
