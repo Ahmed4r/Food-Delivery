@@ -15,29 +15,48 @@ jobs:
           channel: 'stable'
           architecture: x64
 
+      - run: flutter clean
+
       - run: flutter pub get
 
-      # Ensure the Podfile has the correct platform
-      - name: Set iOS deployment target
+      # Configure Podfile for iOS build and Swift version
+      # This step ensures the correct iOS deployment target and
+      # adds a post_install hook to set the Swift version for all pods.
+      - name: Configure Podfile for iOS build and Swift version
         run: |
           cd ios
+          # Ensure platform :ios, '15.5' is present at the beginning of the Podfile
           if ! grep -q "platform :ios, '15.5'" Podfile; then
-            echo "platform :ios, '15.5'" | cat - Podfile > temp && mv temp Podfile
+            sed -i '' "1s/^/platform :ios, '15.5'\\n/" Podfile
           fi
-          cd ..
-      
-       # Explicitly set Swift version for Xcode
-      - name: Set Swift version
-        run: |
-          echo "SWIFT_VERSION = 5.10" >> ios/Flutter/Generated.xcconfig# Clean and reinstall CocoaPods
+
+          # Add post_install hook to set Swift version for all targets if not already present
+          # This is crucial for resolving Swift compiler errors with Firebase pods.
+          if ! grep -q "post_install do |installer|" Podfile; then
+            cat << EOF >> Podfile
+
+              post_install do |installer|
+                installer.pods_project.targets.each do |target|
+                  target.build_configurations.each do |config|
+                    config.build_settings['SWIFT_VERSION'] = '5.10'
+                  end
+                end
+              end
+
+           
+
+      # Clean and reinstall CocoaPods
+      # This step removes the Podfile.lock and performs a fresh pod install
+      # to ensure all dependencies are correctly set up with the specified Swift version.
       - name: Clean and update CocoaPods
         run: |
           rm -f ios/Podfile.lock
           cd ios
           pod repo update
           pod deintegrate
-          pod install
+          pod install --repo-update
           cd ..
+
       - run: flutter build ios --release --no-codesign
 
       - run: mkdir Payload
