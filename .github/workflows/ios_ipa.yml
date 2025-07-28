@@ -1,8 +1,8 @@
-
 name: "[DEV] Build and Publish iOS"
 on: workflow_dispatch
     
 jobs:
+  # Build job
   build:
     runs-on: macos-latest
     steps:
@@ -41,9 +41,20 @@ jobs:
         with:
           flutter-version: '2.10.1'
 
-      # !!!
-      # Build and Sign your application here
-      # !!
+      # Install your project's dependencies
+      - run: flutter pub get
+
+      # Build and sign the ipa using a single flutter command
+      - name: Building IPA
+        run: flutter build ipa --release --export-options-plist=ios/Runner/ExportOptions.plist
+          
+      # Collect the file and upload as artifact         
+      - name: collect ipa artifacts
+        uses: actions/upload-artifact@v2
+        with:
+         name: release-ipa
+         # Path to the release files
+         path: build/ios/ipa/*.ipa
 
       # Important! Cleanup: remove the certificate and provisioning profile from the runner!
       - name: Clean up keychain and provisioning profile
@@ -51,4 +62,26 @@ jobs:
         run: |
           security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
           rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
-   
+  # Release job, upload the ipa to Firebase App Distribution
+  release:
+    name: Release ipa to Firebase
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+    
+    # Retrieve ipa file from GitHub artifacts
+    - uses: actions/checkout@v2
+    - name: Get release-ipa from artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: release-ipa
+
+    # Upload ipa file to Fiebase
+    - name: Upload artifact to Firebase App Distribution
+      uses: wzieba/Firebase-Distribution-Github-Action@v1
+      with:
+        appId: ${{secrets.FIREBASE_IOS_APP_ID}}
+        token: ${{secrets.FIREBASE_TOKEN}}
+        groups: ios-developers
+        file: {your_app_name}.ipa
+     
