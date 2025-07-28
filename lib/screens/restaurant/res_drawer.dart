@@ -1,12 +1,8 @@
-import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:food_delivery/screens/drawer/address.dart';
-import 'package:food_delivery/screens/drawer/faqs.dart';
-import 'package:food_delivery/screens/drawer/payments.dart';
 import 'package:food_delivery/screens/drawer/personal_info.dart';
 import 'package:food_delivery/screens/drawer/settings_page.dart';
 import 'package:food_delivery/screens/login/login.dart';

@@ -43,7 +43,7 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
   late final TextEditingController _searchController;
   String _userName = '';
   List<String> _Address = [];
-  int _currentIndex = 0;
+  final int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -607,14 +607,14 @@ class FoodOrderCard extends StatelessWidget {
   final VoidCallback? onCancel;
 
   const FoodOrderCard({
-    Key? key,
+    super.key,
     this.category = '#Breakfast',
     this.title = 'Chicken Thai Biriyani',
     this.id = 'ID: 32053',
     this.price = '\$60',
     this.onDone,
     this.onCancel,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -762,7 +762,7 @@ class FoodOrderCard extends StatelessWidget {
 
 // Example usage in a screen
 class FoodOrderScreen extends StatelessWidget {
-  const FoodOrderScreen({Key? key}) : super(key: key);
+  const FoodOrderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -795,6 +795,8 @@ class FoodOrderScreen extends StatelessWidget {
 // Main app
 
 class RunningOrdersList extends StatelessWidget {
+  const RunningOrdersList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -808,6 +810,8 @@ class RunningOrdersList extends StatelessWidget {
 
 // Placeholder for Order Requests
 class OrderRequestsList extends StatelessWidget {
+  const OrderRequestsList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ListView(

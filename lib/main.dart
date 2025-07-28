@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,6 @@ import 'package:food_delivery/theme/theme.dart';
 import 'package:food_delivery/theme/theme_provider.dart';
 import 'package:food_delivery/widgets/bottom_nav.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:developer' as developer;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

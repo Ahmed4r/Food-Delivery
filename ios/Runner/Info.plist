@@ -51,13 +51,18 @@
       <string>nb</string>
     </array>
 
-    <!-- Location Permissions -->
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>This app needs access to your location while using the app to show nearby restaurants and offers.</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>This app needs access to your location even when in the background to track deliveries.</string>
 
-    <!-- Transport Security -->
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app needs access to your photo library to select images for your profile or posts.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>This app needs camera access to take photos for your profile or posts.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app needs microphone access to record videos for your posts.</string>
+
     <key>NSAppTransportSecurity</key>
     <dict>
       <key>NSAllowsArbitraryLoads</key>
