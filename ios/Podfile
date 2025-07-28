@@ -32,16 +32,18 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  
+  # ✅ نسخ متوافقة وموجودة فعليًا
   pod 'Firebase/Core', '10.24.0'
   pod 'FirebaseAuth', '10.24.0'
   pod 'FirebaseFirestore', '10.24.0'
   pod 'FirebaseSharedSwift', '10.24.0'
 
-  
   target 'RunnerTests' do
     inherit! :search_paths
   end
 end
+
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
