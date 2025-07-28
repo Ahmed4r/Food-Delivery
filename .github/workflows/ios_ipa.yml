@@ -1,3 +1,4 @@
+
 name: iOS-ipa-build
 
 on:
@@ -6,7 +7,7 @@ on:
 jobs:
   build-ios:
     name: 🎉 iOS Build
-    runs-on: macos-latest
+    runs-on: macos-latest # Consider specifying a fixed macOS version for consistency, e.g., macos-13 or macos-14
 
     steps:
       - name: 🔄 Checkout Repo
@@ -18,8 +19,19 @@ jobs:
           channel: stable
           architecture: x64
 
-      - name: 🧹 Clean Project
-        run: flutter clean
+      - name: 🧹 Clean Flutter and iOS build artifacts aggressively
+        run: |
+          flutter clean
+          cd ios
+          # Remove CocoaPods related files
+          rm -rf Pods
+          rm -rf Podfile.lock
+          pod deintegrate || true # '|| true' ensures this step doesn't fail if pods are not yet integrated
+          # Clean Xcode Derived Data (crucial for CI/CD environments like Codemagic)
+          rm -rf ~/Library/Developer/Xcode/DerivedData/*
+          # Clean Flutter's cached plugin symlinks
+          rm -rf ../.symlinks/
+          cd .. # Go back to the project root
 
       - name: 📦 Get Dependencies
         run: flutter pub get
@@ -53,16 +65,13 @@ jobs:
               echo "end"
             } >> Podfile
           fi
+          cd .. # Go back to the project root after Podfile modification
 
-      - name: 🧼 Clean & Install CocoaPods
+      - name: 🧼 Install CocoaPods
         run: |
           cd ios
-          rm -rf Pods Podfile.lock
-          pod deintegrate
           pod install --repo-update
           cd ..
-
-      
 
       - name: 🔧 Build Flutter iOS Frameworks
         run: flutter build ios-framework --output=build/ios/frameworks
