@@ -23,21 +23,20 @@ jobs:
       - name: 🔄 Install dependencies
         run: flutter pub get
 
-      # 🏗 أول build لتوليد ملفات Flutter اللازمة لل CocoaPods
-      - name: 🚧 Pre-build to generate Flutter frameworks
+      # 👇 أول build سريع علشان يولّد ملفات CocoaPods والـ Generated.xcconfig
+      - name: 🧱 Generate iOS build files (pre-warm)
         run: flutter build ios --release --no-codesign || true
 
       - name: 🛠 Patch Podfile + Set iOS Platform + Fix Flutter.h issue
         run: |
           cd ios
-
           if ! grep -q "platform :ios, '15.5'" Podfile; then
             echo "🔧 Adding platform :ios, '15.5'"
             echo "platform :ios, '15.5'" | cat - Podfile > temp && mv temp Podfile
           fi
 
           if ! grep -q 'FRAMEWORK_SEARCH_PATHS' Podfile; then
-            echo "🔧 Patching Podfile to fix Flutter.h issue"
+            echo "🔧 Patching Podfile"
             sed -i '' '/post_install do |installer|/a\
               \ \ installer.pods_project.targets.each do |target|\ 
               \ \ \ \ target.build_configurations.each do |config|\ 
@@ -52,18 +51,16 @@ jobs:
           pod install
           cd ..
 
-      # 🛠 إصلاح ملفات الخصوصية الناقصة
+      # 🔧 إصلاح ملفات privacy.bundle
       - name: 🔧 Fix missing *_privacy.bundle files
         run: |
-          echo "🔍 Checking for missing *_privacy.bundle files..."
+          echo "🔍 Fixing *_privacy.bundle files..."
           find build/ios -type d -name "*_privacy.bundle" | while read bundle; do
             plugin_name=$(basename "$bundle" | sed 's/_privacy.bundle//')
-            target_file="$bundle/${plugin_name}_privacy"
-            if [ ! -f "$target_file" ]; then
-              echo "📦 Creating fake file: $target_file"
-              echo "{}" > "$target_file"
-            else
-              echo "✅ Already exists: $target_file"
+            file_path="$bundle/${plugin_name}_privacy"
+            if [ ! -f "$file_path" ]; then
+              echo "📦 Creating fake file: $file_path"
+              echo "{}" > "$file_path"
             fi
           done
 
