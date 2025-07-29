@@ -23,8 +23,9 @@ jobs:
       - name: 🔄 Install dependencies
         run: flutter pub get
 
-      - name: 🔥 Clear Flutter pub cache
-        run: flutter pub cache repair || true
+      # 🏗 أول build لتوليد ملفات Flutter اللازمة لل CocoaPods
+      - name: 🚧 Pre-build to generate Flutter frameworks
+        run: flutter build ios --release --no-codesign || true
 
       - name: 🛠 Patch Podfile + Set iOS Platform + Fix Flutter.h issue
         run: |
@@ -36,7 +37,7 @@ jobs:
           fi
 
           if ! grep -q 'FRAMEWORK_SEARCH_PATHS' Podfile; then
-            echo "🔧 Patching Podfile to fix Flutter.h issue by adding FRAMEWORK_SEARCH_PATHS"
+            echo "🔧 Patching Podfile to fix Flutter.h issue"
             sed -i '' '/post_install do |installer|/a\
               \ \ installer.pods_project.targets.each do |target|\ 
               \ \ \ \ target.build_configurations.each do |config|\ 
@@ -51,12 +52,10 @@ jobs:
           pod install
           cd ..
 
-      - name: 📦 Build iOS App (no codesign)
-        run: flutter build ios --release --no-codesign || true
-
-      - name: 🔧 Auto fix all missing *_privacy.bundle files
+      # 🛠 إصلاح ملفات الخصوصية الناقصة
+      - name: 🔧 Fix missing *_privacy.bundle files
         run: |
-          echo "🔍 Creating fake *_privacy.bundle files if missing..."
+          echo "🔍 Checking for missing *_privacy.bundle files..."
           find build/ios -type d -name "*_privacy.bundle" | while read bundle; do
             plugin_name=$(basename "$bundle" | sed 's/_privacy.bundle//')
             target_file="$bundle/${plugin_name}_privacy"
@@ -68,9 +67,7 @@ jobs:
             fi
           done
 
-
-
-      - name: 📦 ReBuild iOS App after fix
+      - name: 📦 Final iOS Build (no codesign)
         run: flutter build ios --release --no-codesign
 
       - name: 📁 Create Payload
