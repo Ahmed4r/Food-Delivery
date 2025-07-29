@@ -56,12 +56,15 @@ jobs:
 
       - name: 🔧 Auto fix all missing *_privacy.bundle files
         run: |
+          echo "🔍 Creating fake *_privacy.bundle files if missing..."
           find build/ios -type d -name "*_privacy.bundle" | while read bundle; do
-            file_name="$(basename "$bundle")"
-            target_file="$bundle/${file_name}"
+            plugin_name=$(basename "$bundle" | sed 's/_privacy.bundle//')
+            target_file="$bundle/${plugin_name}_privacy"
             if [ ! -f "$target_file" ]; then
               echo "📦 Creating fake file: $target_file"
               echo "{}" > "$target_file"
+            else
+              echo "✅ Already exists: $target_file"
             fi
           done
 
