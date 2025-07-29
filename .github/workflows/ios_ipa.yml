@@ -50,10 +50,14 @@ jobs:
           pod deintegrate
           pod install
           cd ..
-      - name: 🔧 Fix missing webview_flutter_wkwebview_privacy.bundle
+      - name: 🔧 Fix known missing .bundle privacy files
         run: |
-          mkdir -p build/ios/Release-iphoneos/webview_flutter_wkwebview/webview_flutter_wkwebview_privacy.bundle
-          echo "{}" > build/ios/Release-iphoneos/webview_flutter_wkwebview/webview_flutter_wkwebview_privacy.bundle/webview_flutter_wkwebview_privacy
+          for plugin in webview_flutter_wkwebview shared_preferences_foundation; do
+            BUNDLE_PATH="build/ios/Release-iphoneos/$plugin/${plugin}_privacy.bundle"
+            mkdir -p "$BUNDLE_PATH"
+            echo "{}" > "$BUNDLE_PATH/${plugin}_privacy"
+          done
+
 
       - name: 📦 Build iOS App (no codesign)
         run: flutter build ios --release --no-codesign
