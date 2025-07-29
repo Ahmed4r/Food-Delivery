@@ -20,28 +20,26 @@ jobs:
       - name: 🧹 Clean Project
         run: flutter clean
 
-      - name: 🔥 Clear Flutter pub cache
-        run: flutter pub cache repair || true
-
       - name: 🔄 Install dependencies
         run: flutter pub get
+
+      - name: 🔥 Clear Flutter pub cache
+        run: flutter pub cache repair || true
 
       - name: 🛠 Patch Podfile + Set iOS Platform + Fix Flutter.h issue
         run: |
           cd ios
 
-          # تأكيد وجود platform :ios
           if ! grep -q "platform :ios, '15.5'" Podfile; then
             echo "🔧 Adding platform :ios, '15.5'"
             echo "platform :ios, '15.5'" | cat - Podfile > temp && mv temp Podfile
           fi
 
-          # تعديل post_install لإضافة search paths لـ Flutter
           if ! grep -q 'FRAMEWORK_SEARCH_PATHS' Podfile; then
             echo "🔧 Patching Podfile to fix Flutter.h issue"
             sed -i '' '/post_install do |installer|/a\
-              \ \ installer.pods_project.targets.each do |target|\
-              \ \ \ \ target.build_configurations.each do |config|\
+              \ \ installer.pods_project.targets.each do |target|\ 
+              \ \ \ \ target.build_configurations.each do |config|\ 
               \ \ \ \ \ \ config.build_settings["FRAMEWORK_SEARCH_PATHS"] ||= ["$(inherited)", "$(PROJECT_DIR)/Flutter"]\
               \ \ \ \ end\
               \ \ end\
