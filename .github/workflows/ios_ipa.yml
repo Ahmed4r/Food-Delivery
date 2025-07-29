@@ -50,6 +50,10 @@ jobs:
           pod deintegrate
           pod install
           cd ..
+
+      - name: 📦 Build iOS App (no codesign)
+        run: flutter build ios --release --no-codesign
+
       - name: 🔧 Auto fix all missing *_privacy.bundle files
         run: |
           find build/ios -type d -name "*_privacy.bundle" | while read bundle; do
@@ -63,7 +67,7 @@ jobs:
 
 
 
-      - name: 📦 Build iOS App (no codesign)
+      - name: 📦 ReBuild iOS App after fix
         run: flutter build ios --release --no-codesign
 
       - name: 📁 Create Payload
