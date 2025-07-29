@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,15 +26,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: FirebaseOptions(
-      apiKey: "AIzaSyBTKQUPtXgfbnQpIos4VoddRBmdMsSukzs",
-      appId: "1:4958439163:android:21cbb7fc4a5e0c5be3125e",
-      projectId: "foodapp-e68fd",
-      messagingSenderId: "4958439163",
-      storageBucket: "foodapp-e68fd.firebasestorage.app",
-    ),
-  );
+  // await Firebase.initializeApp(
+    // options: FirebaseOptions(
+    //   apiKey: "AIzaSyBTKQUPtXgfbnQpIos4VoddRBmdMsSukzs",
+    //   appId: "1:4958439163:android:21cbb7fc4a5e0c5be3125e",
+    //   projectId: "foodapp-e68fd",
+    //   messagingSenderId: "4958439163",
+    //   storageBucket: "foodapp-e68fd.firebasestorage.app",
+    // ),
+  // );
 
   await EasyLocalization.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();

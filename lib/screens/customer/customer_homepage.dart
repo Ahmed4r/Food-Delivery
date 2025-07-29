@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,12 +55,18 @@ class _HomepageState extends State<Homepage> {
 
   // Updated to return Restaurant objects
   Future<List<Restaurant>> fetchRestaurants() async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection('restaurants')
-        .get();
-    return snapshot.docs
-        .map((doc) => Restaurant.fromFirestore(doc))
-        .toList();
+    List<Restaurant> restaurants = [];
+    restaurants.add(Restaurant(id: '1', name: "Burger King", cuisine: "American", image: "https://img.icons8.com/color/96/000000/hamburger.png", location: "Dubai", rating: '4.5', deliveryFee: '12', deliveryTime: '30', opened: true));
+    restaurants.add(Restaurant(id: '2', name: "Pizza Hut", cuisine: "Italian", image: "https://img.icons8.com/color/96/000000/pizza.png", location: "Abu Dhabi", rating: '4.2', deliveryFee: '15', deliveryTime: '45', opened: false));
+    restaurants.add(Restaurant(id: '3', name: "KFC", cuisine: "Fast Food", image: "https://img.icons8.com/color/96/000000/fast-food.png", location: "Sharjah", rating: '4.1', deliveryFee: '10', deliveryTime: '20', opened: true));
+    restaurants.add(Restaurant(id: '4', name: "Domino's Pizza", cuisine: "Italian", image: "https://img.icons8.com/color/96/000000/pizza.png", location: "Ajman", rating: '4.4', deliveryFee: '20', deliveryTime: '40', opened: false));
+    return restaurants;
+  //   final snapshot = await FirebaseFirestore.instance
+  //       .collection('restaurants')
+  //       .get();
+  //   return snapshot.docs
+  //       .map((doc) => Restaurant.fromFirestore(doc))
+  //       .toList();
   }
 
    Future<void> _getuserDate() async {
