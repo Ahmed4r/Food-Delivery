@@ -8,16 +8,20 @@ jobs:
     name: 🎉 iOS Build
     runs-on: macos-latest
     steps:
+      # 🧾 Checkout the repo
       - uses: actions/checkout@v3
 
+      # 💻 Setup Flutter
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           architecture: x64
 
+      # 📦 Install pub dependencies
       - name: 🔄 Install Flutter dependencies
         run: flutter pub get
 
+      # 🛠️ Set iOS deployment target to iOS 15.5
       - name: 🚧 Set iOS deployment target
         run: |
           cd ios
@@ -26,6 +30,7 @@ jobs:
           fi
           cd ..
 
+      # 🧹 Clean & install CocoaPods
       - name: 🧹 Clean and install CocoaPods
         run: |
           rm -f ios/Podfile.lock
@@ -35,30 +40,39 @@ jobs:
           pod install
           cd ..
 
+      # ❌ Remove flutter_native_splash block to prevent iOS framework build errors
       - name: 📴 Disable flutter_native_splash to prevent CI crash
         run: |
-         sed -i '' '/flutter_native_splash:/,/^[^ ]/d' pubspec.yaml
-         flutter pub get
+          sed -i '' '/flutter_native_splash:/,/^[^ ]/d' pubspec.yaml
 
+      # 📦 Run pub get again after changing pubspec.yaml
+      - name: 🔄 Get packages again
+        run: flutter pub get
 
-      - name: 🏗️ Prebuild Flutter iOS frameworks (fix Flutter.h error)
+      # 🏗️ Prebuild Flutter iOS frameworks (fixes Flutter.h not found error)
+      - name: 🏗️ Prebuild Flutter iOS frameworks
         run: flutter build ios-framework --no-universal --output=build/ios-frameworks
 
+      # 📲 Build iOS app without code signing
       - name: 📦 Build iOS app (no codesign)
         run: flutter build ios --release --no-codesign
 
+      # 📁 Prepare IPA directory structure
       - name: 📁 Prepare IPA payload
         run: mkdir Payload
         working-directory: build/ios/iphoneos
 
+      # 📲 Move .app into Payload folder
       - name: 📲 Move Runner.app to Payload
         run: mv Runner.app Payload
         working-directory: build/ios/iphoneos
 
+      # 🗜️ Zip Payload to .ipa
       - name: 📦 Zip to .ipa
         run: zip -qq -r -9 FlutterIpaExport.ipa Payload
         working-directory: build/ios/iphoneos
 
+      # 🚀 Upload the IPA as a GitHub Release asset
       - name: 🚀 Upload IPA to GitHub release
         uses: svenstaro/upload-release-action@v2
         with:
