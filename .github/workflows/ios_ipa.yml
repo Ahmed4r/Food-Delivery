@@ -23,8 +23,18 @@ jobs:
       - name: 🔄 Install dependencies
         run: flutter pub get
 
-      # 👇 أول build سريع علشان يولّد ملفات CocoaPods والـ Generated.xcconfig
-      - name: 🧱 Generate iOS build files (pre-warm)
+      - name: 📦 Precache iOS artifacts
+        run: flutter precache --ios
+
+      - name: 🏗️ Build Flutter.xcframework
+        run: flutter build ios-framework --no-universal
+
+      - name: 🧬 Copy Flutter.xcframework to ios/Flutter
+        run: |
+          mkdir -p ios/Flutter
+          cp -r build/ios/framework/Release/Flutter.xcframework ios/Flutter/
+
+      - name: 🧱 First dry iOS build (generate CocoaPods, xcconfig)
         run: flutter build ios --release --no-codesign || true
 
       - name: 🛠 Patch Podfile + Set iOS Platform + Fix Flutter.h issue
@@ -51,7 +61,6 @@ jobs:
           pod install
           cd ..
 
-      # 🔧 إصلاح ملفات privacy.bundle
       - name: 🔧 Fix missing *_privacy.bundle files
         run: |
           echo "🔍 Fixing *_privacy.bundle files..."
