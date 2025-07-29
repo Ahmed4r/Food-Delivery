@@ -17,6 +17,9 @@ jobs:
           channel: stable
           architecture: x64
 
+      - name: 🔄 Install latest CocoaPods
+        run: sudo gem install cocoapods --pre
+
       - name: 🧹 Clean Project
         run: flutter clean
 
@@ -26,21 +29,24 @@ jobs:
       - name: 📦 Precache iOS artifacts
         run: flutter precache --ios
 
-      - name: 🏗️ Build Flutter.xcframework
+      - name: 🏗️ Build Flutter.xcframework (release only)
         run: |
           flutter build ios-framework \
             --cocoapods \
             --output=build/ios/frameworks \
             --no-universal \
-            --debug \
-            --profile \
             --release
-            
+
+      - name: 🔄 Run pod install manually after xcframework build
+        run: |
+          cd ios
+          pod install
+          cd ..
 
       - name: 🧬 Copy Flutter.xcframework to ios/Flutter
         run: |
           mkdir -p ios/Flutter
-          cp -r build/ios/framework/Release/Flutter.xcframework ios/Flutter/
+          cp -r build/ios/frameworks/*/Flutter.xcframework ios/Flutter/
 
       - name: 🧱 First dry iOS build (generate CocoaPods, xcconfig)
         run: flutter build ios --release --no-codesign || true
