@@ -26,34 +26,31 @@ jobs:
       - name: 🔄 Install dependencies
         run: flutter pub get
 
-      - name: 📱 Set iOS deployment target
+      - name: 🛠 Patch Podfile + Set iOS Platform + Fix Flutter.h issue
         run: |
           cd ios
+
+          # تأكيد وجود platform :ios
           if ! grep -q "platform :ios, '15.5'" Podfile; then
+            echo "🔧 Adding platform :ios, '15.5'"
             echo "platform :ios, '15.5'" | cat - Podfile > temp && mv temp Podfile
           fi
-          cd ..
 
-      - name: 📦 Setup CocoaPods
-        run: |
-          cd ios
-          pod install
-          cd ..
-          
-      - name: 🛠 Patch Podfile for Flutter.h issue
-        run: |
-          cd ios
-          sed -i '' '/post_install do |installer|/a\
-            \ \ installer.pods_project.targets.each do |target|\
-            \ \ \ \ target.build_configurations.each do |config|\
-            \ \ \ \ \ \ config.build_settings["FRAMEWORK_SEARCH_PATHS"] ||= ["$(inherited)", "$(PROJECT_DIR)/Flutter"]\
-            \ \ \ \ end\
-            \ \ end\
-          ' Podfile
+          # تعديل post_install لإضافة search paths لـ Flutter
+          if ! grep -q 'FRAMEWORK_SEARCH_PATHS' Podfile; then
+            echo "🔧 Patching Podfile to fix Flutter.h issue"
+            sed -i '' '/post_install do |installer|/a\
+              \ \ installer.pods_project.targets.each do |target|\
+              \ \ \ \ target.build_configurations.each do |config|\
+              \ \ \ \ \ \ config.build_settings["FRAMEWORK_SEARCH_PATHS"] ||= ["$(inherited)", "$(PROJECT_DIR)/Flutter"]\
+              \ \ \ \ end\
+              \ \ end\
+            ' Podfile
+          fi
+
           pod deintegrate
           pod install
           cd ..
-
 
       - name: 📦 Build iOS App (no codesign)
         run: flutter build ios --release --no-codesign
