@@ -35,6 +35,13 @@ jobs:
           pod install
           cd ..
 
+      - name: 📴 Disable flutter_native_splash to prevent CI crash
+        run: |
+          echo "flutter_native_splash:" >> pubspec.yaml
+          echo "  android: false" >> pubspec.yaml
+          echo "  ios: false" >> pubspec.yaml
+          flutter pub get
+
       - name: 🏗️ Prebuild Flutter iOS frameworks (fix Flutter.h error)
         run: flutter build ios-framework --no-universal --output=build/ios-frameworks
 
