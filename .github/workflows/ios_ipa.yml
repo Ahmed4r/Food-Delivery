@@ -50,13 +50,17 @@ jobs:
           pod deintegrate
           pod install
           cd ..
-      - name: 🔧 Fix known missing .bundle privacy files
+      - name: 🔧 Auto fix all missing *_privacy.bundle files
         run: |
-          for plugin in webview_flutter_wkwebview shared_preferences_foundation another_plugin; do
-            BUNDLE_PATH="build/ios/Release-iphoneos/$plugin/${plugin}_privacy.bundle"
-            mkdir -p "$BUNDLE_PATH"
-            echo "{}" > "$BUNDLE_PATH/${plugin}_privacy"
+          find build/ios -type d -name "*_privacy.bundle" | while read bundle; do
+            file_name="$(basename "$bundle")"
+            target_file="$bundle/${file_name}"
+            if [ ! -f "$target_file" ]; then
+              echo "📦 Creating fake file: $target_file"
+              echo "{}" > "$target_file"
+            fi
           done
+
 
 
       - name: 📦 Build iOS App (no codesign)
