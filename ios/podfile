@@ -1,8 +1,7 @@
-platform :ios, '15.5'
+platform :ios, '15.5' # Or your minimum deployment target
 
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
-# ✅ الحل هنا
 def flutter_root
   generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
   unless File.exist?(generated_xcode_build_settings_path)
@@ -16,23 +15,26 @@ def flutter_root
   raise "FLUTTER_ROOT not found in #{generated_xcode_build_settings_path}"
 end
 
-# ✅ وده السطر اللي كان بيفشل لأنه بيعتمد على flutter_root
+# This line ensures Flutter's own pod configuration is applied
 require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
 flutter_ios_podfile_setup
 
 target 'Runner' do
-  use_modular_headers!
+  use_modular_headers! # Use modular headers for Swift compatibility
   
+  # Installs all Flutter plugin pods
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['SWIFT_VERSION'] = '5.8'
-      config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
-      config.build_settings['FRAMEWORK_SEARCH_PATHS'] ||= ['$(inherited)', '$(PROJECT_DIR)/Flutter']
+      # Essential fixes for Flutter.h and Swift linking
+      config.build_settings['FRAMEWORK_SEARCH_PATHS'] = ["$(inherited)", "$(SRCROOT)/Flutter", "$(PROJECT_DIR)/Flutter"]
+      config.build_settings['ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES'] = "YES"
+      
+      # Ensure Swift version is set if not already handled
+      # config.build_settings['SWIFT_VERSION'] = '5.0' # Adjust as needed
     end
   end
 end
-
