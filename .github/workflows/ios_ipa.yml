@@ -52,7 +52,7 @@ jobs:
           cd ..
       - name: 🔧 Fix known missing .bundle privacy files
         run: |
-          for plugin in webview_flutter_wkwebview shared_preferences_foundation; do
+          for plugin in webview_flutter_wkwebview shared_preferences_foundation another_plugin; do
             BUNDLE_PATH="build/ios/Release-iphoneos/$plugin/${plugin}_privacy.bundle"
             mkdir -p "$BUNDLE_PATH"
             echo "{}" > "$BUNDLE_PATH/${plugin}_privacy"
