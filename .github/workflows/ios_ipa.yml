@@ -8,20 +8,35 @@ jobs:
     name: 🎉 iOS Build
     runs-on: macos-latest
     steps:
-      # 🧾 Checkout the repo
+      # 🧾 Checkout repo
       - uses: actions/checkout@v3
 
       # 💻 Setup Flutter
       - uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          channel: stable
           architecture: x64
 
-      # 📦 Install pub dependencies
-      - name: 🔄 Install Flutter dependencies
+      # 🧹 Clean project & CocoaPods
+      - name: 🧹 Clean Flutter & CocoaPods
+        run: |
+          flutter clean
+          rm -f ios/Podfile.lock
+          cd ios
+          pod deintegrate
+          pod install
+          cd ..
+
+      # 📴 Disable flutter_native_splash temporarily
+      - name: ❌ Remove flutter_native_splash to prevent build crash
+        run: |
+          sed -i '' '/flutter_native_splash:/,/^[^ ]/d' pubspec.yaml
+
+      # 📦 Install Flutter dependencies
+      - name: 🔄 Install dependencies
         run: flutter pub get
 
-      # 🛠️ Set iOS deployment target to iOS 15.5
+      # 📱 Set iOS deployment target
       - name: 🚧 Set iOS deployment target
         run: |
           cd ios
@@ -30,26 +45,7 @@ jobs:
           fi
           cd ..
 
-      # 🧹 Clean & install CocoaPods
-      - name: 🧹 Clean and install CocoaPods
-        run: |
-          rm -f ios/Podfile.lock
-          cd ios
-          pod repo update
-          pod deintegrate
-          pod install
-          cd ..
-
-      # ❌ Remove flutter_native_splash block to prevent iOS framework build errors
-      - name: 📴 Disable flutter_native_splash to prevent CI crash
-        run: |
-          sed -i '' '/flutter_native_splash:/,/^[^ ]/d' pubspec.yaml
-
-      # 📦 Run pub get again after changing pubspec.yaml
-      - name: 🔄 Get packages again
-        run: flutter pub get
-
-      # 🏗️ Prebuild Flutter iOS frameworks (fixes Flutter.h not found error)
+      # 🏗️ Prebuild iOS frameworks (fixes Flutter.h errors)
       - name: 🏗️ Prebuild Flutter iOS frameworks
         run: flutter build ios-framework --no-universal --output=build/ios-frameworks
 
@@ -57,22 +53,21 @@ jobs:
       - name: 📦 Build iOS app (no codesign)
         run: flutter build ios --release --no-codesign
 
-      # 📁 Prepare IPA directory structure
-      - name: 📁 Prepare IPA payload
+      # 📁 Prepare IPA payload
+      - name: 📁 Create Payload directory
         run: mkdir Payload
         working-directory: build/ios/iphoneos
 
-      # 📲 Move .app into Payload folder
       - name: 📲 Move Runner.app to Payload
         run: mv Runner.app Payload
         working-directory: build/ios/iphoneos
 
-      # 🗜️ Zip Payload to .ipa
+      # 🗜️ Zip Payload into IPA file
       - name: 📦 Zip to .ipa
         run: zip -qq -r -9 FlutterIpaExport.ipa Payload
         working-directory: build/ios/iphoneos
 
-      # 🚀 Upload the IPA as a GitHub Release asset
+      # 🚀 Upload IPA to GitHub Release
       - name: 🚀 Upload IPA to GitHub release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -80,4 +75,4 @@ jobs:
           file: build/ios/iphoneos/FlutterIpaExport.ipa
           tag: v1.0
           overwrite: true
-          body: "This is first release"
+          body: "This is the first iOS release"
