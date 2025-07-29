@@ -27,7 +27,7 @@ jobs:
         run: flutter precache --ios
 
       - name: 🏗️ Build Flutter.xcframework
-        run: flutter build ios-framework --no-universal
+        run: flutter build ios-framework --no-universal --release
 
       - name: 🧬 Copy Flutter.xcframework to ios/Flutter
         run: |
