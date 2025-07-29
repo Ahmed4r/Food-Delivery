@@ -17,22 +17,16 @@ jobs:
           channel: stable
           architecture: x64
 
-      # 🧹 Clean project & CocoaPods
-      - name: 🧹 Clean Flutter & CocoaPods
-        run: |
-          flutter clean
-          rm -f ios/Podfile.lock
-          cd ios
-          pod deintegrate
-          pod install
-          cd ..
+      # 🧹 Clean project
+      - name: 🧹 Clean Flutter
+        run: flutter clean
 
       # 📴 Disable flutter_native_splash temporarily
       - name: ❌ Remove flutter_native_splash to prevent build crash
         run: |
           sed -i '' '/flutter_native_splash:/,/^[^ ]/d' pubspec.yaml
 
-      # 📦 Install Flutter dependencies
+      # 📦 Install Flutter dependencies (to regenerate Generated.xcconfig)
       - name: 🔄 Install dependencies
         run: flutter pub get
 
@@ -43,6 +37,15 @@ jobs:
           if ! grep -q "platform :ios, '15.5'" Podfile; then
             echo "platform :ios, '15.5'" | cat - Podfile > temp && mv temp Podfile
           fi
+          cd ..
+
+      # 🧹 Clean & install CocoaPods (AFTER pub get)
+      - name: 🧹 Clean and install CocoaPods
+        run: |
+          rm -f ios/Podfile.lock
+          cd ios
+          pod deintegrate
+          pod install
           cd ..
 
       # 🏗️ Prebuild iOS frameworks (fixes Flutter.h errors)
