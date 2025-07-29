@@ -16,26 +16,12 @@ jobs:
         with:
           channel: stable
           architecture: x64
-      - name: 🧾 Show macOS, Xcode, Swift, iOS SDK Versions
-        run: |
-          echo "📱 macOS Version:"
-          sw_vers
-
-          echo "🛠️ Xcode Version:"
-          xcodebuild -version
-
-          echo "🚀 Swift Version:"
-          swift --version
-
-          echo "📦 iOS SDK Version:"
-          xcrun --sdk iphoneos --show-sdk-version
-
 
       - name: 🧹 Clean Project
         run: flutter clean
+
       - name: 🔥 Clear Flutter pub cache
         run: flutter pub cache repair || true
-
 
       - name: 🔄 Install dependencies
         run: flutter pub get
@@ -53,9 +39,6 @@ jobs:
           cd ios
           pod install
           cd ..
-
-      - name: 🏗️ Prebuild iOS frameworks
-        run: flutter build ios-framework --no-universal --output=build/ios-frameworks
 
       - name: 📦 Build iOS App (no codesign)
         run: flutter build ios --release --no-codesign
