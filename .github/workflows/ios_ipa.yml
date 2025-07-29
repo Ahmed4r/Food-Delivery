@@ -15,18 +15,18 @@ jobs:
           channel: 'stable'
           architecture: x64
 
-      - run: flutter pub get
+      - name: 🔄 Install Flutter dependencies
+        run: flutter pub get
 
-      # Ensure the Podfile has the correct platform
-      - name: Set iOS deployment target
+      - name: 🚧 Set iOS deployment target
         run: |
           cd ios
           if ! grep -q "platform :ios, '15.5'" Podfile; then
             echo "platform :ios, '15.5'" | cat - Podfile > temp && mv temp Podfile
           fi
           cd ..
-      # Clean and reinstall CocoaPods
-      - name: Clean and update CocoaPods
+
+      - name: 🧹 Clean and install CocoaPods
         run: |
           rm -f ios/Podfile.lock
           cd ios
@@ -34,19 +34,26 @@ jobs:
           pod deintegrate
           pod install
           cd ..
-      - run: flutter build ios --release --no-codesign
 
-      - run: mkdir Payload
+      - name: 🏗️ Prebuild Flutter iOS frameworks (fix Flutter.h error)
+        run: flutter build ios-framework --no-universal --output=build/ios-frameworks
+
+      - name: 📦 Build iOS app (no codesign)
+        run: flutter build ios --release --no-codesign
+
+      - name: 📁 Prepare IPA payload
+        run: mkdir Payload
         working-directory: build/ios/iphoneos
 
-      - run: mv Runner.app/ Payload
+      - name: 📲 Move Runner.app to Payload
+        run: mv Runner.app Payload
         working-directory: build/ios/iphoneos
 
-      - name: Zip output
+      - name: 📦 Zip to .ipa
         run: zip -qq -r -9 FlutterIpaExport.ipa Payload
         working-directory: build/ios/iphoneos
 
-      - name: Upload binaries to release
+      - name: 🚀 Upload IPA to GitHub release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
