@@ -39,6 +39,21 @@ jobs:
           cd ios
           pod install
           cd ..
+          
+      - name: 🛠 Patch Podfile for Flutter.h issue
+        run: |
+          cd ios
+          sed -i '' '/post_install do |installer|/a\
+            \ \ installer.pods_project.targets.each do |target|\
+            \ \ \ \ target.build_configurations.each do |config|\
+            \ \ \ \ \ \ config.build_settings["FRAMEWORK_SEARCH_PATHS"] ||= ["$(inherited)", "$(PROJECT_DIR)/Flutter"]\
+            \ \ \ \ end\
+            \ \ end\
+          ' Podfile
+          pod deintegrate
+          pod install
+          cd ..
+
 
       - name: 📦 Build iOS App (no codesign)
         run: flutter build ios --release --no-codesign
