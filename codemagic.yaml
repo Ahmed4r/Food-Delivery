@@ -1,6 +1,6 @@
 workflows:
   ios-workflow:
-    name: iOS Build Fix Flutter.h
+    name: iOS Release Build – Safe
     max_build_duration: 60
     environment:
       flutter: 3.32.5
@@ -11,23 +11,7 @@ workflows:
           flutter clean
           flutter pub get
 
-      - name: Build Flutter Frameworks
-        script: |
-          flutter build ios-framework --no-profile --no-debug --output=build/ios/frameworks
-
-      - name: Fix Flutter.h Not Found
-        script: |
-          mkdir -p ios/Flutter
-          cp -r build/ios/frameworks/* ios/Flutter/
-          rm -rf ios/Pods ios/Podfile.lock ios/.symlinks
-
-      - name: Install CocoaPods
-        script: |
-          cd ios
-          pod install
-          cd ..
-
-      - name: Build iOS
+      - name: Run Flutter Build (iOS)
         script: |
           flutter build ios --release --no-codesign
 
