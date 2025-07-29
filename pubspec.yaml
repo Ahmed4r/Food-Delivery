@@ -46,7 +46,7 @@ dependencies:
   flutter_map: ^8.2.1
   latlong2: ^0.9.1
   http: ^1.1.0
-  geocoding: ^2.0.5
+  geocoding: ^2.1.0
   webview_flutter: ^4.13.0
 
 
