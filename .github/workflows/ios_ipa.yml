@@ -1,4 +1,3 @@
-
 name: iOS-ipa-build
 
 on:
@@ -7,90 +6,51 @@ on:
 jobs:
   build-ios:
     name: 🎉 iOS Build
-    runs-on: macos-latest # Consider specifying a fixed macOS version for consistency, e.g., macos-13 or macos-14
-
+    runs-on: macos-latest
     steps:
-      - name: 🔄 Checkout Repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: 💻 Setup Flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          channel: 'stable'
           architecture: x64
 
-      - name: 🧹 Clean Flutter and iOS build artifacts aggressively
-        run: |
-          flutter clean
-          cd ios
-          # Remove CocoaPods related files
-          rm -rf Pods
-          rm -rf Podfile.lock
-          pod deintegrate || true # '|| true' ensures this step doesn't fail if pods are not yet integrated
-          # Clean Xcode Derived Data (crucial for CI/CD environments like Codemagic)
-          rm -rf ~/Library/Developer/Xcode/DerivedData/*
-          # Clean Flutter's cached plugin symlinks
-          rm -rf ../.symlinks/
-          cd .. # Go back to the project root
+      - run: flutter pub get
 
-      - name: 📦 Get Dependencies
-        run: flutter pub get
-
-      - name: 🛠️ Modify Podfile for iOS 15.5 & Swift 5.8
+      # Ensure the Podfile has the correct platform
+      - name: Set iOS deployment target
         run: |
           cd ios
-
-          # Ensure Podfile exists
-          if [ ! -f "Podfile" ]; then
-            echo "❌ Podfile not found!"
-            exit 1
+          if ! grep -q "platform :ios, '15.5'" Podfile; then
+            echo "platform :ios, '15.5'" | cat - Podfile > temp && mv temp Podfile
           fi
-
-          # Force set iOS deployment target
-          sed -i '' "s/^#\? *platform :ios.*/platform :ios, '15.5'/" Podfile
-          if ! grep -q "platform :ios" Podfile; then
-            sed -i '' "1s/^/platform :ios, '15.5'\n/" Podfile
-          fi
-
-          # Add Swift version post_install block if not already there
-          if ! grep -q "post_install do |installer|" Podfile; then
-            {
-              echo ""
-              echo "post_install do |installer|"
-              echo "  installer.pods_project.targets.each do |target|"
-              echo "    target.build_configurations.each do |config|"
-              echo "      config.build_settings['SWIFT_VERSION'] = '5.8'"
-              echo "    end"
-              echo "  end"
-              echo "end"
-            } >> Podfile
-          fi
-          cd .. # Go back to the project root after Podfile modification
-
-      - name: 🧼 Install CocoaPods
-        run: |
-          cd ios
-          pod install --repo-update
           cd ..
-
-      - name: 🔧 Build Flutter iOS Frameworks
-        run: flutter build ios-framework --output=build/ios/frameworks
-
-      - name: 🚀 Build iOS App
-        run: flutter build ios --release --no-codesign
-
-      - name: 📦 Package IPA
+      # Clean and reinstall CocoaPods
+      - name: Clean and update CocoaPods
         run: |
-          cd build/ios/iphoneos
-          mkdir Payload
-          mv Runner.app Payload
-          zip -qq -r -9 FlutterIpaExport.ipa Payload
+          rm -f ios/Podfile.lock
+          cd ios
+          pod repo update
+          pod deintegrate
+          pod install
+          cd ..
+      - run: flutter build ios --release --no-codesign
 
-      - name: ⬆️ Upload IPA to GitHub Release
+      - run: mkdir Payload
+        working-directory: build/ios/iphoneos
+
+      - run: mv Runner.app/ Payload
+        working-directory: build/ios/iphoneos
+
+      - name: Zip output
+        run: zip -qq -r -9 FlutterIpaExport.ipa Payload
+        working-directory: build/ios/iphoneos
+
+      - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/ios/iphoneos/FlutterIpaExport.ipa
-          tag: ios-build-${{ github.run_id }}
+          tag: v1.0
           overwrite: true
-          body: "🚀 iOS IPA build – created in run ID ${{ github.run_id }}"
+          body: "This is first release"
