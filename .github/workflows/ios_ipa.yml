@@ -55,7 +55,7 @@ jobs:
           cd ..
 
       - name: 🏗️ Prebuild iOS frameworks
-        run: flutter build ios-framework --no-universal --no-build-plugin-as-framework --output=build/ios-frameworks
+        run: flutter build ios-framework --no-universal --output=build/ios-frameworks
 
       - name: 📦 Build iOS App (no codesign)
         run: flutter build ios --release --no-codesign

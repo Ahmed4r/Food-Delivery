@@ -56,39 +56,27 @@ class LocationService {
     );
   }
 
-  static Future<String> getAddressFromCoordinates(double lat, double lng) async {
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
-      if (placemarks.isNotEmpty) {
-        Placemark place = placemarks[0];
-        
-        // Build address with available components
-        List<String> addressParts = [];
-        
-        if (place.name != null && place.name!.isNotEmpty) {
-          addressParts.add(place.name!);
-        }
-        if (place.street != null && place.street!.isNotEmpty && place.street != place.name) {
-          addressParts.add(place.street!);
-        }
-        if (place.subLocality != null && place.subLocality!.isNotEmpty) {
-          addressParts.add(place.subLocality!);
-        }
-        if (place.locality != null && place.locality!.isNotEmpty) {
-          addressParts.add(place.locality!);
-        }
-        if (place.administrativeArea != null && place.administrativeArea!.isNotEmpty) {
-          addressParts.add(place.administrativeArea!);
-        }
-        if (place.postalCode != null && place.postalCode!.isNotEmpty) {
-          addressParts.add(place.postalCode!);
-        }
-        
-        return addressParts.isNotEmpty ? addressParts.join(', ') : 'Address not available';
-      }
-    } catch (e) {
-      print('Error getting address: $e');
-    }
+ static Future<String> getAddressFromCoordinates(double lat, double lng) async {
+  try {
+    final placemarks = await placemarkFromCoordinates(lat, lng);
+
+    if (placemarks.isEmpty) return 'Address not available';
+
+    final place = placemarks.first;
+
+    final addressParts = <String>[
+      if ((place.name ?? '').isNotEmpty) place.name!,
+      if ((place.street ?? '').isNotEmpty && place.street != place.name) place.street!,
+      if ((place.subLocality ?? '').isNotEmpty) place.subLocality!,
+      if ((place.locality ?? '').isNotEmpty) place.locality!,
+      if ((place.administrativeArea ?? '').isNotEmpty) place.administrativeArea!,
+      if ((place.postalCode ?? '').isNotEmpty) place.postalCode!,
+    ];
+
+    return addressParts.join(', ');
+  } catch (e, stack) {
+    debugPrint('❌ Error in getAddressFromCoordinates: $e\n$stack');
     return 'Address not found';
   }
+}
 }
