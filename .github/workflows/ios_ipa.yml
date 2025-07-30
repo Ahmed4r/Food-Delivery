@@ -3,6 +3,7 @@ name: iOS-ipa-build
 on:
   workflow_dispatch:
 
+
 jobs:
   build-ios:
     name: 🔥 Build Unsigned IPA with Firebase
@@ -12,12 +13,20 @@ jobs:
       - name: 🛒 Checkout Code
         uses: actions/checkout@v3
 
+      
+
+
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.1'  # أو حسب نسختك
+          flutter-version: '3.32.5'
           channel: stable
           architecture: x64
+          
+      - name: 🧪 Check Flutter & Dart version
+        run: |
+          flutter --version
+          dart --version
 
       - name: 📦 Install Dependencies
         run: flutter pub get
