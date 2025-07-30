@@ -68,7 +68,7 @@ jobs:
       - name: 🧬 Copy Flutter.xcframework to ios/Flutter
         run: |
           mkdir -p ios/Flutter
-          cp -r build/ios/frameworks/*/Flutter.xcframework ios/Flutter/
+          cp -r build/ios/frameworks/Release/Flutter.xcframework ios/Flutter/
 
 
       - name: 🛠 Final iOS Build
