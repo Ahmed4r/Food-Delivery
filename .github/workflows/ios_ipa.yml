@@ -46,6 +46,19 @@ jobs:
           pod install
           cd ..
 
+      - name: 🔧 Fix missing *_privacy.bundle files
+        run: |
+          echo "🔍 Fixing *_privacy.bundle files..."
+          find build/ios -type d -name "*_privacy.bundle" | while read bundle; do
+            plugin_name=$(basename "$bundle" | sed 's/_privacy.bundle//')
+            file_path="$bundle/${plugin_name}_privacy"
+            if [ ! -f "$file_path" ]; then
+              echo "📦 Creating fake file: $file_path"
+              echo "{}" > "$file_path"
+            fi
+          done
+
+
       - name: 🛠 Final iOS Build
         run: flutter build ios --release --no-codesign
 
