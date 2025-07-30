@@ -1,5 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Restaurant {
   final String id;
   final String name;
@@ -25,22 +27,22 @@ class Restaurant {
     this.isPopular = false,
   });
 
-  // factory Restaurant.fromFirestore(DocumentSnapshot doc) {
-  //   Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+  factory Restaurant.fromFirestore(DocumentSnapshot doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     
-  //   return Restaurant(
-  //     id: doc.id,
-  //     name: data['name'] ?? '',
-  //     cuisine: data['cuisine'] ?? '',
-  //     image: data['image'] ?? '',
-  //     location: data['location'] ?? '',
-  //     rating: data['rating'] ?? '0',
-  //     deliveryFee: data['deliveryFee'] ?? '0',
-  //     deliveryTime: data['deliveryTime'] ?? '0',
-  //     opened: data['opened'] ?? false,
-  //     isPopular: data['isPopular'] ?? false,
-  //   );
-  // }
+    return Restaurant(
+      id: doc.id,
+      name: data['name'] ?? '',
+      cuisine: data['cuisine'] ?? '',
+      image: data['image'] ?? '',
+      location: data['location'] ?? '',
+      rating: data['rating'] ?? '0',
+      deliveryFee: data['deliveryFee'] ?? '0',
+      deliveryTime: data['deliveryTime'] ?? '0',
+      opened: data['opened'] ?? false,
+      isPopular: data['isPopular'] ?? false,
+    );
+  }
 
   // Convert to Map for passing as arguments
   Map<String, dynamic> toMap() {

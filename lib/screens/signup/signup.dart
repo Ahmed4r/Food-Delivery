@@ -39,28 +39,48 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   bool isobsecured = false;
   bool checkboxvalue = false;
   String selectedRole = 'customer';
-   Future<void> registerUser() async {
-    try {
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
-
-      await FirebaseFirestore.instance.collection('users').doc(credential.user!.uid).set({
-        'email': emailController.text.trim(),
-        'role': selectedRole,
-      });
-
-      if (selectedRole == 'owner') {
-        Navigator.pushReplacementNamed(context, OwnerHomepage.routeName);
-      } else {
-        Navigator.pushReplacementNamed(context, Homepage.routeName);
-      }
-    } catch (e) {
-      log('Registration Error: $e');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Registration failed ${e.toString()}')));
+Future<void> registerUser() async {
+  try {
+    // Validate input
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please enter email and password')));
+      return;
     }
+
+    if (passwordController.text.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Password must be at least 6 characters')));
+      return;
+    }
+
+    if (selectedRole.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please select a role')));
+      return;
+    }
+
+    // Create user with Firebase Auth
+    final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+
+    // Create user document in Firestore
+    await FirebaseFirestore.instance.collection('users').doc(credential.user!.uid).set({
+      'email': emailController.text.trim(),
+      'role': selectedRole,
+    });
+
+    // Navigate to corresponding page based on role
+    if (selectedRole == 'owner') {
+      Navigator.pushReplacementNamed(context, OwnerHomepage.routeName);
+    } else {
+      Navigator.pushReplacementNamed(context, Homepage.routeName);
+    }
+  } on FirebaseAuthException catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Registration failed: ${e.message}')));
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('An error occurred: $e')));
   }
+}
 
   @override
   Widget build(BuildContext context) {

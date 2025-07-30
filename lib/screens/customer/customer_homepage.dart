@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,18 +55,12 @@ class _HomepageState extends State<Homepage> {
 
   // Updated to return Restaurant objects
   Future<List<Restaurant>> fetchRestaurants() async {
-    List<Restaurant> restaurants = [];
-    restaurants.add(Restaurant(id: '1', name: "Burger King", cuisine: "American", image: "https://img.icons8.com/color/96/000000/hamburger.png", location: "Dubai", rating: '4.5', deliveryFee: '12', deliveryTime: '30', opened: true));
-    restaurants.add(Restaurant(id: '2', name: "Pizza Hut", cuisine: "Italian", image: "https://img.icons8.com/color/96/000000/pizza.png", location: "Abu Dhabi", rating: '4.2', deliveryFee: '15', deliveryTime: '45', opened: false));
-    restaurants.add(Restaurant(id: '3', name: "KFC", cuisine: "Fast Food", image: "https://img.icons8.com/color/96/000000/fast-food.png", location: "Sharjah", rating: '4.1', deliveryFee: '10', deliveryTime: '20', opened: true));
-    restaurants.add(Restaurant(id: '4', name: "Domino's Pizza", cuisine: "Italian", image: "https://img.icons8.com/color/96/000000/pizza.png", location: "Ajman", rating: '4.4', deliveryFee: '20', deliveryTime: '40', opened: false));
-    return restaurants;
-  //   final snapshot = await FirebaseFirestore.instance
-  //       .collection('restaurants')
-  //       .get();
-  //   return snapshot.docs
-  //       .map((doc) => Restaurant.fromFirestore(doc))
-  //       .toList();
+    final snapshot = await FirebaseFirestore.instance
+        .collection('restaurants')
+        .get();
+    return snapshot.docs
+        .map((doc) => Restaurant.fromFirestore(doc))
+        .toList();
   }
 
    Future<void> _getuserDate() async {
@@ -142,7 +136,7 @@ class _HomepageState extends State<Homepage> {
                         ),
                       );
                     },
-                    child: const Text(
+                    child: Text(
                       'See All',
                       style: TextStyle(
                         fontSize: 14,
@@ -171,8 +165,9 @@ class _HomepageState extends State<Homepage> {
             )),
           );
         }
+        
         if (snapshot.hasError) {
-          return const Center(child: Text('Error loading restaurants'));
+          return Center(child: Text('Error loading restaurants'));
         }
         return Scaffold(
           appBar: PreferredSize(
@@ -195,17 +190,17 @@ class _HomepageState extends State<Homepage> {
                             return GestureDetector(
                               onTap: () => Scaffold.of(context).openDrawer(),
                               child: Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFFF1F1F5),
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFF1F1F5),
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Icon(Icons.menu, color: Colors.black),
+                                child: Icon(Icons.menu, color: Colors.black),
                               ),
                             );
                           },
                         ),
-                        const SizedBox(width: 12),
+                        SizedBox(width: 12),
                         // Deliver to text and location
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,7 +226,7 @@ class _HomepageState extends State<Homepage> {
                                     color:isDark?Colors.white:  Colors.black,
                                   ),
                                 ),
-                                const SizedBox(width: 4),
+                                SizedBox(width: 4),
                                 IconButton(
                                   onPressed: () {
                                     showModalBottomSheet(context: context, builder: (context) {
@@ -249,7 +244,7 @@ class _HomepageState extends State<Homepage> {
                                             Navigator.pop(context);
                                           },
                                           trailing: _selectedAddress == index
-                                              ? const Icon(Icons.check, color: Colors.orange)
+                                              ? Icon(Icons.check, color: Colors.orange)
                                               : null,
                                         );
                                       },
@@ -268,12 +263,12 @@ class _HomepageState extends State<Homepage> {
                     Stack(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF0C1224),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF0C1224),
                             shape: BoxShape.circle,
                           ),
-                          child: const FaIcon(
+                          child: FaIcon(
                             FontAwesomeIcons.cartShopping,
                             color: Colors.white,
                           ),
@@ -282,12 +277,12 @@ class _HomepageState extends State<Homepage> {
                           top: 2,
                           right: 2,
                           child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
+                            padding: EdgeInsets.all(4),
+                            decoration: BoxDecoration(
                               color: Colors.orange,
                               shape: BoxShape.circle,
                             ),
-                            child: const Text(
+                            child: Text(
                               '2',
                               style: TextStyle(
                                 color: Colors.white,
@@ -304,7 +299,7 @@ class _HomepageState extends State<Homepage> {
               ),
             ),
           ),
-          drawer: const CustomDrawer(),
+          drawer: CustomDrawer(),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -355,7 +350,7 @@ class _HomepageState extends State<Homepage> {
                           color: isDark ? Colors.white : Colors.black,
                         ),
                       ),
-                      const Spacer(),
+                      Spacer(),
                       Row(
                         children: [
                           InkWell(

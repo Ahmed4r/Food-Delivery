@@ -1,35 +1,40 @@
 import 'package:flutter/material.dart';
 
 class AddressModel {
-  final String label;
-  final String address;
-  final String iconName; // Use icon name as string
-  final Color iconColor;
+  final String? label;
+  final String? address;
+  final String? iconName; // Use icon name as string
+  final Color? iconColor;
 
   AddressModel({
     required this.label,
     required this.address,
     required this.iconName,
-    required this.iconColor,
+   this.iconColor = Colors.white,
   });
 
-  IconData get icon => _iconFromName(iconName);
+ 
 
-  Map<String, dynamic> toJson() => {
-        'label': label,
-        'address': address,
-        'iconName': iconName,
-        'iconColor': iconColor.value,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      'label': label,
+      'address': address,
+      'iconName': iconName,
+      'iconColor': iconColor?.value,
+    };
+  }
 
-  factory AddressModel.fromJson(Map<String, dynamic> json) => AddressModel(
-        label: json['label'],
-        address: json['address'],
-        iconName: json['iconName'],
-        iconColor: Color(json['iconColor']),
-      );
-
-  static IconData _iconFromName(String name) {
+  factory AddressModel.fromJson(Map<String, dynamic> json) {
+    return AddressModel(
+      label: json['label'],
+      address: json['address'],
+      iconName: json['iconName'],
+      iconColor: json['iconColor'] != null
+          ? Color(json['iconColor'])
+          : null,
+    );
+  }
+    static IconData _iconFromName(String? name) {
     switch (name) {
       case 'home':
         return Icons.home;
@@ -41,4 +46,6 @@ class AddressModel {
         return Icons.place;
     }
   }
+
+  IconData get icon => _iconFromName(iconName);
 }

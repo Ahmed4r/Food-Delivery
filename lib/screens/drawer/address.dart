@@ -105,17 +105,18 @@ class _AddressListScreenState extends State<AddressListScreen> {
                       width: 48,
                       height: 48,
                       decoration: BoxDecoration(
-                        color: address.iconColor.withOpacity(0.1),
+                        color: address.iconColor,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
                         address.icon,
                         color: address.iconColor,
                         size: 24,
+                        
                       ),
                     ),
                     title: Text(
-                      address.label,
+                      address.label??'no label found',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -125,7 +126,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
                     subtitle: Padding(
                       padding: const EdgeInsets.only(top: 4),
                       child: Text(
-                        address.address,
+                        address.address ??"no address found",
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black87,

@@ -408,8 +408,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           SharedPreferences pref =
                               await SharedPreferences.getInstance();
                           pref.remove('authToken');
-                          pref.remove('email');
-                          pref.remove('password');
+                          // pref.remove('email');
+                          // pref.remove('password');
                           Navigator.pushReplacementNamed(
                             context,
                             LoginPage.routeName,

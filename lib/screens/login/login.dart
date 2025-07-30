@@ -31,19 +31,20 @@ class _login_pageState extends ConsumerState<LoginPage> {
     getPref();
   }
 
-  getPref() async {
-    sahredPref = await SharedPreferences.getInstance();
-    setState(() {
-      checkboxvalue = sahredPref!.getBool('remember') ?? false;
-      if (checkboxvalue == true) {
-        Emailcontroller.text = sahredPref!.getString('email') ?? '';
-        Passwordcontroller.text = sahredPref!.getString('password') ?? '';
-      } else {
-        Emailcontroller.text = '';
-        Passwordcontroller.text = '';
-      }
-    });
+
+
+Future<void> getPref() async {
+  final prefs = await SharedPreferences.getInstance();
+  final email = prefs.getString('email');
+  final password = prefs.getString('password');
+  final remember = prefs.getBool('remember');
+
+  if (remember != null && remember) {
+    Emailcontroller.text = email ?? '';
+    Passwordcontroller.text = password ?? '';
+    checkboxvalue = true;
   }
+}
 
   TextEditingController Emailcontroller = TextEditingController(text: '');
   TextEditingController Passwordcontroller = TextEditingController(text: '');
@@ -196,6 +197,7 @@ class _login_pageState extends ConsumerState<LoginPage> {
                       onChanged: (value) async {
                         setState(() {
                           checkboxvalue = value!;
+                          
                         });
                         SharedPreferences sahredPref =
                             await SharedPreferences.getInstance();
@@ -209,6 +211,7 @@ class _login_pageState extends ConsumerState<LoginPage> {
                           'password',
                           Passwordcontroller.text,
                         );
+                        log(checkboxvalue.toString());
                       },
                     ),
 
@@ -293,66 +296,73 @@ class _login_pageState extends ConsumerState<LoginPage> {
 
 
 
- void _login() async {
-    final email = Emailcontroller.text.trim();
-    final password = Passwordcontroller.text;
+void _login() async {
+  final email = Emailcontroller.text.trim();
+  final password = Passwordcontroller.text;
 
-    // Validate input
-    if (email.isEmpty || password.isEmpty) {
-      CustomAlert.error(context, title: 'Please enter email and password');
-      return;
-    }
-    try {
-      // Use Firebase Auth to sign in
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      // Fetch user role from Firestore
-      User? user = FirebaseAuth.instance.currentUser;
-      String? role;
-      if (user != null) {
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-        if (userDoc.exists && userDoc.data() != null) {
-          Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
-          role = userData['role'] as String?;
+  // Validate input
+  if (email.isEmpty || password.isEmpty) {
+    CustomAlert.error(context, title: 'Please enter email and password');
+    return;
+  }
+
+  try {
+    // Use Firebase Auth to sign in
+    final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    // Fetch user role from Firestore
+    final user = userCredential.user;
+    if (user != null) {
+      final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if (userDoc.exists && userDoc.data() != null) {
+        final userData = userDoc.data() as Map<String, dynamic>;
+        final role = userData['role'] as String?;
+
+        // Save credentials if "Remember me" is checked
+        if (checkboxvalue) {
+          await SharedPreferences.getInstance().then((prefs) {
+            prefs.setString('email', email);
+            prefs.setString('password', password);
+            prefs.setBool('remember', true);
+          });
+        } else {
+          await SharedPreferences.getInstance().then((prefs) {
+            prefs.remove('email');
+            prefs.remove('password');
+            prefs.setBool('remember', false);
+          });
         }
-      }
-      // Save credentials if "Remember me" is checked
-      if (checkboxvalue) {
-        await sahredPref?.setString('email', email);
-        await sahredPref?.setString('password', password);
-        await sahredPref?.setBool('remember', true);
+
+        // Navigate based on role
+        if (role == 'owner') {
+          Navigator.pushNamed(context, BottomNav.routeName);
+        } else if (role == 'customer') {
+          Navigator.pushNamed(context, Homepage.routeName);
+        } else {
+          CustomAlert.error(context, title: 'Unknown or no role found');
+          return;
+        }
       } else {
-        await sahredPref?.remove('email');
-        await sahredPref?.remove('password');
-        await sahredPref?.setBool('remember', false);
-      }
-      // Navigate based on role
-      if (role == 'owner') {
-        print('Navigating to owner dashboard');
-        final prefs = await SharedPreferences.getInstance();
-prefs.setString('role', 'owner'); // or 'customer'
-        Navigator.pushNamed(context, BottomNav.routeName);
-      } else if (role == 'user') {
-        print('Navigating to user dashboard');
-        Navigator.pushNamed(context, Homepage.routeName);
-      } else {
-        print('Unknown or no role found');
-        CustomAlert.error(context, title: 'Unknown or no role found');
+        CustomAlert.error(context, title: 'User data not found');
         return;
       }
-      CustomAlert.success(context, title: 'Successfully logged in');
-    } on FirebaseAuthException catch (e) {
-      String message = 'Login failed';
-      if (e.code == 'user-not-found') {
-        message = 'No user found for that email.';
-      } else if (e.code == 'wrong-password') {
-        message = 'Wrong password provided.';
-      }
-      CustomAlert.error(context, title: message);
-    } catch (e) {
-      CustomAlert.error(context, title: 'An error occurred');
+    } else {
+      CustomAlert.error(context, title: 'User not found');
+      return;
     }
+
+    CustomAlert.success(context, title: 'Successfully logged in');
+  } on FirebaseAuthException catch (e) {
+    CustomAlert.error(context, title: 'Error logging in: ${e.message}');
+  } catch (e) {
+    CustomAlert.error(context, title: 'An error occurred: $e');
   }
 }
+}
+// void _login()async{
+//   Navigator.pushNamed(context, Homepage.routeName);
+// }
+// }
