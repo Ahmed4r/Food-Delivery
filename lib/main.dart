@@ -36,6 +36,10 @@ void main() async {
       storageBucket: "foodapp-e68fd.firebasestorage.app",
     ),
   );
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.dumpErrorToConsole(details);
+    // Send to Firebase Crashlytics if needed
+  };
 
   await EasyLocalization.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
