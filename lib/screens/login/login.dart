@@ -1,16 +1,18 @@
 import 'dart:developer';
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_delivery/screens/customer/customer_homepage.dart';
 import 'package:food_delivery/screens/login/forgot_password/forgot_password.dart';
 import 'package:food_delivery/screens/signup/signup.dart';
 import 'package:food_delivery/theme/app_colors.dart';
 import 'package:food_delivery/theme/app_text_styles.dart';
+import 'package:food_delivery/widgets/bottom_nav.dart';
+import 'package:food_delivery/widgets/custom_alert.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class LoginPage extends ConsumerStatefulWidget {
@@ -229,7 +231,7 @@ class _login_pageState extends ConsumerState<LoginPage> {
                 ),
                 SizedBox(height: 20.h),
                 InkWell(
-                  // onTap: () => _login(),
+                  onTap: () => _login(),
                   child: Container(
                     width: 327.w,
                     height: 62.h,
@@ -291,66 +293,66 @@ class _login_pageState extends ConsumerState<LoginPage> {
 
 
 
-//  void _login() async {
-//     final email = Emailcontroller.text.trim();
-//     final password = Passwordcontroller.text;
+ void _login() async {
+    final email = Emailcontroller.text.trim();
+    final password = Passwordcontroller.text;
 
-//     // Validate input
-//     if (email.isEmpty || password.isEmpty) {
-//       CustomAlert.error(context, title: 'Please enter email and password');
-//       return;
-//     }
-//     try {
-//       // Use Firebase Auth to sign in
-//       await FirebaseAuth.instance.signInWithEmailAndPassword(
-//         email: email,
-//         password: password,
-//       );
-//       // Fetch user role from Firestore
-//       User? user = FirebaseAuth.instance.currentUser;
-//       String? role;
-//       if (user != null) {
-//         DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-//         if (userDoc.exists && userDoc.data() != null) {
-//           Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
-//           role = userData['role'] as String?;
-//         }
-//       }
-//       // Save credentials if "Remember me" is checked
-//       if (checkboxvalue) {
-//         await sahredPref?.setString('email', email);
-//         await sahredPref?.setString('password', password);
-//         await sahredPref?.setBool('remember', true);
-//       } else {
-//         await sahredPref?.remove('email');
-//         await sahredPref?.remove('password');
-//         await sahredPref?.setBool('remember', false);
-//       }
-//       // Navigate based on role
-//       if (role == 'owner') {
-//         print('Navigating to owner dashboard');
-//         final prefs = await SharedPreferences.getInstance();
-// prefs.setString('role', 'owner'); // or 'customer'
-//         Navigator.pushNamed(context, BottomNav.routeName);
-//       } else if (role == 'user') {
-//         print('Navigating to user dashboard');
-//         Navigator.pushNamed(context, Homepage.routeName);
-//       } else {
-//         print('Unknown or no role found');
-//         CustomAlert.error(context, title: 'Unknown or no role found');
-//         return;
-//       }
-//       CustomAlert.success(context, title: 'Successfully logged in');
-//     } on FirebaseAuthException catch (e) {
-//       String message = 'Login failed';
-//       if (e.code == 'user-not-found') {
-//         message = 'No user found for that email.';
-//       } else if (e.code == 'wrong-password') {
-//         message = 'Wrong password provided.';
-//       }
-//       CustomAlert.error(context, title: message);
-//     } catch (e) {
-//       CustomAlert.error(context, title: 'An error occurred');
-//     }
-//   }
+    // Validate input
+    if (email.isEmpty || password.isEmpty) {
+      CustomAlert.error(context, title: 'Please enter email and password');
+      return;
+    }
+    try {
+      // Use Firebase Auth to sign in
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      // Fetch user role from Firestore
+      User? user = FirebaseAuth.instance.currentUser;
+      String? role;
+      if (user != null) {
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+        if (userDoc.exists && userDoc.data() != null) {
+          Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+          role = userData['role'] as String?;
+        }
+      }
+      // Save credentials if "Remember me" is checked
+      if (checkboxvalue) {
+        await sahredPref?.setString('email', email);
+        await sahredPref?.setString('password', password);
+        await sahredPref?.setBool('remember', true);
+      } else {
+        await sahredPref?.remove('email');
+        await sahredPref?.remove('password');
+        await sahredPref?.setBool('remember', false);
+      }
+      // Navigate based on role
+      if (role == 'owner') {
+        print('Navigating to owner dashboard');
+        final prefs = await SharedPreferences.getInstance();
+prefs.setString('role', 'owner'); // or 'customer'
+        Navigator.pushNamed(context, BottomNav.routeName);
+      } else if (role == 'user') {
+        print('Navigating to user dashboard');
+        Navigator.pushNamed(context, Homepage.routeName);
+      } else {
+        print('Unknown or no role found');
+        CustomAlert.error(context, title: 'Unknown or no role found');
+        return;
+      }
+      CustomAlert.success(context, title: 'Successfully logged in');
+    } on FirebaseAuthException catch (e) {
+      String message = 'Login failed';
+      if (e.code == 'user-not-found') {
+        message = 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        message = 'Wrong password provided.';
+      }
+      CustomAlert.error(context, title: message);
+    } catch (e) {
+      CustomAlert.error(context, title: 'An error occurred');
+    }
+  }
 }

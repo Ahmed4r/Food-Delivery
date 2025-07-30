@@ -16,9 +16,6 @@ jobs:
       - name: 🛒 Checkout Code
         uses: actions/checkout@v3
 
-      
-
-
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -66,8 +63,8 @@ jobs:
           --no-universal \
           --release
           
-      - name: 🔎 Debug Framework Output
-        run: ls -R build/ios/frameworks
+      # - name: 🔎 Debug Framework Output
+      #   run: ls -R build/ios/frameworks
 
       - name: 📦 Copy All .xcframeworks to ios/Flutter
         run: |
@@ -90,8 +87,23 @@ jobs:
           cd build/ios/iphoneos
           zip -r FlutterIpaExport.ipa Payload
 
-      - name: ☁️ Upload to GitHub Artifacts
-        uses: actions/upload-artifact@v4
+      - name: 🏷️ Create GitHub Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: Unsigned-IPA
-          path: build/ios/iphoneos/FlutterIpaExport.ipa
+          tag_name: v1.0.${{ github.run_number }}
+          name: Release v1.0.${{ github.run_number }}
+          body: |
+            📦 Auto-generated IPA for testing
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ☁️ Upload IPA to GitHub Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/ios/iphoneos/FlutterIpaExport.ipa
+          asset_name: FlutterIpaExport.ipa
+          tag: v1.0.${{ github.run_number }}
+          overwrite: true
+          body: "🚀 Unsigned IPA build uploaded"
+

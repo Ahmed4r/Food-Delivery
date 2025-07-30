@@ -72,4 +72,13 @@
     <key>UIStatusBarHidden</key>
     <false/>
   </dict>
+  <key>CFBundleURLTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>com.googleusercontent.apps.4958439163-i7o714hgt1q7ljem30khgjpvddnurcuh</string>
+      </array>
+    </dict>
+  </array>
 </plist>

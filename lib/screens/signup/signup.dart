@@ -1,11 +1,17 @@
 
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_delivery/screens/customer/customer_homepage.dart';
+import 'package:food_delivery/screens/restaurant/owner_homepage.dart';
 import 'package:food_delivery/theme/app_colors.dart';
 import 'package:food_delivery/theme/app_text_styles.dart';
 
@@ -33,28 +39,28 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   bool isobsecured = false;
   bool checkboxvalue = false;
   String selectedRole = 'customer';
-  //  Future<void> registerUser() async {
-  //   try {
-  //     final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: emailController.text.trim(),
-  //       password: passwordController.text.trim(),
-  //     );
+   Future<void> registerUser() async {
+    try {
+      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
 
-  //     await FirebaseFirestore.instance.collection('users').doc(credential.user!.uid).set({
-  //       'email': emailController.text.trim(),
-  //       'role': selectedRole,
-  //     });
+      await FirebaseFirestore.instance.collection('users').doc(credential.user!.uid).set({
+        'email': emailController.text.trim(),
+        'role': selectedRole,
+      });
 
-  //     if (selectedRole == 'owner') {
-  //       Navigator.pushReplacementNamed(context, OwnerHomepage.routeName);
-  //     } else {
-  //       Navigator.pushReplacementNamed(context, Homepage.routeName);
-  //     }
-  //   } catch (e) {
-  //     log('Registration Error: $e');
-  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Registration failed ${e.toString()}')));
-  //   }
-  // }
+      if (selectedRole == 'owner') {
+        Navigator.pushReplacementNamed(context, OwnerHomepage.routeName);
+      } else {
+        Navigator.pushReplacementNamed(context, Homepage.routeName);
+      }
+    } catch (e) {
+      log('Registration Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Registration failed ${e.toString()}')));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -314,7 +320,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
               SizedBox(height: 20.h,),
                 InkWell(
                   onTap: (){
-                    // registerUser();
+                    registerUser();
                   },
                   child: Container(
                     width: 327.w,
