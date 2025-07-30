@@ -446,13 +446,13 @@ packages:
     source: hosted
     version: "7.0.3"
   google_sign_in_ios:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: google_sign_in_ios
-      sha256: c7ee744ebbcd98353966dbdee735d4fca085226f6bf725c6bea8a5c8fe0055bc
+      sha256: "102005f498ce18442e7158f6791033bbc15ad2dcc0afa4cf4752e2722a516c96"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.0"
+    version: "5.9.0"
   google_sign_in_platform_interface:
     dependency: "direct overridden"
     description:
