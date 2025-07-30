@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_core/firebase_core.dart';
@@ -27,7 +29,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
+  if (Platform.isAndroid) {
+     await Firebase.initializeApp(
     options: const FirebaseOptions(
       apiKey: "AIzaSyBTKQUPtXgfbnQpIos4VoddRBmdMsSukzs",
       appId: "1:4958439163:android:21cbb7fc4a5e0c5be3125e",
@@ -36,6 +39,12 @@ void main() async {
       storageBucket: "foodapp-e68fd.firebasestorage.app",
     ),
   );
+    
+  }
+  else{
+  await Firebase.initializeApp(); // 👈 بس كده، مفيش options
+  }
+ 
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);
     // Send to Firebase Crashlytics if needed
