@@ -69,16 +69,11 @@ jobs:
       - name: 🔎 Debug Framework Output
         run: ls -R build/ios/frameworks
 
-      - name: 🧬 Copy Flutter.xcframework to ios/Flutter
+      - name: 📦 Copy All .xcframeworks to ios/Flutter
         run: |
           mkdir -p ios/Flutter
-          FOUND=$(find build/ios/frameworks -type d -name Flutter.xcframework | head -n 1)
-          if [ -z "$FOUND" ]; then
-            echo "❌ Flutter.xcframework not found!"
-            exit 1
-          fi
-          echo "✅ Found Flutter.xcframework at $FOUND"
-          cp -r "$FOUND" ios/Flutter/
+          cp -r build/ios/frameworks/Release/*.xcframework ios/Flutter/
+
 
 
       - name: 🛠 Final iOS Build
