@@ -762,49 +762,49 @@ class _PaymobWebViewScreenState extends State<PaymobWebViewScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeWebView();
+    // _initializeWebView();
   }
 
-  void _initializeWebView() {
-    controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            if (progress == 100) {
-              setState(() {
-                isLoading = false;
-              });
-            }
-          },
-          onPageStarted: (String url) {
-            print('🌐 Page started: $url');
-          },
-          onPageFinished: (String url) {
-            print('✅ Page finished: $url');
-            _checkPaymentStatus(url);
-          },
-          onHttpError: (HttpResponseError error) {
-            print('❌ HTTP Error: ${error.response?.statusCode}');
-          },
-          onWebResourceError: (WebResourceError error) {
-            print('❌ Web Resource Error: ${error.description}');
-          },
-          onNavigationRequest: (NavigationRequest request) {
-            print('🔄 Navigation to: ${request.url}');
+  // void _initializeWebView() {
+  //   controller = WebViewController()
+  //     ..setJavaScriptMode(JavaScriptMode.unrestricted)
+  //     ..setNavigationDelegate(
+  //       NavigationDelegate(
+  //         onProgress: (int progress) {
+  //           if (progress == 100) {
+  //             setState(() {
+  //               isLoading = false;
+  //             });
+  //           }
+  //         },
+  //         onPageStarted: (String url) {
+  //           print('🌐 Page started: $url');
+  //         },
+  //         onPageFinished: (String url) {
+  //           print('✅ Page finished: $url');
+  //           _checkPaymentStatus(url);
+  //         },
+  //         onHttpError: (HttpResponseError error) {
+  //           print('❌ HTTP Error: ${error.response?.statusCode}');
+  //         },
+  //         onWebResourceError: (WebResourceError error) {
+  //           print('❌ Web Resource Error: ${error.description}');
+  //         },
+  //         onNavigationRequest: (NavigationRequest request) {
+  //           print('🔄 Navigation to: ${request.url}');
             
-            // Check for success/failure in the URL
-            if (_isPaymentCompleted(request.url)) {
-              _handlePaymentResult(request.url);
-              return NavigationDecision.prevent;
-            }
+  //           // Check for success/failure in the URL
+  //           if (_isPaymentCompleted(request.url)) {
+  //             _handlePaymentResult(request.url);
+  //             return NavigationDecision.prevent;
+  //           }
             
-            return NavigationDecision.navigate;
-          },
-        ),
-      )
-      ..loadRequest(Uri.parse(widget.paymentUrl));
-  }
+  //           return NavigationDecision.navigate;
+  //         },
+  //       ),
+  //     )
+  //     ..loadRequest(Uri.parse(widget.paymentUrl));
+  // }
 
   bool _isPaymentCompleted(String url) {
     // Check for common Paymob success/failure patterns
@@ -914,7 +914,7 @@ class _PaymobWebViewScreenState extends State<PaymobWebViewScreen> {
       ),
       body: Stack(
         children: [
-          WebViewWidget(controller: controller),
+          // WebViewWidget(controller: controller),
           if (isLoading)
             Center(
               child: Column(
