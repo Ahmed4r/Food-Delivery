@@ -1,112 +1,55 @@
 name: iOS-ipa-build
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build-ios:
+    name: 🔥 Build Unsigned IPA with Firebase
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: 🛒 Checkout Code
+        uses: actions/checkout@v3
 
-      - uses: subosito/flutter-action@v2
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.22.1'  # أو حسب نسختك
           channel: stable
           architecture: x64
 
-      - name: 🔄 Install latest CocoaPods
-        run: sudo gem install cocoapods --pre
-
-      - name: 🧹 Clean Project
-        run: flutter clean
-
-      - name: 🔄 Install dependencies
+      - name: 📦 Install Dependencies
         run: flutter pub get
 
-      - name: 📦 Precache iOS artifacts
-        run: flutter precache --ios
-
-      - name: 🏗️ Build Flutter.xcframework (release only)
+      - name: 🧼 Clean iOS & Generate Files
         run: |
-          flutter build ios-framework \
-            --cocoapods \
-            --output=build/ios/frameworks \
-            --no-universal \
-            --release
+          flutter clean
+          flutter pub get
+          flutter build ios --release --no-codesign || true
 
-      - name: 🔄 Run pod install manually after xcframework build
+      - name: 📦 Run pod install
         run: |
           cd ios
           pod install
           cd ..
 
-      - name: 🧬 Copy Flutter.xcframework to ios/Flutter
-        run: |
-          mkdir -p ios/Flutter
-          cp -r build/ios/frameworks/*/Flutter.xcframework ios/Flutter/
-
-      - name: 🧱 First dry iOS build (generate CocoaPods, xcconfig)
-        run: flutter build ios --release --no-codesign || true
-
-      - name: 🛠 Patch Podfile + Set iOS Platform + Fix Flutter.h issue
-        run: |
-          cd ios
-          if ! grep -q "platform :ios, '15.5'" Podfile; then
-            echo "🔧 Adding platform :ios, '15.5'"
-            echo "platform :ios, '15.5'" | cat - Podfile > temp && mv temp Podfile
-          fi
-
-          if ! grep -q 'FRAMEWORK_SEARCH_PATHS' Podfile; then
-            echo "🔧 Patching Podfile"
-            sed -i '' '/post_install do |installer|/a\
-              \ \ installer.pods_project.targets.each do |target|\ 
-              \ \ \ \ target.build_configurations.each do |config|\ 
-              \ \ \ \ \ \ config.build_settings["FRAMEWORK_SEARCH_PATHS"] = ["$(inherited)", "$(SRCROOT)/Flutter", "$(PROJECT_DIR)/Flutter"]\
-              \ \ \ \ \ \ config.build_settings["ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES"] = "YES"\
-              \ \ \ \ end\
-              \ \ end\
-            ' Podfile
-          fi
-
-          pod deintegrate
-          pod install
-          cd ..
-
-      - name: 🔧 Fix missing *_privacy.bundle files
-        run: |
-          echo "🔍 Fixing *_privacy.bundle files..."
-          find build/ios -type d -name "*_privacy.bundle" | while read bundle; do
-            plugin_name=$(basename "$bundle" | sed 's/_privacy.bundle//')
-            file_path="$bundle/${plugin_name}_privacy"
-            if [ ! -f "$file_path" ]; then
-              echo "📦 Creating fake file: $file_path"
-              echo "{}" > "$file_path"
-            fi
-          done
-
-      - name: 📦 Final iOS Build (no codesign)
+      - name: 🛠 Final iOS Build
         run: flutter build ios --release --no-codesign
 
-      - name: 📁 Create Payload
-        run: mkdir Payload
-        working-directory: build/ios/iphoneos
+      - name: 📁 Create Payload Directory
+        run: mkdir -p build/ios/iphoneos/Payload
 
       - name: 📲 Move App to Payload
-        run: mv Runner.app Payload
-        working-directory: build/ios/iphoneos
+        run: mv build/ios/iphoneos/Runner.app build/ios/iphoneos/Payload/
 
-      - name: 📦 Zip IPA
-        run: zip -qq -r -9 FlutterIpaExport.ipa Payload
-        working-directory: build/ios/iphoneos
+      - name: 🗜️ Zip to IPA
+        run: |
+          cd build/ios/iphoneos
+          zip -r FlutterIpaExport.ipa Payload
 
-      - name: 🚀 Upload IPA to GitHub Release
-        uses: svenstaro/upload-release-action@v2
+      - name: ☁️ Upload to GitHub Artifacts
+        uses: actions/upload-artifact@v4
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/ios/iphoneos/FlutterIpaExport.ipa
-          tag: v1.0
-          overwrite: true
-          body: "iOS Release"
+          name: Unsigned-IPA
+          path: build/ios/iphoneos/FlutterIpaExport.ipa

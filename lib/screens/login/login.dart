@@ -7,13 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:food_delivery/screens/customer/customer_homepage.dart';
 import 'package:food_delivery/screens/login/forgot_password/forgot_password.dart';
 import 'package:food_delivery/screens/signup/signup.dart';
 import 'package:food_delivery/theme/app_colors.dart';
 import 'package:food_delivery/theme/app_text_styles.dart';
-import 'package:food_delivery/widgets/bottom_nav.dart';
-import 'package:food_delivery/widgets/custom_alert.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class LoginPage extends ConsumerStatefulWidget {
