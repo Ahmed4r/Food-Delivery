@@ -23,10 +23,10 @@ jobs:
           channel: stable
           architecture: x64
 
-      - name: 🧪 Check Flutter & Dart version
-        run: |
-          flutter --version
-          dart --version
+      # - name: 🧪 Check Flutter & Dart version
+      #   run: |
+      #     flutter --version
+      #     dart --version
 
       - name: 📦 Install Dependencies
         run: flutter pub get
