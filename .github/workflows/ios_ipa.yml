@@ -58,6 +58,18 @@ jobs:
             fi
           done
 
+      - name: 🏗️ Build Flutter.xcframework (release only)
+        run: |
+          flutter build ios-framework \
+          --cocoapods \
+          --output=build/ios/frameworks \
+          --no-universal \
+          --release
+      - name: 🧬 Copy Flutter.xcframework to ios/Flutter
+        run: |
+          mkdir -p ios/Flutter
+          cp -r build/ios/frameworks/*/Flutter.xcframework ios/Flutter/
+
 
       - name: 🛠 Final iOS Build
         run: flutter build ios --release --no-codesign
