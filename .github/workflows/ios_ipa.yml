@@ -5,11 +5,9 @@ on:
     branches:
       - main
 
-
-
 jobs:
   build-ios:
-    name: 🔥 Build Unsigned IPA with Firebase
+    name: 🍏 Build Unsigned IPA (with Firebase)
     runs-on: macos-latest
 
     steps:
@@ -23,21 +21,21 @@ jobs:
           channel: stable
           architecture: x64
 
-      # - name: 🧪 Check Flutter & Dart version
-      #   run: |
-      #     flutter --version
-      #     dart --version
+      - name: 💾 Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pub-cache
+            ios/Pods
+            ios/Podfile.lock
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
 
-      - name: 📦 Install Dependencies
-        run: flutter pub get
-
-      - name: 🧼 Clean iOS & Generate Files
+      - name: 🧼 Clean & Get Packages
         run: |
           flutter clean
           flutter pub get
-          flutter build ios --release --no-codesign || true
 
-      - name: 📦 Run pod install
+      - name: 📦 Install CocoaPods
         run: |
           cd ios
           pod install
@@ -54,29 +52,11 @@ jobs:
               echo "{}" > "$file_path"
             fi
           done
- 
-      - name: 🏗️ Build Flutter.xcframework (release only)
-        run: |
-          flutter build ios-framework \
-          --cocoapods \
-          --output=build/ios/frameworks \
-          --no-universal \
-          --release
-          
-      # - name: 🔎 Debug Framework Output
-      #   run: ls -R build/ios/frameworks
 
-      - name: 📦 Copy All .xcframeworks to ios/Flutter
-        run: |
-          mkdir -p ios/Flutter
-          cp -r build/ios/frameworks/Release/*.xcframework ios/Flutter/
-
-
-
-      - name: 🛠 Final iOS Build
+      - name: 🏗️ Build Unsigned IPA (Release Mode)
         run: flutter build ios --release --no-codesign
 
-      - name: 📁 Create Payload Directory
+      - name: 📁 Create Payload Folder
         run: mkdir -p build/ios/iphoneos/Payload
 
       - name: 📲 Move App to Payload
@@ -106,4 +86,3 @@ jobs:
           tag: v1.0.${{ github.run_number }}
           overwrite: true
           body: "🚀 Unsigned IPA build uploaded"
-
