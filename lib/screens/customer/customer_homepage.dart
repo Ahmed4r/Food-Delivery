@@ -62,6 +62,12 @@ class _HomepageState extends State<Homepage> {
         .map((doc) => Restaurant.fromFirestore(doc))
         .toList();
   }
+ Future<void> _refreshData() async {
+  await Future.delayed(Duration(seconds: 1)); // أو نداء API مثلاً
+  setState(() {
+    // عدّل الداتا أو أعد تحميلها
+  });
+}
 
    Future<void> _getuserDate() async {
     var prefs = await SharedPreferences.getInstance();
@@ -233,6 +239,7 @@ class _HomepageState extends State<Homepage> {
                                       return SizedBox(
                                     height: 250.h,
                                     child: ListView.builder(
+                                      
                                       itemCount: _Address.length,
                                       itemBuilder: (context, index) {
                                         return ListTile(
@@ -405,16 +412,19 @@ class _HomepageState extends State<Homepage> {
 
                   buildSectionHeader('opened Restaurants'.tr()),
                   SizedBox(height: 16.h),
-                  ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    separatorBuilder: (context, index) {
-                      return SizedBox(height: 16.h);
-                    },
-                    itemCount: restaurants.length,
-                    itemBuilder: (context, index) {
-                      return _buildRestaurantCard(restaurants[index], context);
-                    },
+                  RefreshIndicator(
+                    onRefresh: _refreshData,
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      // physics: const NeverScrollableScrollPhysics(),
+                      separatorBuilder: (context, index) {
+                        return SizedBox(height: 16.h);
+                      },
+                      itemCount: restaurants.length,
+                      itemBuilder: (context, index) {
+                        return _buildRestaurantCard(restaurants[index], context);
+                      },
+                    ),
                   ),
                 ],
               ),
