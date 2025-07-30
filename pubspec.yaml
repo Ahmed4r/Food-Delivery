@@ -52,14 +52,15 @@ dependencies:
   firebase_core: ^2.27.0
   firebase_auth: ^4.17.4
   cloud_firestore: ^4.15.0
-  google_sign_in: ^6.2.1
+  google_sign_in: any
 
 dependency_overrides:
-
   google_sign_in_ios: ^6.1.0
   google_sign_in_platform_interface: ^3.0.0
   google_sign_in_web: ^1.0.0
   google_sign_in_android: ^7.0.3
+  google_sign_in: ^6.2.1
+
 
 
 dev_dependencies:
