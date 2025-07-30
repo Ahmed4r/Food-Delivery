@@ -28,7 +28,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    options: FirebaseOptions(
+    options: const FirebaseOptions(
       apiKey: "AIzaSyBTKQUPtXgfbnQpIos4VoddRBmdMsSukzs",
       appId: "1:4958439163:android:21cbb7fc4a5e0c5be3125e",
       projectId: "foodapp-e68fd",
@@ -45,10 +45,10 @@ void main() async {
 
   runApp(
     EasyLocalization(
-      startLocale: Locale('en'),
-      supportedLocales: [Locale('en'), Locale('ar')],
+      startLocale: const Locale('en'),
+      supportedLocales: const [Locale('en'), Locale('ar')],
       path: 'assets/lang',
-      fallbackLocale: Locale('en'),
+      fallbackLocale: const Locale('en'),
       child: ProviderScope(
         child: FoodDelivery(token: token, flag: flag, role: role),
       ),
@@ -80,7 +80,7 @@ class FoodDelivery extends ConsumerWidget {
   }
 }
     return ScreenUtilInit(
-      designSize: Size(375, 812),
+      designSize: const Size(375, 812),
       child: MaterialApp(
         
         locale: context.locale,
@@ -90,22 +90,22 @@ class FoodDelivery extends ConsumerWidget {
         initialRoute: initialRoute,
         routes: {
         OnboardingScreen.routeName: (context) => OnboardingScreen(),
-        LoginPage.routeName: (context) => LoginPage(),
-        ForgotPassword.routeName: (context) => ForgotPassword(),
-        OtpScreen.routeName: (context) => OtpScreen(),
-        SignupPage.routeName: (context) => SignupPage(),
-        LocationAccessPage.routeName: (context) => LocationAccessPage(),
-        Homepage.routeName: (context) => Homepage(),
-        ProfileScreen.routeName:  (context) => ProfileScreen(),
-        EditProfile.routeName: (context) => EditProfile(),
-        SettingsPage.routeName: (context) => SettingsPage(),
+        LoginPage.routeName: (context) => const LoginPage(),
+        ForgotPassword.routeName: (context) => const ForgotPassword(),
+        OtpScreen.routeName: (context) => const OtpScreen(),
+        SignupPage.routeName: (context) => const SignupPage(),
+        LocationAccessPage.routeName: (context) => const LocationAccessPage(),
+        Homepage.routeName: (context) => const Homepage(),
+        ProfileScreen.routeName:  (context) => const ProfileScreen(),
+        EditProfile.routeName: (context) => const EditProfile(),
+        SettingsPage.routeName: (context) => const SettingsPage(),
         FaqsScreen.routeName: (context) => FaqsScreen(),
-        AddressListScreen.routeName: (context) => AddressListScreen(),
-        GetGeolocation.routeName: (context) => GetGeolocation(),
-        PaymentSystemScreen.routeName: (context) => PaymentSystemScreen(),
-        OwnerHomepage.routeName : (context)=> OwnerHomepage() ,
-        RestaurantViewScreen.routeName : (context)=> RestaurantViewScreen(),
-        BottomNav.routeName: (context) => BottomNav(),
+        AddressListScreen.routeName: (context) => const AddressListScreen(),
+        GetGeolocation.routeName: (context) => const GetGeolocation(),
+        PaymentSystemScreen.routeName: (context) => const PaymentSystemScreen(),
+        OwnerHomepage.routeName : (context)=> const OwnerHomepage() ,
+        RestaurantViewScreen.routeName : (context)=> const RestaurantViewScreen(),
+        BottomNav.routeName: (context) => const BottomNav(),
         },
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,

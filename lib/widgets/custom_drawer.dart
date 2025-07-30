@@ -35,7 +35,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   ImageProvider _getProfileImageProvider() {
     const String defaultAsset = 'assets/images/profile_img.png';
     if (img == null || img!.isEmpty) {
-      return AssetImage(defaultAsset);
+      return const AssetImage(defaultAsset);
     }
     if (img!.startsWith('http://') || img!.startsWith('https://')) {
       return NetworkImage(img!);
@@ -48,7 +48,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
     try {
       return AssetImage(img!);
     } catch (_) {
-      return AssetImage(defaultAsset);
+      return const AssetImage(defaultAsset);
     }
   }
 
@@ -133,18 +133,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : Color(0xffF6F8FA),
+                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
                   ),
 
                   child: Column(
                     children: [
                       ListTile(
-                        tileColor: Color(0xffF6F8FA),
+                        tileColor: const Color(0xffF6F8FA),
                         leading: CircleAvatar(
                           backgroundColor: isDark
                               ? AppColors.dark_grey
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.user,
                             color: Colors.orange,
                           ),
@@ -171,7 +171,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           backgroundColor: isDark
                               ? AppColors.dark_grey
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.map,
                             color: Colors.deepPurple,
                           ),
@@ -193,12 +193,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ],
                   ),
                 ),
-                Divider(color: Colors.white),
+                const Divider(color: Colors.white),
 
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : Color(0xffF6F8FA),
+                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
                   ),
 
                   child: Column(
@@ -208,7 +208,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           backgroundColor: isDark
                               ? AppColors.dark_grey
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.shoppingCart,
                             color: Colors.blueAccent,
                           ),
@@ -227,7 +227,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           backgroundColor: isDark
                               ? AppColors.dark_grey
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.heart,
                             color: Colors.purpleAccent,
                           ),
@@ -248,7 +248,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : Color(0xffF6F8FA),
+                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
                   ),
 
                   child: Column(
@@ -258,7 +258,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           backgroundColor: isDark
                               ? AppColors.dark_grey
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.bell,
                             color: Colors.orange,
                           ),
@@ -277,7 +277,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           backgroundColor: isDark
                               ? AppColors.dark_grey
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.creditCard,
                             color: Colors.lightBlue,
                           ),
@@ -298,11 +298,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ],
                   ),
                 ),
-                Divider(color: Colors.white),
+                const Divider(color: Colors.white),
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : Color(0xffF6F8FA),
+                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
                   ),
 
                   child: Column(
@@ -312,7 +312,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           backgroundColor: isDark
                               ? AppColors.dark_grey
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.circleQuestion,
                             color: Colors.orange,
                           ),
@@ -334,7 +334,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           backgroundColor: isDark
                               ? AppColors.dark_grey
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.commenting,
                             color: Colors.greenAccent,
                           ),
@@ -353,7 +353,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           backgroundColor: isDark
                               ? AppColors.dark_grey
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.cog,
                             color: Colors.blue,
                           ),
@@ -378,11 +378,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ],
                   ),
                 ),
-                Divider(color: Colors.white),
+                const Divider(color: Colors.white),
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : Color(0xffF6F8FA),
+                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
                   ),
 
                   child: Column(
@@ -390,9 +390,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ListTile(
                         leading: CircleAvatar(
                           backgroundColor: isDark
-                              ? Color(0xff303537)
+                              ? const Color(0xff303537)
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.signOut,
                             color: Colors.orange,
                           ),
@@ -474,7 +474,7 @@ class SeeAllCategoriesScreen extends StatelessWidget {
                   height: 40,
                   fit: BoxFit.contain,
                   errorBuilder: (context, error, stackTrace) =>
-                      Icon(Icons.broken_image),
+                      const Icon(Icons.broken_image),
                 ),
                 const SizedBox(width: 12),
                 Text(

@@ -54,7 +54,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
     final AddressModel? newAddress = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AddressDetailsScreen(),
+        builder: (context) => const AddressDetailsScreen(),
       ),
     );
     if (newAddress != null) {
@@ -73,10 +73,10 @@ class _AddressListScreenState extends State<AddressListScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
+        title: const Text(
           'My Address',
           style: TextStyle(
             color: Colors.black,
@@ -89,18 +89,18 @@ class _AddressListScreenState extends State<AddressListScreen> {
         children: [
           Expanded(
             child: ListView.builder(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               itemCount: addresses.length,
               itemBuilder: (context, index) {
                 final address = addresses[index];
                 return Container(
-                  margin: EdgeInsets.only(bottom: 16),
+                  margin: const EdgeInsets.only(bottom: 16),
                   decoration: BoxDecoration(
                     color: Colors.grey[100],
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: ListTile(
-                    contentPadding: EdgeInsets.all(16),
+                    contentPadding: const EdgeInsets.all(16),
                     leading: Container(
                       width: 48,
                       height: 48,
@@ -123,10 +123,10 @@ class _AddressListScreenState extends State<AddressListScreen> {
                       ),
                     ),
                     subtitle: Padding(
-                      padding: EdgeInsets.only(top: 4),
+                      padding: const EdgeInsets.only(top: 4),
                       child: Text(
                         address.address,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black87,
                           height: 1.3,
@@ -138,7 +138,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
                       children: [
                         
                         IconButton(
-                          icon: Icon(Icons.delete, color: Colors.red, size: 20),
+                          icon: const Icon(Icons.delete, color: Colors.red, size: 20),
                           onPressed: () {
                             setState(() {
                               addresses.removeAt(index);
@@ -157,7 +157,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: SizedBox(
               width: double.infinity,
               height: 56,
@@ -170,7 +170,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
                   ),
                   elevation: 0,
                 ),
-                child: Text(
+                child: const Text(
                   'ADD NEW ADDRESS',
                   style: TextStyle(
                     fontSize: 16,
@@ -205,7 +205,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
   String selectedLabel = 'Home';
   final List<String> labels = ['Home', 'Work', 'Other'];
 
-  LatLng selectedLocation = LatLng(40.7589, -73.9851); // Default to New York
+  LatLng selectedLocation = const LatLng(40.7589, -73.9851); // Default to New York
   List<Marker> markers = [];
   String currentAddress = 'Loading address...';
   bool isLoadingLocation = false;
@@ -264,7 +264,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
       markers = [
         Marker(
           point: location,
-          child: Icon(
+          child: const Icon(
             Icons.location_on,
             color: Colors.red,
             size: 40,
@@ -342,7 +342,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                       userAgentPackageName: 'com.example.address_manager',
                       maxNativeZoom: 19,
                       maxZoom: 19,
-                      additionalOptions: {
+                      additionalOptions: const {
                         'id': 'openstreetmap',
                       },
                     ),
@@ -355,7 +355,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                 if (isLoadingLocation)
                   Container(
                     color: Colors.black.withOpacity(0.3),
-                    child: Center(
+                    child: const Center(
                       child: CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
@@ -370,7 +370,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.white),
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ),
@@ -387,18 +387,18 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                           shape: BoxShape.circle,
                         ),
                         child: IconButton(
-                          icon: FaIcon(FontAwesomeIcons.locationArrow,color: Colors.white,),
+                          icon: const FaIcon(FontAwesomeIcons.locationArrow,color: Colors.white,),
                           onPressed: _getCurrentLocation,
                         ),
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         decoration: BoxDecoration(
                           color: Colors.black.withOpacity(0.7),
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Text(
+                        child: const Text(
                           'Tap to edit location',
                           style: TextStyle(
                             color: Colors.white,
@@ -414,7 +414,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                   left: 16,
                   right: 16,
                   child: Container(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
@@ -422,14 +422,14 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                         BoxShadow(
                           color: Colors.black.withOpacity(0.1),
                           blurRadius: 10,
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),
                     child: Row(
                       children: [
                         Icon(Icons.location_on, color: Colors.grey[600]),
-                        SizedBox(width: 12),
+                        const SizedBox(width: 12),
                         Expanded(
                           child: Text(
                             currentAddress,
@@ -451,7 +451,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
           // Form Section
           Expanded(
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -464,9 +464,9 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                       letterSpacing: 0.5,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Container(
-                    padding: EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: Colors.grey[100],
                       borderRadius: BorderRadius.circular(8),
@@ -474,7 +474,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                     child: Row(
                       children: [
                         Icon(Icons.location_on, color: Colors.grey[600], size: 20),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             currentAddress,
@@ -489,7 +489,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   Row(
                     children: [
                       Expanded(
@@ -505,9 +505,9 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                                 letterSpacing: 0.5,
                               ),
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                               decoration: BoxDecoration(
                                 color: Colors.grey[100],
                                 borderRadius: BorderRadius.circular(8),
@@ -518,13 +518,13 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                                   hintText: 'Enter street name',
                                   hintStyle: TextStyle(color: Colors.grey[500]),
                                 ),
-                                style: TextStyle(fontSize: 14),
+                                style: const TextStyle(fontSize: 14),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(width: 16),
+                      const SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -538,9 +538,9 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                                 letterSpacing: 0.5,
                               ),
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                               decoration: BoxDecoration(
                                 color: Colors.grey[100],
                                 borderRadius: BorderRadius.circular(8),
@@ -551,7 +551,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                                   hintText: 'Enter post code',
                                   hintStyle: TextStyle(color: Colors.grey[500]),
                                 ),
-                                style: TextStyle(fontSize: 14),
+                                style: const TextStyle(fontSize: 14),
                               ),
                             ),
                           ],
@@ -559,7 +559,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   Text(
                     'APARTMENT',
                     style: TextStyle(
@@ -569,9 +569,9 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                       letterSpacing: 0.5,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                     decoration: BoxDecoration(
                       color: Colors.grey[100],
                       borderRadius: BorderRadius.circular(8),
@@ -582,10 +582,10 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                         hintText: 'Enter apartment number',
                         hintStyle: TextStyle(color: Colors.grey[500]),
                       ),
-                      style: TextStyle(fontSize: 14),
+                      style: const TextStyle(fontSize: 14),
                     ),
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   Text(
                     'LABEL AS',
                     style: TextStyle(
@@ -595,7 +595,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                       letterSpacing: 0.5,
                     ),
                   ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   Row(
                     children: labels.map((label) {
                       final isSelected = selectedLabel == label;
@@ -608,7 +608,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                           },
                           child: Container(
                             margin: EdgeInsets.only(right: label != labels.last ? 8 : 0),
-                            padding: EdgeInsets.symmetric(vertical: 12),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
                               color: isSelected ? AppColors.primary : Colors.grey[100],
                               borderRadius: BorderRadius.circular(25),
@@ -628,7 +628,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                       );
                     }).toList(),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   SizedBox(
                     width: double.infinity,
                     height: 56,
@@ -660,7 +660,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                         ),
                         elevation: 0,
                       ),
-                      child: Text(
+                      child: const Text(
                         'SAVE LOCATION',
                         style: TextStyle(
                           fontSize: 16,

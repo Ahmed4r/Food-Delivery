@@ -209,8 +209,8 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                           });
                         },
                         icon: isobsecured
-                            ? FaIcon(FontAwesomeIcons.eye)
-                            : FaIcon(FontAwesomeIcons.eyeSlash),
+                            ? const FaIcon(FontAwesomeIcons.eye)
+                            : const FaIcon(FontAwesomeIcons.eyeSlash),
                       ),
 
                       hintStyle: GoogleFonts.sen(
@@ -265,8 +265,8 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                           });
                         },
                         icon: isobsecured
-                            ? FaIcon(FontAwesomeIcons.eye)
-                            : FaIcon(FontAwesomeIcons.eyeSlash),
+                            ? const FaIcon(FontAwesomeIcons.eye)
+                            : const FaIcon(FontAwesomeIcons.eyeSlash),
                       ),
 
                       hintStyle: GoogleFonts.sen(

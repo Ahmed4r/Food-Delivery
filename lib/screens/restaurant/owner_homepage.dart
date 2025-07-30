@@ -46,22 +46,22 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
   Widget build(BuildContext context) {
      final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      drawer: ResDrawer(),
-      backgroundColor: Color(0xFFF8F9FA),
+      drawer: const ResDrawer(),
+      backgroundColor: const Color(0xFFF8F9FA),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildHeader(isDark),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               _buildMetricsRow(isDark),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               _buildRevenueSection(isDark),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               _buildReviewsSection(isDark),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               _buildPopularItemsSection(isDark),
             ],
           ),
@@ -92,17 +92,17 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                             return GestureDetector(
                               onTap: () => Scaffold.of(context).openDrawer(),
                               child: Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFF1F1F5),
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFFF1F1F5),
                                   shape: BoxShape.circle,
                                 ),
-                                child: Icon(Icons.menu, color: Colors.black),
+                                child: const Icon(Icons.menu, color: Colors.black),
                               ),
                             );
                           },
                         ),
-                        SizedBox(width: 12),
+                        const SizedBox(width: 12),
                         // Deliver to text and location
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,7 +128,7 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                                     color:isDark?Colors.white:  Colors.black,
                                   ),
                                 ),
-                                SizedBox(width: 4),
+                                const SizedBox(width: 4),
                                 IconButton(
                                   onPressed: () {
                                     showModalBottomSheet(context: context, builder: (context) {
@@ -146,7 +146,7 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                                             Navigator.pop(context);
                                           },
                                           trailing: _selectedAddress == index
-                                              ? Icon(Icons.check, color: Colors.orange)
+                                              ? const Icon(Icons.check, color: Colors.orange)
                                               : null,
                                         );
                                       },
@@ -163,7 +163,7 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                       ],
                     ),
                    CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/profile_img.png'),
+                    backgroundImage: const AssetImage('assets/images/profile_img.png'),
                    radius: 30.r,
                    ),
                   ],
@@ -179,7 +179,7 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
         Expanded(
           child: _buildMetricCard('20', 'RUNNING ORDERS',isDark,0),
         ),
-        SizedBox(width: 20),
+        const SizedBox(width: 20),
         Expanded(
           child: _buildMetricCard('05', 'ORDER REQUEST',isDark,1),
         ),
@@ -196,13 +196,13 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
               // Running Orders
               return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.8,
-                child: RunningOrdersList(),
+                child: const RunningOrdersList(),
               );
             } else {
               // Order Requests
               return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.8,
-                child: OrderRequestsList(),
+                child: const OrderRequestsList(),
               );
             }
           },
@@ -220,17 +220,17 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
             children: [
               Text(
                 value,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 48,
                   fontWeight: FontWeight.w700,
                   color: Colors.black87,
                   height: 1,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                   color: Colors.black54,
@@ -261,7 +261,7 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -286,12 +286,12 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                 Row(
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black12),
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
@@ -307,8 +307,8 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                         ],
                       ),
                     ),
-                    SizedBox(width: 15),
-                    Text(
+                    const SizedBox(width: 15),
+                    const Text(
                       'See Details',
                       style: TextStyle(
                         fontSize: 14,
@@ -320,7 +320,7 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                 ),
               ],
             ),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             _buildRevenueChart(isDark),
           ],
         ),
@@ -347,8 +347,8 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
         borderRadius: BorderRadius.circular(20.r),
         color: AppColors.light_grey
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
+      child: const Padding(
+        padding: EdgeInsets.all(12.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -413,7 +413,7 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
         padding: const EdgeInsets.all(12.0),
         child: Column(
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
@@ -434,24 +434,24 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               children: [
                 Expanded(
                   child: Container(
                     height: 120,
                     decoration: BoxDecoration(
-                      color: Color(0xFF9CAAB8),
+                      color: const Color(0xFF9CAAB8),
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                 ),
-                SizedBox(width: 15),
+                const SizedBox(width: 15),
                 Expanded(
                   child: Container(
                     height: 120,
                     decoration: BoxDecoration(
-                      color: Color(0xFF9CAAB8),
+                      color: const Color(0xFF9CAAB8),
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
@@ -469,7 +469,7 @@ class RevenueChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Color(0xFFFF6B35)
+      ..color = const Color(0xFFFF6B35)
       ..strokeWidth = 3
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
@@ -479,8 +479,8 @@ class RevenueChartPainter extends CustomPainter {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          Color(0xFFFF6B35).withOpacity(0.3),
-          Color(0xFFFF6B35).withOpacity(0.05),
+          const Color(0xFFFF6B35).withOpacity(0.3),
+          const Color(0xFFFF6B35).withOpacity(0.05),
         ],
       ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
 
@@ -526,7 +526,7 @@ class RevenueChartPainter extends CustomPainter {
     // Draw peak point with value
     final peakPoint = points[3];
     final circlePaint = Paint()
-      ..color = Color(0xFFFF6B35)
+      ..color = const Color(0xFFFF6B35)
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(peakPoint, 6, circlePaint);
@@ -537,7 +537,7 @@ class RevenueChartPainter extends CustomPainter {
 
     // Draw $500 label
     final textPainter = TextPainter(
-      text: TextSpan(
+      text: const TextSpan(
         text: '\$500',
         style: TextStyle(
           color: Colors.white,
@@ -555,10 +555,10 @@ class RevenueChartPainter extends CustomPainter {
         width: textPainter.width + 16,
         height: textPainter.height + 8,
       ),
-      Radius.circular(15),
+      const Radius.circular(15),
     );
 
-    canvas.drawRRect(labelRect, Paint()..color = Color(0xFF4A4A4A));
+    canvas.drawRRect(labelRect, Paint()..color = const Color(0xFF4A4A4A));
     textPainter.paint(
       canvas,
       Offset(
@@ -574,7 +574,7 @@ class RevenueChartPainter extends CustomPainter {
       final timePainter = TextPainter(
         text: TextSpan(
           text: timeLabels[i],
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black38,
             fontSize: 11,
           ),
@@ -797,7 +797,7 @@ class RunningOrdersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: [
+      children: const [
         FoodOrderCard(title: 'Running Order 1'),
         FoodOrderCard(title: 'Running Order 2'),
       ],
@@ -812,7 +812,7 @@ class OrderRequestsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: [
+      children: const [
         FoodOrderCard(title: 'Order Request 1'),
         FoodOrderCard(title: 'Order Request 2'),
       ],

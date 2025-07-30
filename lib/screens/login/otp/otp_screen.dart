@@ -24,7 +24,7 @@ class _OtpScreenState extends State<OtpScreen> {
 void _startTimer() {
   _isRunning = true;
   _seconds = 60;
-  Timer.periodic(Duration(seconds: 1), (timer) {
+  Timer.periodic(const Duration(seconds: 1), (timer) {
     if (_seconds > 0) {
       if (mounted) {
         setState(() {
@@ -100,23 +100,23 @@ void dispose() {
               children: [
                 Text('CODE'.tr()),
 
-                _isRunning? Text('Resend in ${_seconds.toString()}'.tr(),style: TextStyle(fontWeight: FontWeight.bold,
+                _isRunning? Text('Resend in ${_seconds.toString()}'.tr(),style: const TextStyle(fontWeight: FontWeight.bold,
                              
                 color: Colors.orange
                 ),) 
                 : 
                 InkWell(
                   onTap: () =>_startTimer(),
-                  child: Text('Resend'.tr(),style: TextStyle(fontWeight: FontWeight.bold,
+                  child: Text('Resend'.tr(),style: const TextStyle(fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,
                   color: Colors.orange
                   )),
                 )
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             buildPinPut(context),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               
               style: ButtonStyle(
@@ -124,7 +124,7 @@ void dispose() {
                 backgroundColor: WidgetStateProperty.all(Colors.orange ),
               ),
               
-              onPressed: _verifyOtp, child: Text('verify'.tr(),style: TextStyle(fontSize: 20,color: Colors.white),))
+              onPressed: _verifyOtp, child: Text('verify'.tr(),style: const TextStyle(fontSize: 20,color: Colors.white),))
            
           ],
         ),
@@ -138,27 +138,27 @@ final defaultPinTheme = PinTheme(
   
   width: 300.w,
   height: 56.h,
-  textStyle: TextStyle(
+  textStyle: const TextStyle(
     
     fontSize: 20,
     color: Color.fromRGBO(30, 60, 87, 1),
     fontWeight: FontWeight.w600,
   ),
   decoration: BoxDecoration(
-    border: Border.all(color: Color.fromARGB(255, 154, 160, 166)),
+    border: Border.all(color: const Color.fromARGB(255, 154, 160, 166)),
     borderRadius: BorderRadius.circular(20),
   ),
 );
 
 final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-  border: Border.all(color: Color(0xffF0F5FA)),
+  border: Border.all(color: const Color(0xffF0F5FA)),
   borderRadius: BorderRadius.circular(8),
   
 );
 
 final submittedPinTheme = defaultPinTheme.copyWith(
   decoration: defaultPinTheme.decoration!.copyWith(
-    color: Color.fromRGBO(196, 204, 210, 1),
+    color: const Color.fromRGBO(196, 204, 210, 1),
   ),
 );
 
@@ -178,7 +178,7 @@ Widget buildPinPut(context) {
       
     },
 
-    errorTextStyle: TextStyle(color: Colors.red),
+    errorTextStyle: const TextStyle(color: Colors.red),
     pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
     showCursor: true,
     onCompleted: (pin) => print(pin),

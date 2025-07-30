@@ -58,7 +58,7 @@ class _LocationAccessPageState extends State<LocationAccessPage> {
             CircleAvatar(
           
               radius: 100.r,
-              backgroundImage: AssetImage('assets/images/location.jpg'),
+              backgroundImage: const AssetImage('assets/images/location.jpg'),
             ),
             SizedBox(height: 30.h,),
 

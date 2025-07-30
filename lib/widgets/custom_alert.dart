@@ -11,7 +11,7 @@ class CustomAlert {
     String? subtitle,
   }) {
     InteractiveToast.slide(
-      toastStyle: ToastStyle(backgroundColor: Colors.red),
+      toastStyle: const ToastStyle(backgroundColor: Colors.red),
       context: context,
       leading: leading,
       title: Text(title),
@@ -25,7 +25,7 @@ class CustomAlert {
     String? subtitle,
   }) {
     InteractiveToast.slide(
-      toastStyle: ToastStyle(backgroundColor: Colors.green),
+      toastStyle: const ToastStyle(backgroundColor: Colors.green),
       context: context,
       leading: leading,
       title: Text(title),

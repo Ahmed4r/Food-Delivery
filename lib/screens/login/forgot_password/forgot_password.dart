@@ -90,7 +90,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             SizedBox(height: 20.h,),
             ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(AppColors.primary),
+                backgroundColor: const WidgetStatePropertyAll(AppColors.primary),
                 minimumSize: WidgetStatePropertyAll(Size(327.w, 50.h)),
               ),
               onPressed: (){

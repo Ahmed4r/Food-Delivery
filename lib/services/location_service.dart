@@ -26,7 +26,7 @@ class LocationService {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Location services are disabled.')),
+        const SnackBar(content: Text('Location services are disabled.')),
       );
       return null;
     }
@@ -37,7 +37,7 @@ class LocationService {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Location permissions are denied')),
+          const SnackBar(content: Text('Location permissions are denied')),
         );
         return null;
       }
@@ -45,7 +45,7 @@ class LocationService {
 
     if (permission == LocationPermission.deniedForever) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Location permissions are permanently denied.')),
+        const SnackBar(content: Text('Location permissions are permanently denied.')),
       );
       return null;
     }

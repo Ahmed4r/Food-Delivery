@@ -26,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   ImageProvider _getProfileImageProvider() {
     const String defaultAsset = 'assets/images/profile_img.png';
     if (img.isEmpty) {
-      return AssetImage(defaultAsset);
+      return const AssetImage(defaultAsset);
     }
     if (img.startsWith('http://') || img.startsWith('https://')) {
       return NetworkImage(img);
@@ -39,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     try {
       return AssetImage(img);
     } catch (_) {
-      return AssetImage(defaultAsset);
+      return const AssetImage(defaultAsset);
     }
   }
 
@@ -85,7 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: isDark ? Colors.black : Colors.white,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             TextButton(
               onPressed: () async {
                 final result = await Navigator.pushNamed(context, EditProfile.routeName);
@@ -167,17 +167,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
             width: 340.w,
             decoration: BoxDecoration(
              
-              color: isDark ? AppColors.dark_grey : Color(0xffF6F8FA),
+              color: isDark ? AppColors.dark_grey : const Color(0xffF6F8FA),
             ),
             child: Column(
               children: [
                 ListTile(
-                  tileColor: Color(0xffF6F8FA),
+                  tileColor: const Color(0xffF6F8FA),
                   leading: CircleAvatar(
                     backgroundColor: isDark
                         ? AppColors.dark_grey
                         : Colors.white,
-                    child: FaIcon(FontAwesomeIcons.user, color: Colors.orange),
+                    child: const FaIcon(FontAwesomeIcons.user, color: Colors.orange),
                   ),
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     backgroundColor: isDark
                         ? AppColors.dark_grey
                         : Colors.white,
-                    child: FaIcon(
+                    child: const FaIcon(
                       FontAwesomeIcons.map,
                       color: Colors.deepPurple,
                     ),
@@ -234,7 +234,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     backgroundColor: isDark
                         ? AppColors.dark_grey
                         : Colors.white,
-                    child: FaIcon(
+                    child: const FaIcon(
                       FontAwesomeIcons.phone,
                       color: Colors.blueAccent,
                     ),

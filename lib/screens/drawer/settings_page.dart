@@ -54,7 +54,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               },
             ),
           ),
-          Divider(),
+          const Divider(),
           ListTile(
             leading:FaIcon( FontAwesomeIcons.language, color: themeMode == ThemeMode.dark ? Colors.white : Colors.black),
             title: Text('Language'.tr(), style: GoogleFonts.sen(
@@ -67,7 +67,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               ),
               icon: Icon(Icons.arrow_drop_down, color: themeMode == ThemeMode.dark ? Colors.white : Colors.black),
               value: context.locale,
-              items: [
+              items: const [
                 DropdownMenuItem(
 
                   value: Locale('en'),
@@ -91,7 +91,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             title: Text('location'.tr(), style: GoogleFonts.sen(
               color: themeMode == ThemeMode.dark ? Colors.white : Colors.black
             )),
-            trailing: IconButton(onPressed: ()=> Navigator.pushNamed(context, LocationAccessPage.routeName,), icon: Icon(Icons.arrow_forward_ios)),
+            trailing: IconButton(onPressed: ()=> Navigator.pushNamed(context, LocationAccessPage.routeName,), icon: const Icon(Icons.arrow_forward_ios)),
           ),
          
         ],

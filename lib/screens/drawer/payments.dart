@@ -122,11 +122,11 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
 
     if (result == true) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Payment processed successfully!')),
+        const SnackBar(content: Text('Payment processed successfully!')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Payment failed. Please try again.')),
+        const SnackBar(content: Text('Payment failed. Please try again.')),
       );
     }
   } catch (error) {
@@ -135,7 +135,7 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Payment failed. Please try again.')),
+      const SnackBar(content: Text('Payment failed. Please try again.')),
     );
   }
 }
@@ -192,7 +192,7 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
@@ -200,17 +200,17 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
   onPressed: () {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PaymobTester()),
+      MaterialPageRoute(builder: (context) => const PaymobTester()),
     );
   },
-  child: Icon(Icons.bug_report),
+  child: const Icon(Icons.bug_report),
 )
 
         ],
-        title: Text('Payment Method_No Mastercard', style: TextStyle(color: Colors.black, fontSize: 16)),
+        title: const Text('Payment Method_No Mastercard', style: TextStyle(color: Colors.black, fontSize: 16)),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             // Payment methods grid
@@ -223,14 +223,14 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
                 _buildPaymentMethodIcon('🅿️', 'PayPal', false),
               ],
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             
             // No card illustration
             Container(
               height: 150,
               width: 250,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: [Colors.orange, Colors.red],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -267,28 +267,28 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
               ),
             ),
             
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'No master card added',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               'You can add a mastercard and\nsave it for later',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.grey[600]),
             ),
             
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             
             // Add new button
             TextButton.icon(
               onPressed: () => setState(() => currentScreenIndex = 2),
-              icon: Icon(Icons.add, color: Colors.orange),
-              label: Text('ADD NEW', style: TextStyle(color: Colors.orange)),
+              icon: const Icon(Icons.add, color: Colors.orange),
+              label: const Text('ADD NEW', style: TextStyle(color: Colors.orange)),
             ),
             
-            Spacer(),
+            const Spacer(),
             
             // Total and pay button
             Row(
@@ -298,13 +298,13 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('TOTAL', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
-                    Text('\$1', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                    const Text('\$1', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                   ],
                 ),
               ],
             ),
             
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             
             SizedBox(
               width: double.infinity,
@@ -312,10 +312,10 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
                 onPressed: savedCards.isNotEmpty ? processPayment : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orange,
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 ),
-                child: Text(
+                child: const Text(
                   'PAY & CONFIRM',
                   style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
@@ -334,13 +334,13 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => setState(() => currentScreenIndex = 0),
         ),
-        title: Text('Payment Method', style: TextStyle(color: Colors.black, fontSize: 16)),
+        title: const Text('Payment Method', style: TextStyle(color: Colors.black, fontSize: 16)),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             // Payment methods grid
@@ -353,11 +353,11 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
                 _buildPaymentMethodIcon('🅿️', 'PayPal', false),
               ],
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             
             // Selected card dropdown
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
@@ -372,31 +372,31 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(3),
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         'MC',
                         style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
-                  SizedBox(width: 10),
-                  Text('••••••••••••436', style: TextStyle(fontSize: 16)),
-                  Spacer(),
-                  Icon(Icons.keyboard_arrow_down),
+                  const SizedBox(width: 10),
+                  const Text('••••••••••••436', style: TextStyle(fontSize: 16)),
+                  const Spacer(),
+                  const Icon(Icons.keyboard_arrow_down),
                 ],
               ),
             ),
             
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             
             // Add new button
             TextButton.icon(
               onPressed: () => setState(() => currentScreenIndex = 2),
-              icon: Icon(Icons.add, color: Colors.orange),
-              label: Text('ADD NEW', style: TextStyle(color: Colors.orange)),
+              icon: const Icon(Icons.add, color: Colors.orange),
+              label: const Text('ADD NEW', style: TextStyle(color: Colors.orange)),
             ),
             
-            Spacer(),
+            const Spacer(),
             
             // Total and pay button
             Row(
@@ -406,13 +406,13 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('TOTAL', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
-                    Text('\$96', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                    const Text('\$96', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                   ],
                 ),
               ],
             ),
             
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             
             SizedBox(
               width: double.infinity,
@@ -420,12 +420,12 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
                 onPressed: isProcessing ? null : processPayment,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orange,
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 ),
                 child: isProcessing
-                    ? CircularProgressIndicator(color: Colors.white)
-                    : Text(
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text(
                         'PAY & CONFIRM',
                         style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                       ),
@@ -444,24 +444,24 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => setState(() => currentScreenIndex = savedCards.isEmpty ? 0 : 1),
         ),
-        title: Text('Add Card', style: TextStyle(color: Colors.black, fontSize: 16)),
+        title: const Text('Add Card', style: TextStyle(color: Colors.black, fontSize: 16)),
         actions: [
           IconButton(
-            icon: Icon(Icons.close, color: Colors.black),
+            icon: const Icon(Icons.close, color: Colors.black),
             onPressed: () => setState(() => currentScreenIndex = savedCards.isEmpty ? 0 : 1),
           ),
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('CARD HOLDER NAME', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextField(
               controller: cardholderNameController,
               decoration: InputDecoration(
@@ -474,10 +474,10 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
               ),
             ),
             
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             
             Text('CARD NUMBER', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextField(
               controller: cardNumberController,
               keyboardType: TextInputType.number,
@@ -505,7 +505,7 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
               ),
             ),
             
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             
             Row(
               children: [
@@ -514,7 +514,7 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('EXPIRE DATE', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       TextField(
                         controller: expiryDateController,
                         keyboardType: TextInputType.number,
@@ -543,13 +543,13 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
                     ],
                   ),
                 ),
-                SizedBox(width: 15),
+                const SizedBox(width: 15),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('CVC', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       TextField(
                         controller: cvcController,
                         keyboardType: TextInputType.number,
@@ -573,7 +573,7 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
               ],
             ),
             
-            Spacer(),
+            const Spacer(),
             
             SizedBox(
               width: double.infinity,
@@ -588,10 +588,10 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orange,
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 ),
-                child: Text(
+                child: const Text(
                   'ADD & MAKE PAYMENT',
                   style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
@@ -618,20 +618,20 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
             ),
           ),
           child: Center(
-            child: Text(icon, style: TextStyle(fontSize: 24)),
+            child: Text(icon, style: const TextStyle(fontSize: 24)),
           ),
         ),
         if (isSelected)
           Container(
-            margin: EdgeInsets.only(top: 5),
-            padding: EdgeInsets.all(3),
-            decoration: BoxDecoration(
+            margin: const EdgeInsets.only(top: 5),
+            padding: const EdgeInsets.all(3),
+            decoration: const BoxDecoration(
               color: Colors.orange,
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.check, color: Colors.white, size: 12),
+            child: const Icon(Icons.check, color: Colors.white, size: 12),
           ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(label, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
       ],
     );
@@ -700,24 +700,24 @@ class _PaymobTesterState extends State<PaymobTester> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Paymob Tester')),
+      appBar: AppBar(title: const Text('Paymob Tester')),
       body: Column(
         children: [
           Row(
             children: [
-              Expanded(child: ElevatedButton(onPressed: testAuth, child: Text('1. Auth'))),
-              Expanded(child: ElevatedButton(onPressed: testOrder, child: Text('2. Order'))),
-              Expanded(child: ElevatedButton(onPressed: testPaymentKey, child: Text('3. Payment'))),
+              Expanded(child: ElevatedButton(onPressed: testAuth, child: const Text('1. Auth'))),
+              Expanded(child: ElevatedButton(onPressed: testOrder, child: const Text('2. Order'))),
+              Expanded(child: ElevatedButton(onPressed: testPaymentKey, child: const Text('3. Payment'))),
             ],
           ),
           ElevatedButton(
             onPressed: () => setState(() => logs.clear()),
-            child: Text('Clear Logs'),
+            child: const Text('Clear Logs'),
           ),
           Expanded(
             child: Container(
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Colors.black87,
                 borderRadius: BorderRadius.circular(8),
@@ -860,22 +860,22 @@ class _PaymobWebViewScreenState extends State<PaymobWebViewScreen> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Payment Status'),
-          content: Text('Did your payment complete successfully?'),
+          title: const Text('Payment Status'),
+          content: const Text('Did your payment complete successfully?'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 _returnResult(false);
               },
-              child: Text('No, Failed'),
+              child: const Text('No, Failed'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 _returnResult(true);
               },
-              child: Text('Yes, Success'),
+              child: const Text('Yes, Success'),
             ),
           ],
         );
@@ -892,20 +892,20 @@ class _PaymobWebViewScreenState extends State<PaymobWebViewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Complete Payment'),
+        title: const Text('Complete Payment'),
         backgroundColor: Colors.orange,
         foregroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.close),
+          icon: const Icon(Icons.close),
           onPressed: () => _returnResult(false), // Treat close as failed payment
         ),
         actions: [
           if (isLoading)
             Container(
-              margin: EdgeInsets.all(16),
+              margin: const EdgeInsets.all(16),
               width: 20,
               height: 20,
-              child: CircularProgressIndicator(
+              child: const CircularProgressIndicator(
                 color: Colors.white,
                 strokeWidth: 2,
               ),
@@ -916,7 +916,7 @@ class _PaymobWebViewScreenState extends State<PaymobWebViewScreen> {
         children: [
           // WebViewWidget(controller: controller),
           if (isLoading)
-            Center(
+            const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

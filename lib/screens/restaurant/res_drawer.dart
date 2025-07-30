@@ -45,12 +45,12 @@ class _CustomDrawerState extends State<ResDrawer> {
                   height: 350,
                   child: Container(
                     height: 200.h,
-                    decoration: BoxDecoration(color: AppColors.primary),
+                    decoration: const BoxDecoration(color: AppColors.primary),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Row(children: [
-                          IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back_ios_new, color: Colors.white,),),
+                          IconButton(onPressed: (){}, icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white,),),
                         
                           Text('My Profile', style: GoogleFonts.sen(color: Colors.white, fontSize: 20.sp),)
                         ],),
@@ -66,9 +66,9 @@ ElevatedButton(
     backgroundColor: AppColors.primary, // Use your desired button color
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
-      side: BorderSide(color: Colors.white)
+      side: const BorderSide(color: Colors.white)
     ),
-    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
   ),
   child: Text(
     'Withdraw',
@@ -96,18 +96,18 @@ ElevatedButton(
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : Color(0xffF6F8FA),
+                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
                   ),
 
                   child: Column(
                     children: [
                       ListTile(
-                        tileColor: Color(0xffF6F8FA),
+                        tileColor: const Color(0xffF6F8FA),
                         leading: CircleAvatar(
                           backgroundColor: isDark
                               ? AppColors.dark_grey
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.user,
                             color: Colors.orange,
                           ),
@@ -134,7 +134,7 @@ ElevatedButton(
                           backgroundColor: isDark
                               ? AppColors.dark_grey
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.cog,
                             color: Colors.blue,
                           ),
@@ -159,12 +159,12 @@ ElevatedButton(
                     ],
                   ),
                 ),
-                Divider(color: Colors.white),
+                const Divider(color: Colors.white),
 
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : Color(0xffF6F8FA),
+                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
                   ),
 
                   child: Column(
@@ -174,7 +174,7 @@ ElevatedButton(
                           backgroundColor: isDark
                               ? AppColors.dark_grey
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.moneyBill,
                             color: Colors.blueAccent,
                           ),
@@ -193,7 +193,7 @@ ElevatedButton(
                           backgroundColor: isDark
                               ? AppColors.dark_grey
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.file,
                             color: Colors.purpleAccent,
                           ),
@@ -211,11 +211,11 @@ ElevatedButton(
                   ),
                 ),
 
-                Divider(color: Colors.white),
+                const Divider(color: Colors.white),
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : Color(0xffF6F8FA),
+                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
                   ),
 
                   child: Column(
@@ -225,7 +225,7 @@ ElevatedButton(
                           backgroundColor: isDark
                               ? AppColors.dark_grey
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.commenting,
                             color: Colors.greenAccent,
                           ),
@@ -242,11 +242,11 @@ ElevatedButton(
                     ],
                   ),
                 ),
-                Divider(color: Colors.white),
+                const Divider(color: Colors.white),
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : Color(0xffF6F8FA),
+                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
                   ),
 
                   child: Column(
@@ -254,9 +254,9 @@ ElevatedButton(
                       ListTile(
                         leading: CircleAvatar(
                           backgroundColor: isDark
-                              ? Color(0xff303537)
+                              ? const Color(0xff303537)
                               : Colors.white,
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.signOut,
                             color: Colors.orange,
                           ),

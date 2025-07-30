@@ -150,8 +150,8 @@ class _login_pageState extends ConsumerState<LoginPage> {
                           });
                         },
                         icon: isobsecured
-                            ? FaIcon(FontAwesomeIcons.eye)
-                            : FaIcon(FontAwesomeIcons.eyeSlash),
+                            ? const FaIcon(FontAwesomeIcons.eye)
+                            : const FaIcon(FontAwesomeIcons.eyeSlash),
                       ),
 
                       hintStyle: GoogleFonts.sen(
@@ -213,7 +213,7 @@ class _login_pageState extends ConsumerState<LoginPage> {
                     ),
 
                     Text("Remember me".tr(), style: AppTextStyles.bodyText),
-                    Spacer(),
+                    const Spacer(),
 
                     TextButton(
                       onPressed: () {
@@ -274,14 +274,14 @@ class _login_pageState extends ConsumerState<LoginPage> {
                     
 
                   },
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     child: FaIcon(
                       FontAwesomeIcons.google,
                       color: Colors.orange,
                     ),
                   ),
                 ),
-                SizedBox(height: 200),
+                const SizedBox(height: 200),
               ],
             ),
           ),

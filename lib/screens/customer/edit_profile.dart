@@ -81,7 +81,7 @@ class _EditProfileState extends State<EditProfile> {
                           ? AssetImage(img) as ImageProvider
                           : (File(img).existsSync()
                               ? FileImage(File(img))
-                              : AssetImage('assets/images/profile_img.png')),
+                              : const AssetImage('assets/images/profile_img.png')),
                     ),
                     CircleAvatar(
                       backgroundColor: Colors.deepPurpleAccent,
@@ -100,7 +100,7 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: 327.w,
                   child: TextField(
@@ -110,7 +110,7 @@ class _EditProfileState extends State<EditProfile> {
                       filled: true,
                       fillColor: AppColors.dark_grey,
                       labelText: 'FULL NAME'.tr(),
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1.5,
@@ -134,7 +134,7 @@ class _EditProfileState extends State<EditProfile> {
                       filled: true,
                       fillColor: AppColors.dark_grey,
                       labelText: 'EMAIL'.tr(),
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1.5,
@@ -158,7 +158,7 @@ class _EditProfileState extends State<EditProfile> {
                       filled: true,
                       fillColor: AppColors.dark_grey,
                       labelText: 'PHONE NUMBER'.tr(),
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1.5,
@@ -172,7 +172,7 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 customButtom(
                   title: 'SAVE'.tr(),
                   onTap: () async {
