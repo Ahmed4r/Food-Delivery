@@ -63,7 +63,7 @@ class _HomepageState extends State<Homepage> {
         .toList();
   }
  Future<void> _refreshData() async {
-  await Future.delayed(Duration(seconds: 1)); // أو نداء API مثلاً
+  await Future.delayed(const Duration(seconds: 1)); // أو نداء API مثلاً
   setState(() {
     // عدّل الداتا أو أعد تحميلها
   });
@@ -142,7 +142,7 @@ class _HomepageState extends State<Homepage> {
                         ),
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       'See All',
                       style: TextStyle(
                         fontSize: 14,
@@ -173,7 +173,7 @@ class _HomepageState extends State<Homepage> {
         }
         
         if (snapshot.hasError) {
-          return Center(child: Text('Error loading restaurants'));
+          return const Center(child: Text('Error loading restaurants'));
         }
         return Scaffold(
           appBar: PreferredSize(
@@ -196,17 +196,17 @@ class _HomepageState extends State<Homepage> {
                             return GestureDetector(
                               onTap: () => Scaffold.of(context).openDrawer(),
                               child: Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFF1F1F5),
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFFF1F1F5),
                                   shape: BoxShape.circle,
                                 ),
-                                child: Icon(Icons.menu, color: Colors.black),
+                                child: const Icon(Icons.menu, color: Colors.black),
                               ),
                             );
                           },
                         ),
-                        SizedBox(width: 12),
+                        const SizedBox(width: 12),
                         // Deliver to text and location
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,7 +232,7 @@ class _HomepageState extends State<Homepage> {
                                     color:isDark?Colors.white:  Colors.black,
                                   ),
                                 ),
-                                SizedBox(width: 4),
+                                const SizedBox(width: 4),
                                 IconButton(
                                   onPressed: () {
                                     showModalBottomSheet(context: context, builder: (context) {
@@ -251,7 +251,7 @@ class _HomepageState extends State<Homepage> {
                                             Navigator.pop(context);
                                           },
                                           trailing: _selectedAddress == index
-                                              ? Icon(Icons.check, color: Colors.orange)
+                                              ? const Icon(Icons.check, color: Colors.orange)
                                               : null,
                                         );
                                       },
@@ -270,12 +270,12 @@ class _HomepageState extends State<Homepage> {
                     Stack(
                       children: [
                         Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF0C1224),
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF0C1224),
                             shape: BoxShape.circle,
                           ),
-                          child: FaIcon(
+                          child: const FaIcon(
                             FontAwesomeIcons.cartShopping,
                             color: Colors.white,
                           ),
@@ -284,12 +284,12 @@ class _HomepageState extends State<Homepage> {
                           top: 2,
                           right: 2,
                           child: Container(
-                            padding: EdgeInsets.all(4),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
                               color: Colors.orange,
                               shape: BoxShape.circle,
                             ),
-                            child: Text(
+                            child: const Text(
                               '2',
                               style: TextStyle(
                                 color: Colors.white,
@@ -306,7 +306,7 @@ class _HomepageState extends State<Homepage> {
               ),
             ),
           ),
-          drawer: CustomDrawer(),
+          drawer: const CustomDrawer(),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -357,7 +357,7 @@ class _HomepageState extends State<Homepage> {
                           color: isDark ? Colors.white : Colors.black,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Row(
                         children: [
                           InkWell(

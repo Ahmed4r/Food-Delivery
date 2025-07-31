@@ -43,17 +43,17 @@ Future<void> registerUser() async {
   try {
     // Validate input
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please enter email and password')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please enter email and password')));
       return;
     }
 
     if (passwordController.text.length < 6) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Password must be at least 6 characters')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Password must be at least 6 characters')));
       return;
     }
 
     if (selectedRole.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please select a role')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please select a role')));
       return;
     }
 

@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,8 +57,10 @@ void main() async {
   final token = prefs.getBool('authToken') ?? false;
   final flag = prefs.getBool('hasSeenOnboarding') ?? false;
   final role = prefs.getString('role');
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
-  runApp(
+  runZonedGuarded((){
+    runApp(
     EasyLocalization(
       startLocale: const Locale('en'),
       supportedLocales: const [Locale('en'), Locale('ar')],
@@ -67,7 +71,10 @@ void main() async {
       ),
     ),
   );
-}
+
+  },(error, stack) {
+  FirebaseCrashlytics.instance.recordError(error, stack);
+});}
 
 class FoodDelivery extends ConsumerWidget {
   final bool token;
