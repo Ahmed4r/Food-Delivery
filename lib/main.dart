@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,8 +31,22 @@ import 'package:food_delivery/widgets/bottom_nav.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isIOS) {
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: "AIzaSyBTKQUPtXgfbnQpIos4VoddRBmdMsSukzs",
+        appId: "1:4958439163:ios:4d9f7e7d8a5e9e6cbe3125e",
+        projectId: "foodapp-e68fd",
+        messagingSenderId: "4958439163",
+        storageBucket: "foodapp-e68fd.firebasestorage.app",
+        iosBundleId:  "com.example.food_delivery",
+        iosClientId:  "4958439163-75t6jvm7cuhn0jncvov9v16g09kf92fc.apps.googleusercontent.com",
+      )
+    );
+    
+  }
 
-  if (Platform.isAndroid) {
+  else {
      await Firebase.initializeApp(
     options: const FirebaseOptions(
       apiKey: "AIzaSyBTKQUPtXgfbnQpIos4VoddRBmdMsSukzs",
@@ -43,9 +58,8 @@ void main() async {
   );
     
   }
-  else{
-  await Firebase.initializeApp(); // 👈 بس كده، مفيش options
-  }
+  
+  
  
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);
@@ -53,10 +67,10 @@ void main() async {
   };
 
   await EasyLocalization.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
-  final token = prefs.getBool('authToken') ?? false;
-  final flag = prefs.getBool('hasSeenOnboarding') ?? false;
-  final role = prefs.getString('role');
+  // final prefs = await SharedPreferences.getInstance();
+  // final token = prefs.getBool('authToken') ?? false;
+  // final flag = prefs.getBool('hasSeenOnboarding') ?? false;
+  // final role = prefs.getString('role');
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
   runZonedGuarded((){
@@ -91,8 +105,8 @@ class FoodDelivery extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
 
-     String initialRoute;
-     initialRoute = LoginPage.routeName;
+    //  String initialRoute;
+    //  initialRoute = LoginPage.routeName;
 //     if (flag==false) {
 //       initialRoute = OnboardingScreen.routeName;
 //     } 
@@ -108,12 +122,13 @@ class FoodDelivery extends ConsumerWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       child: MaterialApp(
+        home: LoginPage(),
         
         locale: context.locale,
         supportedLocales: context.supportedLocales,
         localizationsDelegates: context.localizationDelegates,
         debugShowCheckedModeBanner: false,
-        initialRoute: initialRoute,
+        // initialRoute: initialRoute,
         routes: {
         OnboardingScreen.routeName: (context) => OnboardingScreen(),
         LoginPage.routeName: (context) => const LoginPage(),
