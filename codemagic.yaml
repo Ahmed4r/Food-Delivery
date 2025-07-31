@@ -1,20 +1,88 @@
-workflows:
-  ios-workflow:
-    name: iOS Release Build – Safe
-    max_build_duration: 60
-    environment:
-      flutter: 3.32.5
-      xcode: latest
-    scripts:
-      - name: Clean & Get Packages
-        script: |
+name: iOS-ipa-build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-ios:
+    name:  Build Unsigned IPA (with Firebase)
+    runs-on: macos-latest
+
+    steps:
+      - name: 🛒 Checkout Code
+        uses: actions/checkout@v3
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.5'
+          channel: stable
+          architecture: x64
+
+      - name: 💾 Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pub-cache
+            ios/Pods
+            ios/Podfile.lock
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
+
+      - name: 🧼 Clean & Get Packages
+        run: |
           flutter clean
           flutter pub get
 
-      - name: Run Flutter Build (iOS)
-        script: |
-          flutter build ios --release --no-codesign
+      - name: 📦 Install CocoaPods
+        run: |
+          cd ios
+          pod install
+          cd ..
 
-    artifacts:
-      - build/ios/iphoneos/*.ipa
-      - build/ios/iphoneos/*.app
+      - name: 🔧 Fix missing *_privacy.bundle files
+        run: |
+          echo "🔍 Fixing *_privacy.bundle files..."
+          find build/ios -type d -name "*_privacy.bundle" | while read bundle; do
+            plugin_name=$(basename "$bundle" | sed 's/_privacy.bundle//')
+            file_path="$bundle/${plugin_name}_privacy"
+            if [ ! -f "$file_path" ]; then
+              echo "📦 Creating fake file: $file_path"
+              echo "{}" > "$file_path"
+            fi
+          done
+
+      - name: 🏗️ Build Unsigned IPA (Release Mode)
+        run: flutter build ios --release --no-codesign
+
+      - name: 📁 Create Payload Folder
+        run: mkdir -p build/ios/iphoneos/Payload
+
+      - name: 📲 Move App to Payload
+        run: mv build/ios/iphoneos/Runner.app build/ios/iphoneos/Payload/
+
+      - name: 🗜️ Zip to IPA
+        run: |
+          cd build/ios/iphoneos
+          zip -r FlutterIpaExport.ipa Payload
+
+      - name: 🏷️ Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Release v1.0.${{ github.run_number }}
+          body: |
+            📦 Auto-generated IPA for testing
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ☁️ Upload IPA to GitHub Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/ios/iphoneos/FlutterIpaExport.ipa
+          asset_name: FlutterIpaExport.ipa
+          tag: v1.0.${{ github.run_number }}
+          overwrite: true
+          body: "🚀 Unsigned IPA build uploaded"
