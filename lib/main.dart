@@ -67,7 +67,8 @@ void main() async {
       path: 'assets/lang',
       fallbackLocale: const Locale('en'),
       child: ProviderScope(
-        child: FoodDelivery(token: token, flag: flag, role: role),
+        child: FoodDelivery()
+        // FoodDelivery(token: token, flag: flag, role: role)
       ),
     ),
   );
@@ -77,28 +78,33 @@ void main() async {
 });}
 
 class FoodDelivery extends ConsumerWidget {
-  final bool token;
-  final bool flag;
-  final String? role;
-  const FoodDelivery({super.key, required this.token,required this.flag, this.role});
+  // final bool token;
+  // final bool flag;
+  // final String? role;
+  const FoodDelivery({super.key,
+  //  required this.token,
+  //  required this.flag,
+    // this.role
+    });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
 
      String initialRoute;
-    if (flag==false) {
-      initialRoute = OnboardingScreen.routeName;
-    } 
-    else if (token==false && flag==true) {
-      initialRoute = LoginPage.routeName;
-    } else {
-  if (role == 'owner') {
-    initialRoute = OwnerHomepage.routeName;
-  } else {
-    initialRoute = Homepage.routeName;
-  }
-}
+     initialRoute = LoginPage.routeName;
+//     if (flag==false) {
+//       initialRoute = OnboardingScreen.routeName;
+//     } 
+//     else if (token==false && flag==true) {
+//       initialRoute = LoginPage.routeName;
+//     } else {
+//   if (role == 'owner') {
+//     initialRoute = OwnerHomepage.routeName;
+//   } else {
+//     initialRoute = Homepage.routeName;
+//   }
+// }
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       child: MaterialApp(
