@@ -10,10 +10,8 @@ class AddressModel {
     required this.label,
     required this.address,
     required this.iconName,
-   this.iconColor = Colors.white,
+    this.iconColor = Colors.white,
   });
-
- 
 
   Map<String, dynamic> toJson() {
     return {
@@ -29,12 +27,10 @@ class AddressModel {
       label: json['label'],
       address: json['address'],
       iconName: json['iconName'],
-      iconColor: json['iconColor'] != null
-          ? Color(json['iconColor'])
-          : null,
+      iconColor: json['iconColor'] != null ? Color(json['iconColor']) : null,
     );
   }
-    static IconData _iconFromName(String? name) {
+  static IconData _iconFromName(String? name) {
     switch (name) {
       case 'home':
         return Icons.home;
