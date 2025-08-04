@@ -12,8 +12,6 @@ import 'package:food_delivery/widgets/custom_drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 class Homepage extends StatefulWidget {
   static const String routeName = '/customer_homepage';
 
@@ -24,7 +22,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  int _selectedAddress = 0; 
+  int _selectedAddress = 0;
   int isSelectedIndex = 0;
   late final TextEditingController _searchController;
   String _userName = '';
@@ -55,21 +53,21 @@ class _HomepageState extends State<Homepage> {
 
   // Updated to return Restaurant objects
   Future<List<Restaurant>> fetchRestaurants() async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection('restaurants')
-        .get();
+    final snapshot =
+        await FirebaseFirestore.instance.collection('restaurants').get();
     return snapshot.docs
-        .map((doc) => Restaurant.fromFirestore(doc))
+        .map((doc) => Restaurant.fromFirestore(doc.data()))
         .toList();
   }
- Future<void> _refreshData() async {
-  await Future.delayed(const Duration(seconds: 1)); // أو نداء API مثلاً
-  setState(() {
-    // عدّل الداتا أو أعد تحميلها
-  });
-}
 
-   Future<void> _getuserDate() async {
+  Future<void> _refreshData() async {
+    await Future.delayed(const Duration(seconds: 1)); // أو نداء API مثلاً
+    setState(() {
+      // عدّل الداتا أو أعد تحميلها
+    });
+  }
+
+  Future<void> _getuserDate() async {
     var prefs = await SharedPreferences.getInstance();
     var name = prefs.getString('profile_name') ?? '';
     var email = prefs.getString('email');
@@ -82,7 +80,7 @@ class _HomepageState extends State<Homepage> {
     setState(() {
       _userName = name;
       _Address = addressList;
-      // Ensure _selectedAddress is valid
+
       if (_selectedAddress >= _Address.length) {
         _selectedAddress = 0;
       }
@@ -109,17 +107,17 @@ class _HomepageState extends State<Homepage> {
       future: fetchRestaurants(),
       builder: (context, snapshot) {
         final restaurants = snapshot.data ?? [];
-        
+
         Widget buildSectionHeader(String title) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 title,
-                style:  TextStyle(
+                style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.w600,
-                  color:isDark?Colors.white:  Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
               Row(
@@ -127,17 +125,19 @@ class _HomepageState extends State<Homepage> {
                   InkWell(
                     onTap: () {
                       // Convert Restaurant objects back to Maps for SeeAllRestaurantsScreen
-                      final restaurantMaps = restaurants.map((r) => r.toMap()).toList();
+                      final restaurantMaps =
+                          restaurants.map((r) => r.toMap()).toList();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (_) => SeeAllRestaurantsScreen(
                             restaurants: restaurantMaps,
                             restaurantCardBuilder:
-                                (Map<String, dynamic> restaurant) {
-                                  return _buildRestaurantCard(restaurant as 
-                                  Restaurant, context);
-                                },
+                                (Map<String, dynamic> restaurantMap) {
+                              final restaurant =
+                                  Restaurant.fromFirestore(restaurantMap);
+                              return _buildRestaurantCard(restaurant, context);
+                            },
                           ),
                         ),
                       );
@@ -165,13 +165,14 @@ class _HomepageState extends State<Homepage> {
 
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            backgroundColor:  isDark?Colors.black:Colors.white,
-            body: Center(child: CircularProgressIndicator(
-              color:isDark?Colors.white: Colors.black,
+            backgroundColor: isDark ? Colors.black : Colors.white,
+            body: Center(
+                child: CircularProgressIndicator(
+              color: isDark ? Colors.white : Colors.black,
             )),
           );
         }
-        
+
         if (snapshot.hasError) {
           return const Center(child: Text('Error loading restaurants'));
         }
@@ -201,7 +202,8 @@ class _HomepageState extends State<Homepage> {
                                   color: Color(0xFFF1F1F5),
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Icon(Icons.menu, color: Colors.black),
+                                child:
+                                    const Icon(Icons.menu, color: Colors.black),
                               ),
                             );
                           },
@@ -229,38 +231,43 @@ class _HomepageState extends State<Homepage> {
                                   style: TextStyle(
                                     overflow: TextOverflow.ellipsis,
                                     fontSize: 14,
-                                    color:isDark?Colors.white:  Colors.black,
+                                    color: isDark ? Colors.white : Colors.black,
                                   ),
                                 ),
                                 const SizedBox(width: 4),
                                 IconButton(
                                   onPressed: () {
-                                    showModalBottomSheet(context: context, builder: (context) {
-                                      return SizedBox(
-                                    height: 250.h,
-                                    child: ListView.builder(
-                                      
-                                      itemCount: _Address.length,
-                                      itemBuilder: (context, index) {
-                                        return ListTile(
-                                          title: Text(_Address[index]),
-                                          onTap: () {
-                                            setState(() {
-                                              _selectedAddress = index;
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                          trailing: _selectedAddress == index
-                                              ? const Icon(Icons.check, color: Colors.orange)
-                                              : null,
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return SizedBox(
+                                          height: 250.h,
+                                          child: ListView.builder(
+                                            itemCount: _Address.length,
+                                            itemBuilder: (context, index) {
+                                              return ListTile(
+                                                title: Text(_Address[index]),
+                                                onTap: () {
+                                                  setState(() {
+                                                    _selectedAddress = index;
+                                                  });
+                                                  Navigator.pop(context);
+                                                },
+                                                trailing: _selectedAddress ==
+                                                        index
+                                                    ? const Icon(Icons.check,
+                                                        color: Colors.orange)
+                                                    : null,
+                                              );
+                                            },
+                                          ),
                                         );
                                       },
-                                    ),
-                                      );
-                                    },);
+                                    );
                                   },
-                                 icon: Icon( Icons.keyboard_arrow_down, 
-                                 size: 18.sp)),
+                                  icon: Icon(Icons.keyboard_arrow_down,
+                                      size: 18.sp),
+                                ),
                               ],
                             ),
                           ],
@@ -326,27 +333,40 @@ class _HomepageState extends State<Homepage> {
                     controller: _searchController,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor:isDark?Colors.black: const Color.fromARGB(179, 241, 239, 239),
+                      fillColor: isDark
+                          ? Colors.black
+                          : const Color.fromARGB(179, 241, 239, 239),
                       hintText: 'Search for food'.tr(),
-                      hintStyle: GoogleFonts.sen( color:isDark?Colors.white:  Colors.black,),
-                      prefixIcon: Icon(Icons.search,  color:isDark?Colors.white:  Colors.black,),
+                      hintStyle: GoogleFonts.sen(
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
                       border: OutlineInputBorder(
-                        borderSide: BorderSide(color:isDark?Colors.black: AppColors.light_grey),
+                        borderSide: BorderSide(
+                            color:
+                                isDark ? Colors.black : AppColors.light_grey),
                         borderRadius: BorderRadius.circular(15.r),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color:isDark?Colors.black: AppColors.light_grey),
+                        borderSide: BorderSide(
+                            color:
+                                isDark ? Colors.black : AppColors.light_grey),
                         borderRadius: BorderRadius.circular(15.r),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                         color:isDark?Colors.black: AppColors.light_grey
-                        ),
+                            color:
+                                isDark ? Colors.black : AppColors.light_grey),
                         borderRadius: BorderRadius.circular(15.r),
                       ),
                     ),
                   ),
-                  SizedBox(height: 20.h,),
+                  SizedBox(
+                    height: 20.h,
+                  ),
                   Row(
                     children: [
                       Text(
@@ -409,7 +429,6 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ),
                   SizedBox(height: 16.h),
-
                   buildSectionHeader('opened Restaurants'.tr()),
                   SizedBox(height: 16.h),
                   RefreshIndicator(
@@ -422,7 +441,8 @@ class _HomepageState extends State<Homepage> {
                       },
                       itemCount: restaurants.length,
                       itemBuilder: (context, index) {
-                        return _buildRestaurantCard(restaurants[index], context);
+                        return _buildRestaurantCard(
+                            restaurants[index], context);
                       },
                     ),
                   ),
@@ -437,7 +457,7 @@ class _HomepageState extends State<Homepage> {
 
   Widget _buildCategoryChip(String title, String image, int index) {
     bool isSelected = isSelectedIndex == index;
-     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
       onTap: () {
@@ -458,12 +478,12 @@ class _HomepageState extends State<Homepage> {
               width: 40.w,
               height: 40.h,
               decoration: BoxDecoration(
-                color:isDark?Colors.black: AppColors.light_grey ,
+                color: isDark ? Colors.black : AppColors.light_grey,
                 shape: BoxShape.circle,
               ),
               child: Center(
                 child: Image.network(
-                  image,
+                  image ?? '',
                   width: 32,
                   height: 32,
                   fit: BoxFit.contain,
@@ -475,7 +495,7 @@ class _HomepageState extends State<Homepage> {
             ),
             const SizedBox(width: 8),
             Text(
-              title,
+              title ?? '',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -495,14 +515,14 @@ class _HomepageState extends State<Homepage> {
       onTap: () {
         // Pass the restaurant data to RestaurantViewScreen
         Navigator.pushNamed(
-          context, 
+          context,
           RestaurantViewScreen.routeName,
           arguments: restaurant.toMap(), // Pass restaurant data as arguments
         );
       },
       child: Container(
         decoration: BoxDecoration(
-           color:isDark?AppColors.dark_grey:  AppColors.secondary_white, 
+          color: isDark ? AppColors.dark_grey : AppColors.secondary_white,
           borderRadius: BorderRadius.circular(12.r),
           boxShadow: [
             BoxShadow(
@@ -554,12 +574,13 @@ class _HomepageState extends State<Homepage> {
                   ),
                 ),
                 // Popular Badge
-                if (restaurant.isPopular)
+                if (restaurant.isPopular ?? false)
                   Positioned(
                     top: 10.h,
                     left: 10.w,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                       decoration: BoxDecoration(
                         color: Colors.orange,
                         borderRadius: BorderRadius.circular(12.r),
@@ -579,7 +600,8 @@ class _HomepageState extends State<Homepage> {
                   top: 10.h,
                   right: 10.w,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                     decoration: BoxDecoration(
                       color: restaurant.opened ? Colors.green : Colors.red,
                       borderRadius: BorderRadius.circular(12.r),
@@ -596,7 +618,7 @@ class _HomepageState extends State<Homepage> {
                 ),
               ],
             ),
-      
+
             // Restaurant Details
             Padding(
               padding: EdgeInsets.all(16.w),
@@ -608,34 +630,34 @@ class _HomepageState extends State<Homepage> {
                     children: [
                       Expanded(
                         child: Text(
-                          restaurant.name,
+                          restaurant.name ?? 'null',
                           style: GoogleFonts.sen(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w600,
-                           color:isDark?Colors.white:  Colors.black,
+                            color: isDark ? Colors.white : Colors.black,
                           ),
                         ),
                       ),
                       Text(
-                        restaurant.location,
+                        restaurant.location ?? 'null',
                         style: GoogleFonts.sen(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
-                         color:isDark?Colors.white70:  Colors.black54,
+                          color: isDark ? Colors.white70 : Colors.black54,
                         ),
                       ),
                     ],
                   ),
                   SizedBox(height: 4.h),
                   Text(
-                    restaurant.cuisine,
+                    restaurant.cuisine ?? 'null',
                     style: GoogleFonts.sen(
                       fontSize: 15.sp,
                       color: Colors.grey,
                     ),
                   ),
                   SizedBox(height: 12.h),
-      
+
                   // Rating, Delivery, and Time Row
                   Row(
                     children: [
@@ -644,45 +666,47 @@ class _HomepageState extends State<Homepage> {
                         children: [
                           FaIcon(
                             FontAwesomeIcons.star,
-                          color: AppColors.primary,
+                            color: AppColors.primary,
                             size: 20.sp,
                           ),
                           SizedBox(width: 4.w),
                           Text(
-                            restaurant.rating,
+                            restaurant.rating ?? 'null',
                             style: GoogleFonts.sen(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.bold,
-                               color:isDark?Colors.white:  Colors.black,
+                              color: isDark ? Colors.white : Colors.black,
                             ),
                           ),
                         ],
                       ),
-      
+
                       SizedBox(width: 24.w),
-      
+
                       // Delivery
                       Row(
                         children: [
                           FaIcon(
                             FontAwesomeIcons.truck,
                             color: AppColors.primary,
-                             size: 20.sp,
+                            size: 20.sp,
                           ),
                           SizedBox(width: 4.w),
                           Text(
-                            restaurant.deliveryFee == '0' ? 'مجاني' : '${restaurant.deliveryFee} ج.م',
+                            restaurant.deliveryFee == '0'
+                                ? 'مجاني'
+                                : '${restaurant.deliveryFee} ج.م' ?? 'null',
                             style: GoogleFonts.sen(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w600,
-                              color:isDark?Colors.white:  Colors.black,
+                              color: isDark ? Colors.white : Colors.black,
                             ),
                           ),
                         ],
                       ),
-      
+
                       SizedBox(width: 24.w),
-      
+
                       // Time
                       Row(
                         children: [
@@ -693,11 +717,11 @@ class _HomepageState extends State<Homepage> {
                           ),
                           SizedBox(width: 4.w),
                           Text(
-                            '${restaurant.deliveryTime} دقيقة',
+                            '${restaurant.deliveryTime} دقيقة' ?? 'null',
                             style: GoogleFonts.sen(
-                               fontSize: 16.sp,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w600,
-                             color:isDark?Colors.white:  Colors.black,
+                              color: isDark ? Colors.white : Colors.black,
                             ),
                           ),
                         ],

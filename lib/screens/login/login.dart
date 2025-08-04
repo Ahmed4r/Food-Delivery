@@ -16,6 +16,7 @@ import 'package:food_delivery/widgets/bottom_nav.dart';
 import 'package:food_delivery/widgets/custom_alert.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class LoginPage extends ConsumerStatefulWidget {
   static const String routeName = '/login_page';
   const LoginPage({super.key});
@@ -32,20 +33,18 @@ class _login_pageState extends ConsumerState<LoginPage> {
     getPref();
   }
 
+  Future<void> getPref() async {
+    final prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('email');
+    final password = prefs.getString('password');
+    final remember = prefs.getBool('remember');
 
-
-Future<void> getPref() async {
-  final prefs = await SharedPreferences.getInstance();
-  final email = prefs.getString('email');
-  final password = prefs.getString('password');
-  final remember = prefs.getBool('remember');
-
-  if (remember != null && remember) {
-    Emailcontroller.text = email ?? '';
-    Passwordcontroller.text = password ?? '';
-    checkboxvalue = true;
+    if (remember != null && remember) {
+      Emailcontroller.text = email ?? '';
+      Passwordcontroller.text = password ?? '';
+      checkboxvalue = true;
+    }
   }
-}
 
   TextEditingController Emailcontroller = TextEditingController(text: '');
   TextEditingController Passwordcontroller = TextEditingController(text: '');
@@ -84,16 +83,12 @@ Future<void> getPref() async {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-
               children: [
                 SizedBox(height: 40.h),
-
                 SizedBox(
                   width: 327.w,
-
                   child: TextField(
                     controller: Emailcontroller,
-
                     style: TextStyle(
                       fontSize: 16,
                       color: isDark ? Colors.white : Colors.black,
@@ -111,13 +106,11 @@ Future<void> getPref() async {
                         fontSize: 16,
                         color: isDark ? Colors.white : Colors.black,
                       ),
-
                       hintText: 'example@gmail.com'.tr(),
                       labelStyle: GoogleFonts.sen(
                         fontSize: 11.sp,
                         color: isDark ? Colors.white : Colors.black,
                       ),
-
                       contentPadding: const EdgeInsets.symmetric(
                         vertical: 16,
                         horizontal: 20,
@@ -131,12 +124,9 @@ Future<void> getPref() async {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 20.h),
-
                 SizedBox(
                   width: 327.w,
-
                   child: TextField(
                     controller: Passwordcontroller,
                     obscureText: isobsecured == true ? false : true,
@@ -155,7 +145,6 @@ Future<void> getPref() async {
                             ? const FaIcon(FontAwesomeIcons.eye)
                             : const FaIcon(FontAwesomeIcons.eyeSlash),
                       ),
-
                       hintStyle: GoogleFonts.sen(
                         fontSize: 16,
                         color: isDark ? Colors.white : Colors.black,
@@ -172,9 +161,7 @@ Future<void> getPref() async {
                         fontSize: 11.sp,
                         color: isDark ? Colors.white : Colors.black,
                       ),
-
                       hintText: 'password'.tr(),
-
                       contentPadding: const EdgeInsets.symmetric(
                         vertical: 16,
                         horizontal: 20,
@@ -188,7 +175,6 @@ Future<void> getPref() async {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 20.h),
                 Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -198,7 +184,6 @@ Future<void> getPref() async {
                       onChanged: (value) async {
                         setState(() {
                           checkboxvalue = value!;
-                          
                         });
                         SharedPreferences sahredPref =
                             await SharedPreferences.getInstance();
@@ -215,10 +200,8 @@ Future<void> getPref() async {
                         log(checkboxvalue.toString());
                       },
                     ),
-
                     Text("Remember me".tr(), style: AppTextStyles.bodyText),
                     const Spacer(),
-
                     TextButton(
                       onPressed: () {
                         log('clicked');
@@ -271,12 +254,9 @@ Future<void> getPref() async {
                 ),
                 Text('Or'.tr(), style: AppTextStyles.bodyText),
                 SizedBox(height: 20.h),
-
                 InkWell(
-                  onTap: () async{
+                  onTap: () async {
                     // signInWithGoogle();
-                    
-
                   },
                   child: const CircleAvatar(
                     child: FaIcon(
@@ -293,78 +273,77 @@ Future<void> getPref() async {
       ),
     );
   }
-  
-
 
   Future<void> _login() async {
-  await Firebase.initializeApp(); // 👈 دي مهمة جدًا على iOS
+    await Firebase.initializeApp(); // 👈 دي مهمة جدًا على iOS
 
-  final email = Emailcontroller.text.trim();
-  final password = Passwordcontroller.text;
+    final email = Emailcontroller.text.trim();
+    final password = Passwordcontroller.text;
 
-  // Validate input
-  if (email.isEmpty || password.isEmpty) {
-    CustomAlert.error(context, title: 'Please enter email and password');
-    return;
-  }
-
-  try {
-    // Use Firebase Auth to sign in
-    final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-
-    // Fetch user role from Firestore
-    final user = userCredential.user;
-    if (user != null) {
-      final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-      if (userDoc.exists && userDoc.data() != null) {
-        final userData = userDoc.data() as Map<String, dynamic>;
-        final role = userData['role'] as String?;
-
-        // Save credentials if "Remember me" is checked
-        if (checkboxvalue) {
-          await SharedPreferences.getInstance().then((prefs) {
-            prefs.setString('email', email);
-            prefs.setString('password', password);
-            prefs.setBool('remember', true);
-          });
-        } else {
-          await SharedPreferences.getInstance().then((prefs) {
-            prefs.remove('email');
-            prefs.remove('password');
-            prefs.setBool('remember', false);
-          });
-        }
-
-        // Navigate based on role
-        if (role == 'owner') {
-          Navigator.pushNamed(context, BottomNav.routeName);
-        } else if (role == 'customer') {
-          Navigator.pushNamed(context, Homepage.routeName);
-        } else {
-          CustomAlert.error(context, title: 'Unknown or no role found');
-          return;
-        }
-      } else {
-        CustomAlert.error(context, title: 'User data not found');
-        return;
-      }
-    } else {
-      CustomAlert.error(context, title: 'User not found');
+    // Validate input
+    if (email.isEmpty || password.isEmpty) {
+      CustomAlert.error(context, title: 'Please enter email and password');
       return;
     }
 
-    CustomAlert.success(context, title: 'Successfully logged in');
-  } on FirebaseAuthException catch (e) {
-    CustomAlert.error(context, title: 'Error logging in: ${e.message}');
-  } catch (e) {
-    CustomAlert.error(context, title: 'An error occurred: $e');
+    try {
+      // Use Firebase Auth to sign in
+      final userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Fetch user role from Firestore
+      final user = userCredential.user;
+      if (user != null) {
+        final userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+        if (userDoc.exists && userDoc.data() != null) {
+          final userData = userDoc.data() as Map<String, dynamic>;
+          final role = userData['role'] as String?;
+
+          // Save credentials if "Remember me" is checked
+          if (checkboxvalue) {
+            await SharedPreferences.getInstance().then((prefs) {
+              prefs.setString('email', email);
+              prefs.setString('password', password);
+              prefs.setBool('remember', true);
+              prefs.setBool('authToken', true);
+            });
+          } else {
+            await SharedPreferences.getInstance().then((prefs) {
+              prefs.remove('email');
+              prefs.remove('password');
+              prefs.setBool('remember', false);
+            });
+          }
+
+          // Navigate based on role
+          if (role == 'owner') {
+            Navigator.pushNamed(context, BottomNav.routeName);
+          } else if (role == 'customer') {
+            Navigator.pushNamed(context, Homepage.routeName);
+          } else {
+            CustomAlert.error(context, title: 'Unknown or no role found');
+            return;
+          }
+        } else {
+          CustomAlert.error(context, title: 'User data not found');
+          return;
+        }
+      } else {
+        CustomAlert.error(context, title: 'User not found');
+        return;
+      }
+
+      CustomAlert.success(context, title: 'Successfully logged in');
+    } on FirebaseAuthException catch (e) {
+      CustomAlert.error(context, title: 'Error logging in: ${e.message}');
+    } catch (e) {
+      CustomAlert.error(context, title: 'An error occurred: $e');
+    }
   }
 }
-}
-// void _login()async{
-//   Navigator.pushNamed(context, Homepage.routeName);
-// }
-// }

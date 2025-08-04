@@ -81,7 +81,8 @@ class _EditProfileState extends State<EditProfile> {
                           ? AssetImage(img) as ImageProvider
                           : (File(img).existsSync()
                               ? FileImage(File(img))
-                              : const AssetImage('assets/images/profile_img.png')),
+                              : const AssetImage(
+                                  'assets/images/profile_img.png')),
                     ),
                     CircleAvatar(
                       backgroundColor: Colors.deepPurpleAccent,
@@ -95,7 +96,8 @@ class _EditProfileState extends State<EditProfile> {
                           //   });
                           // }
                         },
-                        icon: FaIcon(FontAwesomeIcons.pen, size: 20.sp, color: Colors.white),
+                        icon: FaIcon(FontAwesomeIcons.pen,
+                            size: 20.sp, color: Colors.white),
                       ),
                     ),
                   ],
@@ -105,7 +107,8 @@ class _EditProfileState extends State<EditProfile> {
                   width: 327.w,
                   child: TextField(
                     controller: namecontroller,
-                    style: GoogleFonts.sen(color: Colors.white, fontSize: 14.sp),
+                    style:
+                        GoogleFonts.sen(color: Colors.white, fontSize: 14.sp),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: AppColors.dark_grey,
@@ -129,7 +132,8 @@ class _EditProfileState extends State<EditProfile> {
                   width: 327.w,
                   child: TextField(
                     controller: emailcontroller,
-                    style: GoogleFonts.sen(color: Colors.white, fontSize: 14.sp),
+                    style:
+                        GoogleFonts.sen(color: Colors.white, fontSize: 14.sp),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: AppColors.dark_grey,
@@ -153,7 +157,8 @@ class _EditProfileState extends State<EditProfile> {
                   width: 327.w,
                   child: TextField(
                     controller: phonecontroller,
-                    style: GoogleFonts.sen(color: Colors.white, fontSize: 14.sp),
+                    style:
+                        GoogleFonts.sen(color: Colors.white, fontSize: 14.sp),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: AppColors.dark_grey,
@@ -179,18 +184,18 @@ class _EditProfileState extends State<EditProfile> {
                     if (!_validateInputs()) return;
                     final prefs = await SharedPreferences.getInstance();
                     await prefs.setString('profile_name', namecontroller.text);
-                    await prefs.setString('profile_email', emailcontroller.text);
-                    await prefs.setString('profile_phone', phonecontroller.text);
+                    await prefs.setString(
+                        'profile_email', emailcontroller.text);
+                    await prefs.setString(
+                        'profile_phone', phonecontroller.text);
                     if (img.isNotEmpty) {
                       await prefs.setString('profile_img', img);
                     }
                     CustomAlert.success(
                       context,
                       title: 'Profile updated successfully!'.tr(),
-
-                    
                     );
-                   
+
                     Navigator.pop(context, {
                       'name': namecontroller.text,
                       'email': emailcontroller.text,

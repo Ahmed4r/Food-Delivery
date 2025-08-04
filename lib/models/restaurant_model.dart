@@ -27,20 +27,20 @@ class Restaurant {
     this.isPopular = false,
   });
 
-  factory Restaurant.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    
+  factory Restaurant.fromFirestore(Map<String, dynamic> map) {
+    // Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
     return Restaurant(
-      id: doc.id,
-      name: data['name'] ?? '',
-      cuisine: data['cuisine'] ?? '',
-      image: data['image'] ?? '',
-      location: data['location'] ?? '',
-      rating: data['rating'] ?? '0',
-      deliveryFee: data['deliveryFee'] ?? '0',
-      deliveryTime: data['deliveryTime'] ?? '0',
-      opened: data['opened'] ?? false,
-      isPopular: data['isPopular'] ?? false,
+      id: map['id'] ?? '',
+      name: map['name'] ?? '',
+      cuisine: map['cuisine'] ?? '',
+      image: map['image'] ?? '',
+      location: map['location'] ?? '',
+      rating: map['rating'] ?? '0',
+      deliveryFee: map['deliveryFee'] ?? '0',
+      deliveryTime: map['deliveryTime'] ?? '0',
+      opened: map['opened'] ?? false,
+      isPopular: map['isPopular'] ?? false,
     );
   }
 

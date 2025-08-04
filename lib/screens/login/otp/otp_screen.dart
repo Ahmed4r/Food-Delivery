@@ -18,30 +18,31 @@ class _OtpScreenState extends State<OtpScreen> {
   final _otpController = TextEditingController();
   int _seconds = 60;
   bool _isRunning = false;
-  bool is_clicked =false;
+  bool is_clicked = false;
   Timer? _timer;
 
-void _startTimer() {
-  _isRunning = true;
-  _seconds = 60;
-  Timer.periodic(const Duration(seconds: 1), (timer) {
-    if (_seconds > 0) {
-      if (mounted) {
-        setState(() {
-          _seconds--;
-        });
+  void _startTimer() {
+    _isRunning = true;
+    _seconds = 60;
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_seconds > 0) {
+        if (mounted) {
+          setState(() {
+            _seconds--;
+          });
+        }
+      } else {
+        _isRunning = false;
+        timer.cancel();
       }
-    } else {
-      _isRunning = false;
-      timer.cancel();
-    }
-  });
-}
-@override
-void dispose() {
-  _timer?.cancel();
-  super.dispose();
-}
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   void _verifyOtp() {
     print(_otpController.text);
@@ -49,9 +50,10 @@ void dispose() {
 
   @override
   Widget build(BuildContext context) {
-     final isDark = Theme.of(context).brightness == Brightness.dark;
-     final args = ModalRoute.of(context)!.settings.arguments as Map<String,String>;
-     final email =args['email'];
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+    final email = args['email'];
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -60,33 +62,28 @@ void dispose() {
             RichText(
               text: TextSpan(
                 text: 'verification'.tr(),
-               style: GoogleFonts.sen(
-                  fontSize: 30.sp,
-                  fontWeight: FontWeight.bold,
-                  color: isDark?Colors.black:Colors.white
-                ),
+                style: GoogleFonts.sen(
+                    fontSize: 30.sp,
+                    fontWeight: FontWeight.bold,
+                    color: isDark ? Colors.black : Colors.white),
               ),
             ),
             SizedBox(height: 10.h),
             RichText(
               text: TextSpan(
-                text: 'we have sent a code to your email'.tr(),
-                 style: GoogleFonts.sen(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.normal,
-                  color: isDark?Colors.black:Colors.white
-                )
-              ),
+                  text: 'we have sent a code to your email'.tr(),
+                  style: GoogleFonts.sen(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.normal,
+                      color: isDark ? Colors.black : Colors.white)),
             ),
             RichText(
               text: TextSpan(
-                text:email,
-                 style: GoogleFonts.sen(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: isDark?Colors.black:Colors.white
-                )
-              ),
+                  text: email,
+                  style: GoogleFonts.sen(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.black : Colors.white)),
             ),
           ],
         ),
@@ -99,33 +96,35 @@ void dispose() {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('CODE'.tr()),
-
-                _isRunning? Text('Resend in ${_seconds.toString()}'.tr(),style: const TextStyle(fontWeight: FontWeight.bold,
-                             
-                color: Colors.orange
-                ),) 
-                : 
-                InkWell(
-                  onTap: () =>_startTimer(),
-                  child: Text('Resend'.tr(),style: const TextStyle(fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
-                  color: Colors.orange
-                  )),
-                )
+                _isRunning
+                    ? Text(
+                        'Resend in ${_seconds.toString()}'.tr(),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.orange),
+                      )
+                    : InkWell(
+                        onTap: () => _startTimer(),
+                        child: Text('Resend'.tr(),
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,
+                                color: Colors.orange)),
+                      )
               ],
             ),
             const SizedBox(height: 20),
             buildPinPut(context),
             const SizedBox(height: 20),
             ElevatedButton(
-              
-              style: ButtonStyle(
-                minimumSize: WidgetStatePropertyAll(Size(327.w, 70.h)),
-                backgroundColor: WidgetStateProperty.all(Colors.orange ),
-              ),
-              
-              onPressed: _verifyOtp, child: Text('verify'.tr(),style: const TextStyle(fontSize: 20,color: Colors.white),))
-           
+                style: ButtonStyle(
+                  minimumSize: WidgetStatePropertyAll(Size(327.w, 70.h)),
+                  backgroundColor: WidgetStateProperty.all(Colors.orange),
+                ),
+                onPressed: _verifyOtp,
+                child: Text(
+                  'verify'.tr(),
+                  style: const TextStyle(fontSize: 20, color: Colors.white),
+                ))
           ],
         ),
       ),
@@ -134,12 +133,9 @@ void dispose() {
 }
 
 final defaultPinTheme = PinTheme(
-  
-  
   width: 300.w,
   height: 56.h,
   textStyle: const TextStyle(
-    
     fontSize: 20,
     color: Color.fromRGBO(30, 60, 87, 1),
     fontWeight: FontWeight.w600,
@@ -153,7 +149,6 @@ final defaultPinTheme = PinTheme(
 final focusedPinTheme = defaultPinTheme.copyDecorationWith(
   border: Border.all(color: const Color(0xffF0F5FA)),
   borderRadius: BorderRadius.circular(8),
-  
 );
 
 final submittedPinTheme = defaultPinTheme.copyWith(
@@ -164,20 +159,16 @@ final submittedPinTheme = defaultPinTheme.copyWith(
 
 Widget buildPinPut(context) {
   return Pinput(
-    
     autofocus: true,
-
     defaultPinTheme: defaultPinTheme,
     focusedPinTheme: focusedPinTheme,
     submittedPinTheme: submittedPinTheme,
     validator: (s) {
-      if (s=='2222') {
+      if (s == '2222') {
         Navigator.pushReplacementNamed(context, LocationAccessPage.routeName);
       }
       return null;
-      
     },
-
     errorTextStyle: const TextStyle(color: Colors.red),
     pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
     showCursor: true,

@@ -6,7 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // MenuItem Model (add this to your models if you haven't already)
 
-
 class RestaurantViewScreen extends StatefulWidget {
   static const String routeName = '/restaurant_view';
 
@@ -26,7 +25,8 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Get the restaurant data passed from homepage
-    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       restaurantData = args;
       _initializeCategories();
@@ -40,7 +40,7 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
       String cuisine = restaurantData!['cuisine'] ?? '';
       categories = ['الكل', cuisine];
       selectedCategory = cuisine.isNotEmpty ? cuisine : 'الكل';
-      
+
       // TODO: Fetch actual menu items from Firebase based on restaurant ID
       // For now, we'll show placeholder message
     }
@@ -49,12 +49,13 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     if (restaurantData == null) {
       return Scaffold(
         body: Center(
           child: Text(
-'error while tryingh to fetch data',            style: GoogleFonts.cairo(fontSize: 18),
+            'error while tryingh to fetch data',
+            style: GoogleFonts.cairo(fontSize: 18),
           ),
         ),
       );
@@ -72,7 +73,8 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
             borderRadius: BorderRadius.circular(20),
           ),
           child: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 16),
+            icon:
+                const Icon(Icons.arrow_back_ios, color: Colors.black, size: 16),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -113,7 +115,8 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20.r),
-                    child: restaurantData!['image'] != null && restaurantData!['image'].isNotEmpty
+                    child: restaurantData!['image'] != null &&
+                            restaurantData!['image'].isNotEmpty
                         ? Image.network(
                             restaurantData!['image'],
                             width: double.infinity,
@@ -151,13 +154,18 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
                     top: 15.h,
                     right: 15.w,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                       decoration: BoxDecoration(
-                        color: (restaurantData!['opened'] ?? false) ? Colors.green : Colors.red,
+                        color: (restaurantData!['opened'] ?? false)
+                            ? Colors.green
+                            : Colors.red,
                         borderRadius: BorderRadius.circular(15.r),
                       ),
                       child: Text(
-                        (restaurantData!['opened'] ?? false) ? 'opened' : 'closed',
+                        (restaurantData!['opened'] ?? false)
+                            ? 'opened'
+                            : 'closed',
                         style: GoogleFonts.cairo(
                           color: Colors.white,
                           fontSize: 12.sp,
@@ -168,9 +176,9 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
                   ),
                 ],
               ),
-              
+
               SizedBox(height: 20.h),
-              
+
               // Restaurant Name and Cuisine
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -186,7 +194,8 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                     decoration: BoxDecoration(
                       color: Colors.orange[100],
                       borderRadius: BorderRadius.circular(10.r),
@@ -202,9 +211,9 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
                   ),
                 ],
               ),
-              
+
               SizedBox(height: 8.h),
-              
+
               // Location
               Row(
                 children: [
@@ -219,15 +228,16 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
                   ),
                 ],
               ),
-              
+
               SizedBox(height: 20.h),
-              
+
               // Rating, Delivery Info
               Row(
                 children: [
                   Row(
                     children: [
-                      FaIcon(FontAwesomeIcons.star, color: Colors.orange[700], size: 20.sp),
+                      FaIcon(FontAwesomeIcons.star,
+                          color: Colors.orange[700], size: 20.sp),
                       SizedBox(width: 4.w),
                       Text(
                         restaurantData!['rating'] ?? '0',
@@ -241,11 +251,12 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
                   SizedBox(width: 30.w),
                   Row(
                     children: [
-                      FaIcon(FontAwesomeIcons.truck, color: Colors.orange[700], size: 20.sp),
+                      FaIcon(FontAwesomeIcons.truck,
+                          color: Colors.orange[700], size: 20.sp),
                       SizedBox(width: 4.w),
                       Text(
-                        (restaurantData!['deliveryFee'] ?? '0') == '0' 
-                            ? 'free' 
+                        (restaurantData!['deliveryFee'] ?? '0') == '0'
+                            ? 'free'
                             : '${restaurantData!['deliveryFee']} egp',
                         style: GoogleFonts.cairo(
                           fontSize: 16.sp,
@@ -257,7 +268,8 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
                   SizedBox(width: 30.w),
                   Row(
                     children: [
-                      FaIcon(FontAwesomeIcons.clock, color: Colors.orange[700], size: 20.sp),
+                      FaIcon(FontAwesomeIcons.clock,
+                          color: Colors.orange[700], size: 20.sp),
                       SizedBox(width: 4.w),
                       Text(
                         '${restaurantData!['deliveryTime'] ?? '0'} minutes',
@@ -270,9 +282,9 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
                   ),
                 ],
               ),
-              
+
               SizedBox(height: 30.h),
-              
+
               // Category Tabs
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -287,9 +299,12 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
                       },
                       child: Container(
                         margin: EdgeInsets.only(left: 15.w),
-                        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.w, vertical: 12.h),
                         decoration: BoxDecoration(
-                          color: isSelected ? Colors.orange[700] : Colors.grey[200],
+                          color: isSelected
+                              ? Colors.orange[700]
+                              : Colors.grey[200],
                           borderRadius: BorderRadius.circular(25.r),
                         ),
                         child: Text(
@@ -305,9 +320,9 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
                   }).toList(),
                 ),
               ),
-              
+
               SizedBox(height: 25.h),
-              
+
               // Section Title
               Text(
                 '$selectedCategory (${menuItems.length})',
@@ -317,9 +332,9 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
                   color: isDark ? Colors.white : Colors.black,
                 ),
               ),
-              
+
               SizedBox(height: 20.h),
-              
+
               // Menu Items or Placeholder
               menuItems.isNotEmpty
                   ? GridView.builder(
@@ -437,7 +452,7 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
                     ),
                   ),
           ),
-          
+
           Padding(
             padding: EdgeInsets.all(12.w),
             child: Column(
@@ -453,7 +468,9 @@ class _RestaurantViewScreenState extends State<RestaurantViewScreen> {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  item.description.isNotEmpty ? item.description : restaurantData!['name'] ?? '',
+                  item.description.isNotEmpty
+                      ? item.description
+                      : restaurantData!['name'] ?? '',
                   style: GoogleFonts.cairo(
                     fontSize: 12.sp,
                     color: Colors.grey[600],

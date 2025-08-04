@@ -1,4 +1,3 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,7 +33,6 @@ class _CustomDrawerState extends State<ResDrawer> {
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-      
           children: [
             Material(
               child: InkWell(
@@ -49,43 +47,68 @@ class _CustomDrawerState extends State<ResDrawer> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Row(children: [
-                          IconButton(onPressed: (){}, icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white,),),
-                        
-                          Text('My Profile', style: GoogleFonts.sen(color: Colors.white, fontSize: 20.sp),)
-                        ],),
-                        SizedBox(height: 20.h,),
-                        Text('avaliable Balance'.tr(), style: GoogleFonts.sen(color: Colors.white, fontSize: 15.sp),),
-                         SizedBox(height: 10.h,),
-                        Text("\$500 ", style: GoogleFonts.sen(color: Colors.white, fontSize: 30.sp,fontWeight: FontWeight.bold),), SizedBox(height: 20.h,),
-ElevatedButton(
-  onPressed: () {
-    // Add withdraw functionality here
-  },
-  style: ElevatedButton.styleFrom(
-    backgroundColor: AppColors.primary, // Use your desired button color
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10),
-      side: const BorderSide(color: Colors.white)
-    ),
-    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-  ),
-  child: Text(
-    'Withdraw',
-    style: GoogleFonts.sen(
-      color: Colors.white,
-      fontSize: 16.sp,
-      fontWeight: FontWeight.bold,
-    ),
-  ),
-),
-
-
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.arrow_back_ios_new,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              'My Profile',
+                              style: GoogleFonts.sen(
+                                  color: Colors.white, fontSize: 20.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        Text(
+                          'avaliable Balance'.tr(),
+                          style: GoogleFonts.sen(
+                              color: Colors.white, fontSize: 15.sp),
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Text(
+                          "\$500 ",
+                          style: GoogleFonts.sen(
+                              color: Colors.white,
+                              fontSize: 30.sp,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Add withdraw functionality here
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors
+                                .primary, // Use your desired button color
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: const BorderSide(color: Colors.white)),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 12),
+                          ),
+                          child: Text(
+                            'Withdraw',
+                            style: GoogleFonts.sen(
+                              color: Colors.white,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                  
-                  
                 ),
               ),
             ),
@@ -96,17 +119,17 @@ ElevatedButton(
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
+                    color: isDark
+                        ? const Color(0xff181F20)
+                        : const Color(0xffF6F8FA),
                   ),
-
                   child: Column(
                     children: [
                       ListTile(
                         tileColor: const Color(0xffF6F8FA),
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? AppColors.dark_grey
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? AppColors.dark_grey : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.user,
                             color: Colors.orange,
@@ -131,9 +154,8 @@ ElevatedButton(
                       ),
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? AppColors.dark_grey
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? AppColors.dark_grey : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.cog,
                             color: Colors.blue,
@@ -160,20 +182,19 @@ ElevatedButton(
                   ),
                 ),
                 const Divider(color: Colors.white),
-
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
+                    color: isDark
+                        ? const Color(0xff181F20)
+                        : const Color(0xffF6F8FA),
                   ),
-
                   child: Column(
                     children: [
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? AppColors.dark_grey
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? AppColors.dark_grey : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.moneyBill,
                             color: Colors.blueAccent,
@@ -190,9 +211,8 @@ ElevatedButton(
                       ),
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? AppColors.dark_grey
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? AppColors.dark_grey : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.file,
                             color: Colors.purpleAccent,
@@ -210,21 +230,20 @@ ElevatedButton(
                     ],
                   ),
                 ),
-
                 const Divider(color: Colors.white),
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
+                    color: isDark
+                        ? const Color(0xff181F20)
+                        : const Color(0xffF6F8FA),
                   ),
-
                   child: Column(
                     children: [
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? AppColors.dark_grey
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? AppColors.dark_grey : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.commenting,
                             color: Colors.greenAccent,
@@ -246,16 +265,16 @@ ElevatedButton(
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
+                    color: isDark
+                        ? const Color(0xff181F20)
+                        : const Color(0xffF6F8FA),
                   ),
-
                   child: Column(
                     children: [
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? const Color(0xff303537)
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? const Color(0xff303537) : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.signOut,
                             color: Colors.orange,
@@ -291,4 +310,3 @@ ElevatedButton(
     );
   }
 }
-

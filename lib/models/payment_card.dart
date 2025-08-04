@@ -12,16 +12,16 @@ class PaymentCard {
   });
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'type': type,
-    'last4': last4,
-    'cardholderName': cardholderName,
-  };
+        'id': id,
+        'type': type,
+        'last4': last4,
+        'cardholderName': cardholderName,
+      };
 
   factory PaymentCard.fromJson(Map<String, dynamic> json) => PaymentCard(
-    id: json['id'],
-    type: json['type'],
-    last4: json['last4'],
-    cardholderName: json['cardholderName'],
-  );
+        id: json['id'],
+        type: json['type'],
+        last4: json['last4'],
+        cardholderName: json['cardholderName'],
+      );
 }

@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery/screens/restaurant/res_drawer.dart';
 import 'package:food_delivery/theme/app_colors.dart';
+import 'package:food_delivery/theme/theme_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OwnerHomepage extends StatefulWidget {
-  static const String routeName ='owner_homepage';
+  static const String routeName = 'owner_homepage';
   const OwnerHomepage({super.key});
 
   @override
@@ -35,7 +36,8 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
       }
     });
   }
-    int _selectedAddress = 0; 
+
+  int _selectedAddress = 0;
   int isSelectedIndex = 0;
   late final TextEditingController _searchController;
   String _userName = '';
@@ -44,10 +46,9 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
 
   @override
   Widget build(BuildContext context) {
-     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       drawer: const ResDrawer(),
-      backgroundColor: const Color(0xFFF8F9FA),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
@@ -67,126 +68,131 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
           ),
         ),
       ),
-  
     );
   }
 
   Widget _buildHeader(bool isDark) {
-    return   PreferredSize(
-            preferredSize: Size.fromHeight(90.h),
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 8,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Menu Icon + Deliver Info
-                    Row(
-                      children: [
-                        // Menu icon in circle
-                        Builder(
-                          builder: (context) {
-                            return GestureDetector(
-                              onTap: () => Scaffold.of(context).openDrawer(),
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFFF1F1F5),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(Icons.menu, color: Colors.black),
-                              ),
-                            );
-                          },
+    return PreferredSize(
+      preferredSize: Size.fromHeight(90.h),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 8,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Menu Icon + Deliver Info
+              Row(
+                children: [
+                  // Menu icon in circle
+                  Builder(
+                    builder: (context) {
+                      return GestureDetector(
+                        onTap: () => Scaffold.of(context).openDrawer(),
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF1F1F5),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.menu, color: Colors.black),
                         ),
-                        const SizedBox(width: 12),
-                        // Deliver to text and location
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'DELIVER TO',
-                              style: GoogleFonts.sen(
-                                fontSize: 12,
-                                color: Colors.orange,
-                                fontWeight: FontWeight.bold,
-                              ),
+                      );
+                    },
+                  ),
+                  const SizedBox(width: 12),
+                  // Deliver to text and location
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'DELIVER TO',
+                        style: GoogleFonts.sen(
+                          fontSize: 12,
+                          color: Colors.orange,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            _Address.isEmpty
+                                ? 'Add Address'
+                                : _Address[_selectedAddress],
+                            style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: 14,
+                              color: isDark ? Colors.white : Colors.black,
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                  _Address.isEmpty
-                                      ? 'Add Address'
-                                      : _Address[_selectedAddress],
-                                  style: TextStyle(
-                                    overflow: TextOverflow.ellipsis,
-                                    fontSize: 14,
-                                    color:isDark?Colors.white:  Colors.black,
-                                  ),
-                                ),
-                                const SizedBox(width: 4),
-                                IconButton(
-                                  onPressed: () {
-                                    showModalBottomSheet(context: context, builder: (context) {
-                                      return SizedBox(
-                                    height: 250.h,
-                                    child: ListView.builder(
-                                      itemCount: _Address.length,
-                                      itemBuilder: (context, index) {
-                                        return ListTile(
-                                          title: Text(_Address[index]),
-                                          onTap: () {
-                                            setState(() {
-                                              _selectedAddress = index;
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                          trailing: _selectedAddress == index
-                                              ? const Icon(Icons.check, color: Colors.orange)
-                                              : null,
-                                        );
-                                      },
-                                    ),
-                                      );
-                                    },);
+                          ),
+                          const SizedBox(width: 4),
+                          IconButton(
+                              onPressed: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return SizedBox(
+                                      height: 250.h,
+                                      child: ListView.builder(
+                                        itemCount: _Address.length,
+                                        itemBuilder: (context, index) {
+                                          return ListTile(
+                                            title: Text(_Address[index]),
+                                            onTap: () {
+                                              setState(() {
+                                                _selectedAddress = index;
+                                              });
+                                              Navigator.pop(context);
+                                            },
+                                            trailing: _selectedAddress == index
+                                                ? const Icon(Icons.check,
+                                                    color: Colors.orange)
+                                                : null,
+                                          );
+                                        },
+                                      ),
+                                    );
                                   },
-                                 icon: Icon( Icons.keyboard_arrow_down, 
-                                 size: 18.sp)),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                   CircleAvatar(
-                    backgroundImage: const AssetImage('assets/images/profile_img.png'),
-                   radius: 30.r,
-                   ),
-                  ],
-                ),
+                                );
+                              },
+                              icon:
+                                  Icon(Icons.keyboard_arrow_down, size: 18.sp)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ),
-          );
+              CircleAvatar(
+                backgroundImage:
+                    const AssetImage('assets/images/profile_img.png'),
+                radius: 30.r,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildMetricsRow(bool isDark) {
     return Row(
       children: [
         Expanded(
-          child: _buildMetricCard('20', 'RUNNING ORDERS',isDark,0),
+          child: _buildMetricCard('20', 'RUNNING ORDERS', isDark, 0),
         ),
         const SizedBox(width: 20),
         Expanded(
-          child: _buildMetricCard('05', 'ORDER REQUEST',isDark,1),
+          child: _buildMetricCard('05', 'ORDER REQUEST', isDark, 1),
         ),
       ],
     );
   }
-  Widget _buildMetricCard(String value, String label,bool isDark,int index) {
+
+  Widget _buildMetricCard(String value, String label, bool isDark, int index) {
     return InkWell(
       onTap: () {
         showModalBottomSheet(
@@ -210,9 +216,8 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
       },
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.r),
-          color: AppColors.light_grey
-        ),
+            borderRadius: BorderRadius.circular(20.r),
+            color: AppColors.dark_grey),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
@@ -223,7 +228,6 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                 style: const TextStyle(
                   fontSize: 48,
                   fontWeight: FontWeight.w700,
-                  color: Colors.black87,
                   height: 1,
                 ),
               ),
@@ -233,7 +237,6 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black54,
                   letterSpacing: 0.5,
                 ),
               ),
@@ -248,11 +251,9 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
 
   Widget _buildRevenueSection(bool isDark) {
     return Container(
-         decoration: BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
-        color: AppColors.light_grey
       ),
-
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -269,7 +270,7 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black87,
+                        color: Colors.white,
                       ),
                     ),
                     SizedBox(height: 4),
@@ -278,7 +279,6 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
-                        color: Colors.black87,
                       ),
                     ),
                   ],
@@ -286,7 +286,8 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black12),
                         borderRadius: BorderRadius.circular(6),
@@ -298,12 +299,13 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                             'Daily',
                             style: TextStyle(
                               fontSize: 14,
-                              color: Colors.black54,
                             ),
                           ),
                           SizedBox(width: 4),
-                          Icon(Icons.keyboard_arrow_down, 
-                               size: 16, color: Colors.black54),
+                          Icon(
+                            Icons.keyboard_arrow_down,
+                            size: 16,
+                          ),
                         ],
                       ),
                     ),
@@ -343,10 +345,9 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
 
   Widget _buildReviewsSection(bool isDark) {
     return Container(
-         decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.r),
-        color: AppColors.light_grey
-      ),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.r),
+          color: AppColors.dark_grey),
       child: const Padding(
         padding: EdgeInsets.all(12.0),
         child: Row(
@@ -360,7 +361,6 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: Colors.black87,
                   ),
                 ),
                 SizedBox(height: 12),
@@ -373,7 +373,6 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black87,
                       ),
                     ),
                     SizedBox(width: 10),
@@ -381,7 +380,6 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                       'Total 20 Reviews',
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.black54,
                       ),
                     ),
                   ],
@@ -404,11 +402,9 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
 
   Widget _buildPopularItemsSection(bool isDark) {
     return Container(
-         decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.r),
-        color: AppColors.light_grey
-      ),
-
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.r),
+          color: AppColors.dark_grey),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -421,7 +417,6 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: Colors.black87,
                   ),
                 ),
                 Text(
@@ -463,8 +458,8 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
       ),
     );
   }
-
 }
+
 class RevenueChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -498,7 +493,7 @@ class RevenueChartPainter extends CustomPainter {
     // Draw the main line
     final path = Path();
     path.moveTo(points[0].dx, points[0].dy);
-    
+
     for (int i = 1; i < points.length; i++) {
       final cp1 = Offset(
         points[i - 1].dx + (points[i].dx - points[i - 1].dx) * 0.5,
@@ -519,7 +514,7 @@ class RevenueChartPainter extends CustomPainter {
 
     // Draw fill
     canvas.drawPath(fillPath, fillPaint);
-    
+
     // Draw line
     canvas.drawPath(path, paint);
 
@@ -530,9 +525,12 @@ class RevenueChartPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(peakPoint, 6, circlePaint);
-    canvas.drawCircle(peakPoint, 6, Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.fill);
+    canvas.drawCircle(
+        peakPoint,
+        6,
+        Paint()
+          ..color = Colors.white
+          ..style = PaintingStyle.fill);
     canvas.drawCircle(peakPoint, 4, circlePaint);
 
     // Draw $500 label
@@ -593,8 +591,6 @@ class RevenueChartPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-
-
 class FoodOrderCard extends StatelessWidget {
   final String category;
   final String title;
@@ -619,7 +615,6 @@ class FoodOrderCard extends StatelessWidget {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -633,7 +628,7 @@ class FoodOrderCard extends StatelessWidget {
         children: [
           // Food Image Placeholder
           Container(
-            width: 120.w,
+            width: 110.w,
             height: 120.h,
             decoration: BoxDecoration(
               color: Colors.blueGrey[300],
@@ -641,7 +636,7 @@ class FoodOrderCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-          
+
           // Food Info
           Expanded(
             child: Column(
@@ -657,44 +652,42 @@ class FoodOrderCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                
+
                 // Title
                 Text(
                   title,
                   style: const TextStyle(
-                    color: Color(0xFF1F2937),
+                    // color: Color(0xFF1F2937),
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 4),
-                
+
                 // ID
                 Text(
                   id,
                   style: TextStyle(
-                    color: Colors.grey[500],
                     fontSize: 14,
                   ),
                 ),
-                const SizedBox(height: 8),
-                
-                // Price
-               
-                const SizedBox(height: 16),
-                
+
+                const SizedBox(height: 20),
+
                 // Buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                     Text(
-                  price,
-                  style: const TextStyle(
-                    color: Color(0xFF1F2937),
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                    Text(
+                      price,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10.h,
+                    ),
                     // Done Button
                     ElevatedButton(
                       onPressed: onDone,
@@ -710,16 +703,17 @@ class FoodOrderCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Done',
                         style: TextStyle(
+                          color: isDark == true ? Colors.black : Colors.white,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
                     const SizedBox(width: 8),
-                    
+
                     // Cancel Button
                     OutlinedButton(
                       onPressed: onCancel,

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/screens/restaurant/notifications_screen.dart';
+import 'package:food_delivery/screens/restaurant/orders_screen.dart';
 import 'package:food_delivery/screens/restaurant/owner_homepage.dart';
+import 'package:food_delivery/screens/restaurant/profile_screen.dart';
 
 class BottomNav extends StatefulWidget {
-  static const String routeName ='bottom-nav';
+  static const String routeName = 'bottom-nav';
   const BottomNav({super.key});
 
   @override
@@ -15,7 +18,6 @@ class _BottomNavState extends State<BottomNav> {
   final List<Widget> _pages = const [
     //here is the bug/error
     OwnerHomepage(),
-    //11
     orders(),
     Notifications(),
     Profile(),
@@ -33,48 +35,19 @@ class _BottomNavState extends State<BottomNav> {
           });
         },
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         selectedItemColor: Colors.orange,
         unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(
-            label: 'Dashboard',
-            icon: Icon(Icons.dashboard)),
+              label: 'Dashboard', icon: Icon(Icons.dashboard)),
           BottomNavigationBarItem(
-            label: 'Orders',
-            icon: Icon(Icons.shopping_cart)),
+              label: 'Orders', icon: Icon(Icons.shopping_cart)),
           BottomNavigationBarItem(
-            label: 'Notifications',
-            icon: Icon(Icons.notifications)),
-          BottomNavigationBarItem(
-            label: 'Profile',
-            icon: Icon(Icons.person)),
+              label: 'Notifications', icon: Icon(Icons.notifications)),
+          BottomNavigationBarItem(label: 'Profile', icon: Icon(Icons.person)),
         ],
       ),
     );
-  }
-}
-class orders extends StatelessWidget {
-  const orders({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-class Notifications extends StatelessWidget {
-  const Notifications({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-class Profile extends StatelessWidget {
-  const Profile({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }

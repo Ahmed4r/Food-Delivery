@@ -20,11 +20,13 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   Widget build(BuildContext context) {
     final themeMode = ref.watch(themeModeProvider);
     return Scaffold(
-      
-      backgroundColor: themeMode == ThemeMode.dark ?AppColors.secondary : Colors.white,
+      backgroundColor:
+          themeMode == ThemeMode.dark ? AppColors.secondary : Colors.white,
       appBar: AppBar(
-         leading: CircleAvatar(
-          backgroundColor: themeMode == ThemeMode.dark ? AppColors.secondary_white : AppColors.dark_grey,
+        leading: CircleAvatar(
+          backgroundColor: themeMode == ThemeMode.dark
+              ? AppColors.secondary_white
+              : AppColors.dark_grey,
           child: IconButton(
             onPressed: () => Navigator.pop(context),
             icon: Icon(
@@ -33,43 +35,62 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             ),
           ),
         ),
-
-        backgroundColor: themeMode == ThemeMode.dark ? Colors.white : AppColors.secondary,
-        title: Text('settings'.tr(), style: GoogleFonts.sen(
-          color: themeMode == ThemeMode.dark ? Colors.black : Colors.white
-        )),
+        backgroundColor:
+            themeMode == ThemeMode.dark ? Colors.white : AppColors.secondary,
+        title: Text('settings'.tr(),
+            style: GoogleFonts.sen(
+                color:
+                    themeMode == ThemeMode.dark ? Colors.black : Colors.white)),
       ),
       body: ListView(
         children: [
           ListTile(
-            leading: FaIcon( themeMode == ThemeMode.dark? FontAwesomeIcons.moon : FontAwesomeIcons.sun, color: themeMode == ThemeMode.dark ? Colors.white : Colors.black),
-            title: Text('Theme'.tr(), style: GoogleFonts.sen(
-              color: themeMode == ThemeMode.dark ? Colors.white : Colors.black
-            )),
+            leading: FaIcon(
+                themeMode == ThemeMode.dark
+                    ? FontAwesomeIcons.moon
+                    : FontAwesomeIcons.sun,
+                color:
+                    themeMode == ThemeMode.dark ? Colors.white : Colors.black),
+            title: Text('Theme'.tr(),
+                style: GoogleFonts.sen(
+                    color: themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black)),
             trailing: Switch(
               value: themeMode == ThemeMode.dark,
               onChanged: (val) {
-                ref.read(themeModeProvider.notifier).state =
-                    val ? ThemeMode.dark : ThemeMode.light;
+                toggleTheme(ref);
+                // saveThemeMode(themeMode);
+                // ref.read(themeModeProvider.notifier).state =
+                //     val ? ThemeMode.dark : ThemeMode.light;
               },
             ),
           ),
           const Divider(),
           ListTile(
-            leading:FaIcon( FontAwesomeIcons.language, color: themeMode == ThemeMode.dark ? Colors.white : Colors.black),
-            title: Text('Language'.tr(), style: GoogleFonts.sen(
-              color: themeMode == ThemeMode.dark ? Colors.white : Colors.black
-            )),
+            leading: FaIcon(FontAwesomeIcons.language,
+                color:
+                    themeMode == ThemeMode.dark ? Colors.white : Colors.black),
+            title: Text('Language'.tr(),
+                style: GoogleFonts.sen(
+                    color: themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black)),
             trailing: DropdownButton<Locale>(
-              dropdownColor:  themeMode == ThemeMode.dark ?AppColors.primary: Colors.white,
-              style:  GoogleFonts.sen(
-                color: themeMode == ThemeMode.dark ? Colors.white : Colors.black
-              ),
-              icon: Icon(Icons.arrow_drop_down, color: themeMode == ThemeMode.dark ? Colors.white : Colors.black),
+              dropdownColor: themeMode == ThemeMode.dark
+                  ? AppColors.primary
+                  : Colors.white,
+              style: GoogleFonts.sen(
+                  color: themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black),
+              icon: Icon(Icons.arrow_drop_down,
+                  color: themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black),
               value: context.locale,
               items: const [
                 DropdownMenuItem(
-
                   value: Locale('en'),
                   child: Text('English'),
                 ),
@@ -87,13 +108,21 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             ),
           ),
           ListTile(
-            leading: FaIcon( FontAwesomeIcons.locationArrow, color: themeMode == ThemeMode.dark ? Colors.white : Colors.black),
-            title: Text('location'.tr(), style: GoogleFonts.sen(
-              color: themeMode == ThemeMode.dark ? Colors.white : Colors.black
-            )),
-            trailing: IconButton(onPressed: ()=> Navigator.pushNamed(context, LocationAccessPage.routeName,), icon: const Icon(Icons.arrow_forward_ios)),
+            leading: FaIcon(FontAwesomeIcons.locationArrow,
+                color:
+                    themeMode == ThemeMode.dark ? Colors.white : Colors.black),
+            title: Text('location'.tr(),
+                style: GoogleFonts.sen(
+                    color: themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black)),
+            trailing: IconButton(
+                onPressed: () => Navigator.pushNamed(
+                      context,
+                      LocationAccessPage.routeName,
+                    ),
+                icon: const Icon(Icons.arrow_forward_ios)),
           ),
-         
         ],
       ),
     );

@@ -72,9 +72,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-         
             Material(
-            
               child: InkWell(
                 onTap: () {
                   /// Close Navigation drawer before
@@ -94,7 +92,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           backgroundImage: _getProfileImageProvider(),
                         ),
                       ),
-
                       Flexible(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +107,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                     : const Color(0xff181F20),
                               ),
                             ),
-
                             Text(
                               email,
                               style: TextStyle(
@@ -133,17 +129,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
+                    color: isDark
+                        ? const Color(0xff181F20)
+                        : const Color(0xffF6F8FA),
                   ),
-
                   child: Column(
                     children: [
                       ListTile(
                         tileColor: const Color(0xffF6F8FA),
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? AppColors.dark_grey
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? AppColors.dark_grey : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.user,
                             color: Colors.orange,
@@ -168,9 +164,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? AppColors.dark_grey
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? AppColors.dark_grey : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.map,
                             color: Colors.deepPurple,
@@ -186,7 +181,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         onTap: () {
                           /// Close Navigation drawer before
                           Navigator.pop(context);
-                          Navigator.pushNamed(context, AddressListScreen.routeName);
+                          Navigator.pushNamed(
+                              context, AddressListScreen.routeName);
                           // Navigator.push(context, MaterialPageRoute(builder: (context) => FavouriteScreen()),);
                         },
                       ),
@@ -194,20 +190,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                 ),
                 const Divider(color: Colors.white),
-
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
+                    color: isDark
+                        ? const Color(0xff181F20)
+                        : const Color(0xffF6F8FA),
                   ),
-
                   child: Column(
                     children: [
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? AppColors.dark_grey
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? AppColors.dark_grey : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.shoppingCart,
                             color: Colors.blueAccent,
@@ -224,9 +219,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? AppColors.dark_grey
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? AppColors.dark_grey : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.heart,
                             color: Colors.purpleAccent,
@@ -244,20 +238,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ],
                   ),
                 ),
-
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
+                    color: isDark
+                        ? const Color(0xff181F20)
+                        : const Color(0xffF6F8FA),
                   ),
-
                   child: Column(
                     children: [
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? AppColors.dark_grey
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? AppColors.dark_grey : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.bell,
                             color: Colors.orange,
@@ -274,9 +267,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? AppColors.dark_grey
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? AppColors.dark_grey : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.creditCard,
                             color: Colors.lightBlue,
@@ -292,7 +284,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         onTap: () {
                           /// Close Navigation drawer before
                           Navigator.pop(context);
-                          Navigator.pushNamed(context, PaymentSystemScreen.routeName);
+                          Navigator.pushNamed(
+                              context, PaymentSystemScreen.routeName);
                         },
                       ),
                     ],
@@ -302,16 +295,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
+                    color: isDark
+                        ? const Color(0xff181F20)
+                        : const Color(0xffF6F8FA),
                   ),
-
                   child: Column(
                     children: [
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? AppColors.dark_grey
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? AppColors.dark_grey : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.circleQuestion,
                             color: Colors.orange,
@@ -331,9 +324,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? AppColors.dark_grey
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? AppColors.dark_grey : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.commenting,
                             color: Colors.greenAccent,
@@ -350,9 +342,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? AppColors.dark_grey
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? AppColors.dark_grey : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.cog,
                             color: Colors.blue,
@@ -382,16 +373,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 Container(
                   width: 260.w,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xff181F20) : const Color(0xffF6F8FA),
+                    color: isDark
+                        ? const Color(0xff181F20)
+                        : const Color(0xffF6F8FA),
                   ),
-
                   child: Column(
                     children: [
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: isDark
-                              ? const Color(0xff303537)
-                              : Colors.white,
+                          backgroundColor:
+                              isDark ? const Color(0xff303537) : Colors.white,
                           child: const FaIcon(
                             FontAwesomeIcons.signOut,
                             color: Colors.orange,

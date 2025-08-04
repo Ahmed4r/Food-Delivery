@@ -47,7 +47,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     _loadProfileData();
-   
   }
 
   Future<void> _loadProfileData() async {
@@ -58,7 +57,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       phone = prefs.getString('profile_phone') ?? '';
       img = prefs.getString('profile_img') ?? '';
     });
-   
   }
 
   @override
@@ -67,7 +65,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: CircleAvatar(
-          backgroundColor: isDark ? AppColors.secondary_white : AppColors.dark_grey,
+          backgroundColor:
+              isDark ? AppColors.secondary_white : AppColors.dark_grey,
           child: IconButton(
             onPressed: () => Navigator.pop(context),
             icon: Icon(
@@ -88,7 +87,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const Spacer(),
             TextButton(
               onPressed: () async {
-                final result = await Navigator.pushNamed(context, EditProfile.routeName);
+                final result =
+                    await Navigator.pushNamed(context, EditProfile.routeName);
                 if (result != null && result is Map) {
                   setState(() {
                     name = result['name'] ?? '';
@@ -99,7 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 }
               },
               child: Text(
-               "Edit Profile".tr(),
+                "Edit Profile".tr(),
                 style: GoogleFonts.sen(
                   fontSize: 17.sp,
                   color: AppColors.primary,
@@ -166,7 +166,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Container(
             width: 340.w,
             decoration: BoxDecoration(
-             
               color: isDark ? AppColors.dark_grey : const Color(0xffF6F8FA),
             ),
             child: Column(
@@ -174,10 +173,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ListTile(
                   tileColor: const Color(0xffF6F8FA),
                   leading: CircleAvatar(
-                    backgroundColor: isDark
-                        ? AppColors.dark_grey
-                        : Colors.white,
-                    child: const FaIcon(FontAwesomeIcons.user, color: Colors.orange),
+                    backgroundColor:
+                        isDark ? AppColors.dark_grey : Colors.white,
+                    child: const FaIcon(FontAwesomeIcons.user,
+                        color: Colors.orange),
                   ),
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,9 +200,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: isDark
-                        ? AppColors.dark_grey
-                        : Colors.white,
+                    backgroundColor:
+                        isDark ? AppColors.dark_grey : Colors.white,
                     child: const FaIcon(
                       FontAwesomeIcons.map,
                       color: Colors.deepPurple,
@@ -231,9 +229,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: isDark
-                        ? AppColors.dark_grey
-                        : Colors.white,
+                    backgroundColor:
+                        isDark ? AppColors.dark_grey : Colors.white,
                     child: const FaIcon(
                       FontAwesomeIcons.phone,
                       color: Colors.blueAccent,
