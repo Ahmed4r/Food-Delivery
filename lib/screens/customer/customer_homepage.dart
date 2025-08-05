@@ -431,20 +431,18 @@ class _HomepageState extends State<Homepage> {
                   SizedBox(height: 16.h),
                   buildSectionHeader('opened Restaurants'.tr()),
                   SizedBox(height: 16.h),
-                  RefreshIndicator(
-                    onRefresh: _refreshData,
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      // physics: const NeverScrollableScrollPhysics(),
-                      separatorBuilder: (context, index) {
-                        return SizedBox(height: 16.h);
-                      },
-                      itemCount: restaurants.length,
-                      itemBuilder: (context, index) {
-                        return _buildRestaurantCard(
-                            restaurants[index], context);
-                      },
-                    ),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    separatorBuilder: (context, index) {
+                      // return SizedBox(height: 16.h);
+                      return Divider();
+                    },
+                    itemCount: restaurants.length,
+                    itemBuilder: (context, index) {
+                      return _buildRestaurantCard(
+                          restaurants[index], context);
+                    },
                   ),
                 ],
               ),
@@ -483,7 +481,7 @@ class _HomepageState extends State<Homepage> {
               ),
               child: Center(
                 child: Image.network(
-                  image ?? '',
+                  image,
                   width: 32,
                   height: 32,
                   fit: BoxFit.contain,
@@ -495,7 +493,7 @@ class _HomepageState extends State<Homepage> {
             ),
             const SizedBox(width: 8),
             Text(
-              title ?? '',
+              title,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,

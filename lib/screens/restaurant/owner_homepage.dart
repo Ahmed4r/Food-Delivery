@@ -217,7 +217,7 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.r),
-            color: AppColors.dark_grey),
+            color: isDark ? AppColors.dark_grey : AppColors.secondary_white),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
@@ -253,6 +253,7 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
+          color: isDark ? AppColors.dark_grey : AppColors.secondary_white
       ),
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -347,7 +348,7 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
-          color: AppColors.dark_grey),
+           color: isDark ? AppColors.dark_grey : AppColors.secondary_white),
       child: const Padding(
         padding: EdgeInsets.all(12.0),
         child: Row(
@@ -404,7 +405,7 @@ class _OwnerHomepageState extends State<OwnerHomepage> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
-          color: AppColors.dark_grey),
+           color: isDark ? AppColors.dark_grey : AppColors.secondary_white),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -667,7 +668,7 @@ class FoodOrderCard extends StatelessWidget {
                 // ID
                 Text(
                   id,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                   ),
                 ),

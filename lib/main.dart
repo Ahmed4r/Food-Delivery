@@ -36,9 +36,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final container = ProviderContainer();
   await loadSavedThemeMode(container);
-  if (WebViewPlatform.instance == null) {
-    WebViewPlatform.instance = AndroidWebViewPlatform();
-  }
+  WebViewPlatform.instance ??= AndroidWebViewPlatform();
   if (Platform.isIOS) {
     await Firebase.initializeApp(
         options: const FirebaseOptions(

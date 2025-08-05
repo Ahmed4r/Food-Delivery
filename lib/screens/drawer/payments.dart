@@ -459,14 +459,14 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
             const Spacer(),
 
             // Total and pay button
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('TOTAL', style: TextStyle(fontSize: 12)),
-                    const Text('\$1',
+                    Text('\$1',
                         style: TextStyle(
                             fontSize: 24, fontWeight: FontWeight.bold)),
                   ],
@@ -527,7 +527,7 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('CARD HOLDER NAME', style: TextStyle(fontSize: 12)),
+            const Text('CARD HOLDER NAME', style: TextStyle(fontSize: 12)),
             const SizedBox(height: 8),
             TextField(
               controller: cardholderNameController,
@@ -541,7 +541,7 @@ class _PaymentSystemScreenState extends State<PaymentSystemScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            Text('CARD NUMBER', style: TextStyle(fontSize: 12)),
+            const Text('CARD NUMBER', style: TextStyle(fontSize: 12)),
             const SizedBox(height: 8),
             TextField(
               controller: cardNumberController,
@@ -862,7 +862,7 @@ class _PaymobWebViewScreenState extends State<PaymobWebViewScreen> {
       appBar: AppBar(
         title: const Text('Complete Payment'),
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.close,
             color: Colors.red,
           ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -314,6 +315,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // resizeToAvoidBottomInset: true,
       body: Column(
         children: [
           SizedBox(
@@ -442,12 +444,36 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
             ),
           ),
           // Form Section
-          Expanded(
+          Flexible(
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                   Text(
+                    'APARTMENT',
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: TextField(
+                      controller: apartmentController,
+                      decoration: InputDecoration.collapsed(
+                        hintText: 'Enter apartment number',
+                        hintStyle: TextStyle(fontSize: 14.sp),
+                      ),
+                      style: TextStyle(fontSize: 14.sp),
+                    ),
+                  ),
                   Text(
                     'ADDRESS',
                     style: TextStyle(
@@ -547,33 +573,61 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 24.h),
-                  Text(
-                    'APARTMENT',
-                    style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: TextField(
-                      controller: apartmentController,
-                      decoration: InputDecoration.collapsed(
-                        hintText: 'Enter apartment number',
-                        hintStyle: TextStyle(fontSize: 14.sp),
-                      ),
-                      style: TextStyle(fontSize: 14.sp),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
+                  SizedBox(height: 20.h),
+                 
+                  // SizedBox(height: 24.h),
+                  LayoutBuilder(builder: (context, constraints) {
+                    if (constraints.maxWidth < 600) {
+                      return Row(
+                              children: labels.map((label) {
+                                final isSelected = selectedLabel == label;
+                                return Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedLabel = label;
+                                      });
+                                    },
+                                    child: Container(
+                                      // width: 12,
+                                      // height: 15,
+                                      margin: EdgeInsets.only(
+                                          right: label != labels.last ? 8 : 0),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12),
+                                      decoration: BoxDecoration(
+                                        color: isSelected
+                                            ? AppColors.primary
+                                            : Colors.grey[100],
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
+                                      child: Center(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              label,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: isSelected
+                                                    ? Colors.white
+                                                    : Colors.grey[700],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            
+                          
+                        );
+                      } else {
+                      return Column(
+                        children: [
+                           Text(
                     'LABEL AS',
                     style: TextStyle(
                       fontSize: 15.sp,
@@ -619,6 +673,12 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                       );
                     }).toList(),
                   ),
+                        
+                        ],
+                      );
+                    }
+                  },),
+                 
                   const Spacer(),
                   SizedBox(
                     width: double.infinity,
