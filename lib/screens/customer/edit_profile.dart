@@ -8,6 +8,7 @@ import 'package:food_delivery/theme/app_colors.dart';
 import 'package:food_delivery/widgets/custom_alert.dart';
 import 'package:food_delivery/widgets/custom_button.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 // import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -85,16 +86,17 @@ class _EditProfileState extends State<EditProfile> {
                                   'assets/images/profile_img.png')),
                     ),
                     CircleAvatar(
-                      backgroundColor: Colors.deepPurpleAccent,
+                      backgroundColor: AppColors.dark_grey,
                       child: IconButton(
                         onPressed: () async {
-                          // ImagePicker imgpicker = ImagePicker();
-                          // final XFile? image = await imgpicker.pickImage(source: ImageSource.gallery);
-                          // if (image != null) {
-                          //   setState(() {
-                          //     img = image.path;
-                          //   });
-                          // }
+                          ImagePicker imgpicker = ImagePicker();
+                          final XFile? image = await imgpicker.pickImage(
+                              source: ImageSource.gallery);
+                          if (image != null) {
+                            setState(() {
+                              img = image.path;
+                            });
+                          }
                         },
                         icon: FaIcon(FontAwesomeIcons.pen,
                             size: 20.sp, color: Colors.white),

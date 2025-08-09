@@ -30,23 +30,23 @@ class _HomepageState extends State<Homepage> {
 
   final List<Map<String, dynamic>> categories = [
     {
-      "title": "All",
+      "title": "All".tr(),
       "image": "https://img.icons8.com/color/96/000000/fire-element.png",
     },
     {
-      "title": "Burger",
+      "title": "Burger".tr(),
       "image": "https://img.icons8.com/color/96/000000/hamburger.png",
     },
     {
-      "title": "Pizza",
+      "title": "Pizza".tr(),
       "image": "https://img.icons8.com/color/96/000000/pizza.png",
     },
     {
-      "title": "Drinks",
+      "title": "Drinks".tr(),
       "image": "https://img.icons8.com/color/96/000000/cocktail.png",
     },
     {
-      "title": "Desserts",
+      "title": "Desserts".tr(),
       "image": "https://img.icons8.com/color/96/000000/cake.png",
     },
   ];
@@ -100,6 +100,11 @@ class _HomepageState extends State<Homepage> {
     super.dispose();
   }
 
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _getuserDate();
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -142,8 +147,8 @@ class _HomepageState extends State<Homepage> {
                         ),
                       );
                     },
-                    child: const Text(
-                      'See All',
+                    child: Text(
+                      'See All'.tr(),
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
@@ -164,17 +169,19 @@ class _HomepageState extends State<Homepage> {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            backgroundColor: isDark ? Colors.black : Colors.white,
-            body: Center(
-                child: CircularProgressIndicator(
-              color: isDark ? Colors.white : Colors.black,
-            )),
-          );
+          return const Center(
+              child: CircularProgressIndicator(
+            color: Colors.white,
+          ));
         }
 
         if (snapshot.hasError) {
-          return const Center(child: Text('Error loading restaurants'));
+          return Scaffold(
+            appBar: AppBar(title: const Text('Error')),
+            body: Center(
+              child: Text('Error: ${snapshot.error}'),
+            ),
+          );
         }
         return Scaffold(
           appBar: PreferredSize(
@@ -215,7 +222,7 @@ class _HomepageState extends State<Homepage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'DELIVER TO',
+                              'Deliver To'.tr(),
                               style: GoogleFonts.sen(
                                 fontSize: 12,
                                 color: Colors.orange,
@@ -274,40 +281,40 @@ class _HomepageState extends State<Homepage> {
                         ),
                       ],
                     ),
-                    Stack(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF0C1224),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const FaIcon(
-                            FontAwesomeIcons.cartShopping,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Positioned(
-                          top: 2,
-                          right: 2,
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
-                              color: Colors.orange,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Text(
-                              '2',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Stack(
+                    //   children: [
+                    //     Container(
+                    //       padding: const EdgeInsets.all(10),
+                    //       decoration: const BoxDecoration(
+                    //         color: Color(0xFF0C1224),
+                    //         shape: BoxShape.circle,
+                    //       ),
+                    //       child: const FaIcon(
+                    //         FontAwesomeIcons.cartShopping,
+                    //         color: Colors.white,
+                    //       ),
+                    //     ),
+                    //     Positioned(
+                    //       top: 2,
+                    //       right: 2,
+                    //       child: Container(
+                    //         padding: const EdgeInsets.all(4),
+                    //         decoration: const BoxDecoration(
+                    //           color: Colors.orange,
+                    //           shape: BoxShape.circle,
+                    //         ),
+                    //         child: const Text(
+                    //           '2',
+                    //           style: TextStyle(
+                    //             color: Colors.white,
+                    //             fontSize: 10,
+                    //             fontWeight: FontWeight.bold,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
@@ -321,7 +328,7 @@ class _HomepageState extends State<Homepage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hey $_userName, Welcome Back',
+                    'Hey $_userName, Welcome Back'.tr(),
                     style: GoogleFonts.sen(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w400,
@@ -334,7 +341,7 @@ class _HomepageState extends State<Homepage> {
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: isDark
-                          ? Colors.black
+                          ? AppColors.dark_grey
                           : const Color.fromARGB(179, 241, 239, 239),
                       hintText: 'Search for food'.tr(),
                       hintStyle: GoogleFonts.sen(
@@ -392,7 +399,7 @@ class _HomepageState extends State<Homepage> {
                               );
                             },
                             child: Text(
-                              'See All',
+                              'See All'.tr(),
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 color: Colors.grey,
@@ -436,12 +443,11 @@ class _HomepageState extends State<Homepage> {
                     physics: const NeverScrollableScrollPhysics(),
                     separatorBuilder: (context, index) {
                       // return SizedBox(height: 16.h);
-                      return Divider();
+                      return const Divider();
                     },
                     itemCount: restaurants.length,
                     itemBuilder: (context, index) {
-                      return _buildRestaurantCard(
-                          restaurants[index], context);
+                      return _buildRestaurantCard(restaurants[index], context);
                     },
                   ),
                 ],
@@ -476,7 +482,7 @@ class _HomepageState extends State<Homepage> {
               width: 40.w,
               height: 40.h,
               decoration: BoxDecoration(
-                color: isDark ? Colors.black : AppColors.light_grey,
+                color: isDark ? AppColors.dark_grey : AppColors.light_grey,
                 shape: BoxShape.circle,
               ),
               child: Center(
@@ -729,6 +735,7 @@ class _HomepageState extends State<Homepage> {
                 ],
               ),
             ),
+            Divider(color: Colors.amberAccent),
           ],
         ),
       ),

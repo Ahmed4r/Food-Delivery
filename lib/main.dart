@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -159,6 +158,8 @@ class FoodDelivery extends ConsumerWidget {
           },
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
+          themeAnimationCurve: Curves.fastOutSlowIn,
+         
           themeMode: themeMode),
     );
   }

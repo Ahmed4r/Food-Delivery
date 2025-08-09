@@ -134,28 +134,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     SizedBox(height: 12.h),
                     Flexible(
                       flex: 1,
-                      child: Column(
-                        children: [
-                          SizedBox(height: 50.h),
-                          Text(
-                            name.isNotEmpty ? name : 'user',
-                            style: TextStyle(
-                              fontSize: 28.sp,
-                              color: isDark
-                                  ? Colors.white
-                                  : const Color(0xff181F20),
+                      child: Flexible(
+                        child: Column(
+                          children: [
+                            SizedBox(height: 50.h),
+                            Text(
+                              name.isNotEmpty ? name : 'user',
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 28.sp,
+                                color: isDark
+                                    ? Colors.white
+                                    : const Color(0xff181F20),
+                              ),
                             ),
-                          ),
-                          Text(
-                            email,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: isDark
-                                  ? Colors.white
-                                  : const Color(0xff181F20),
+                            Text(
+                              email,
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: isDark
+                                    ? Colors.white
+                                    : const Color(0xff181F20),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],

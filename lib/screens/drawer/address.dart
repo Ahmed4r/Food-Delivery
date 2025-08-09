@@ -78,8 +78,8 @@ class _AddressListScreenState extends State<AddressListScreen> {
           ),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'My Address',
+        title: Text(
+          'My Address'.tr(),
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w500,
@@ -116,7 +116,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
                     ),
                     title: Text(
                       address.label ?? 'no label found',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
@@ -168,8 +168,8 @@ class _AddressListScreenState extends State<AddressListScreen> {
                   ),
                   elevation: 0,
                 ),
-                child: const Text(
-                  'ADD NEW ADDRESS',
+                child: Text(
+                  'ADD NEW ADDRESS'.tr(),
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -201,7 +201,11 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
   final TextEditingController apartmentController = TextEditingController();
 
   String selectedLabel = 'Home';
-  final List<String> labels = ['Home', 'Work', 'Other'];
+  final List<String> labels = [
+    'Home'.tr(),
+    'Work'.tr(),
+    'Other'.tr(),
+  ];
 
   LatLng selectedLocation =
       const LatLng(40.7589, -73.9851); // Default to New York
@@ -377,7 +381,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                         ),
                         child: IconButton(
@@ -394,8 +398,8 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                           color: Colors.orange,
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: const Text(
-                          'Tap to edit location',
+                        child: Text(
+                          'Tap to edit location'.tr(),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12,
@@ -450,8 +454,8 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Text(
-                    'APARTMENT',
+                  Text(
+                    'APARTMENT'.tr(),
                     style: TextStyle(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.w600,
@@ -475,7 +479,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                     ),
                   ),
                   Text(
-                    'ADDRESS',
+                    'ADDRESS'.tr(),
                     style: TextStyle(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.w600,
@@ -513,7 +517,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'STREET',
+                              'STREET'.tr(),
                               style: TextStyle(
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.w600,
@@ -545,7 +549,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'POST CODE',
+                              'POST CODE'.tr(),
                               style: TextStyle(
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.w600,
@@ -574,11 +578,68 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                     ],
                   ),
                   SizedBox(height: 20.h),
-                 
+
                   // SizedBox(height: 24.h),
-                  LayoutBuilder(builder: (context, constraints) {
-                    if (constraints.maxWidth < 600) {
-                      return Row(
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      if (constraints.maxWidth < 600) {
+                        return Row(
+                          children: labels.map((label) {
+                            final isSelected = selectedLabel == label;
+                            return Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedLabel = label;
+                                  });
+                                },
+                                child: Container(
+                                  // width: 12,
+                                  // height: 15,
+                                  margin: EdgeInsets.only(
+                                      right: label != labels.last ? 8 : 0),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12),
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? AppColors.primary
+                                        : Colors.grey[100],
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                  child: Center(
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          label,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: isSelected
+                                                ? Colors.white
+                                                : Colors.grey[700],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        );
+                      } else {
+                        return Column(
+                          children: [
+                            Text(
+                              'LABEL AS'.tr(),
+                              style: TextStyle(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            SizedBox(height: 12.h),
+                            Row(
                               children: labels.map((label) {
                                 final isSelected = selectedLabel == label;
                                 return Expanded(
@@ -589,8 +650,6 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                                       });
                                     },
                                     child: Container(
-                                      // width: 12,
-                                      // height: 15,
                                       margin: EdgeInsets.only(
                                           right: label != labels.last ? 8 : 0),
                                       padding: const EdgeInsets.symmetric(
@@ -602,83 +661,28 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                                         borderRadius: BorderRadius.circular(25),
                                       ),
                                       child: Center(
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              label,
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: isSelected
-                                                    ? Colors.white
-                                                    : Colors.grey[700],
-                                              ),
-                                            ),
-                                          ],
+                                        child: Text(
+                                          label,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: isSelected
+                                                ? Colors.white
+                                                : Colors.grey[700],
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
                                 );
                               }).toList(),
-                            
-                          
+                            ),
+                          ],
                         );
-                      } else {
-                      return Column(
-                        children: [
-                           Text(
-                    'LABEL AS',
-                    style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.5,
-                    ),
+                      }
+                    },
                   ),
-                  SizedBox(height: 12.h),
-                  Row(
-                    children: labels.map((label) {
-                      final isSelected = selectedLabel == label;
-                      return Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedLabel = label;
-                            });
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(
-                                right: label != labels.last ? 8 : 0),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? AppColors.primary
-                                  : Colors.grey[100],
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: Center(
-                              child: Text(
-                                label,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: isSelected
-                                      ? Colors.white
-                                      : Colors.grey[700],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                        
-                        ],
-                      );
-                    }
-                  },),
-                 
+
                   const Spacer(),
                   SizedBox(
                     width: double.infinity,
@@ -710,8 +714,8 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                         ),
                         elevation: 0,
                       ),
-                      child: const Text(
-                        'SAVE LOCATION',
+                      child: Text(
+                        'SAVE LOCATION'.tr(),
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
